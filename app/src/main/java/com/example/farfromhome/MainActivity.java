@@ -17,4 +17,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
     }
+
+    public void goToHome(View view) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void openMapsApp(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
+    }
 }
