@@ -16,10 +16,7 @@
         android:text="FarFromHome"
         android:fontFamily="@font/funneldisplay_extrabold"
         android:textSize="40dp"
-        android:textColor="#402E32">
-
-
-    </TextView>
+        android:textColor="#402E32" />
 
     <!-- Contenitore verticale centrato -->
     <LinearLayout
@@ -31,41 +28,73 @@
         android:padding="16dp">
 
         <!-- Bottone Lista della spesa -->
-        <Button
-            android:id="@+id/shoppinglistbutton"
-            android:layout_weight="1"
-            android:backgroundTint="@color/brown"
-            android:text="Lista della spesa"
-            android:textSize="35dp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="12dp"
-            android:layout_gravity="center"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/brown"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/paperscaled"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lista della spesa"
+                android:textSize="35dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
         <!-- Bottone Dispensa -->
-        <Button
-            android:id="@+id/pantrybutton"
-            android:layout_weight="1"
-            android:backgroundTint="@color/brown"
-            android:text="Dispensa"
-            android:textSize="35dp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="12dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/brown"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/fridgescaled"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dispensa"
+                android:textSize="35dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
         <!-- Bottone Valigia -->
-        <Button
-            android:id="@+id/suitcasebutton"
-            android:layout_weight="1"
-            android:backgroundTint="@color/brown"
-            android:text="Valigia"
-            android:textSize="35dp"
-            android:textColor="@color/white"
-            android:layout_marginBottom="24dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/brown"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/suitcasescaled"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valigia"
+                android:textSize="35dp"
+                android:textColor="@color/white" />
+        </LinearLayout>
 
         <!-- TextView per avvisi -->
         <TextView
@@ -79,7 +108,7 @@
             android:background="#FFF8EC"
             android:textSize="16sp"
             android:textColor="#000000"
-            android:clickable="false"/>
+            android:clickable="false" />
     </LinearLayout>
 
 </RelativeLayout>
