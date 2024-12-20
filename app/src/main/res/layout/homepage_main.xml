@@ -3,9 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="#FBD39D"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="FarFromHome"
+        android:fontFamily="@font/funneldisplay_extrabold"
+        android:textSize="30dp"
+        android:textColor="#402E32">
+
+
+    </TextView>
 
     <!-- Contenitore verticale centrato -->
     <LinearLayout
@@ -19,37 +32,44 @@
         <!-- Bottone Lista della spesa -->
         <Button
             android:id="@+id/shoppinglistbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#402E32"
             android:text="Lista della spesa"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <!-- Bottone Dispensa -->
         <Button
             android:id="@+id/pantrybutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#402E32"
             android:text="Dispensa"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <!-- Bottone Valigia -->
         <Button
             android:id="@+id/suitcasebutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#402E32"
             android:text="Valigia"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
 
         <!-- TextView per avvisi -->
         <TextView
             android:id="@+id/warningtext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:text="Avvisi dispensa"
             android:gravity="center"
             android:padding="16dp"
             android:layout_marginTop="24dp"
-            android:background="#EFEFEF"
+            android:background="#FFF8EC"
             android:textSize="16sp"
             android:textColor="#000000"
             android:clickable="false"/>

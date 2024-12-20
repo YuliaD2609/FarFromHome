@@ -9,7 +9,7 @@
         android:orientation="vertical">
 
         <include
-            layout="@layout/menu_orizzontale" />
+            layout="@layout/horizontal_menu" />
 
         <!-- Contenuto della schermata Dispensa -->
     </LinearLayout>
