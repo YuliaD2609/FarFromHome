@@ -29,7 +29,7 @@ public class Categories extends Activity {
         // Create an EditText to input the category name
         final EditText input = new EditText(this);
         input.setHint("Inserire il nome della categoria");
-        input.setTextColor(getResources().getColor(R.color.brown));  // Use your color resource
+        input.setTextColor(getResources().getColor(R.color.brown));
         builder.setView(input);
 
 

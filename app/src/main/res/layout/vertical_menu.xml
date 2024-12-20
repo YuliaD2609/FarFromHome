@@ -20,7 +20,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/category1"
+                android:id="@+id/Cucina"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
                 android:textSize="10dp"
@@ -30,9 +30,43 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="5dp"
                 />
+            <Button
+                android:id="@+id/Bagno"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:textSize="10dp"
+                android:text="Bagno"
+                android:onClick="goToCategory1"
+                android:background="@color/lightBrown"
+                android:textColor="@color/white"
+                android:layout_marginBottom="5dp"
+                />
+            <Button
+                android:id="@+id/Frigo"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:textSize="10dp"
+                android:text="Frigo"
+                android:onClick="goToCategory1"
+                android:background="@color/lightBrown"
+                android:textColor="@color/white"
+                android:layout_marginBottom="5dp"
+                />
+            <Button
+                android:id="@+id/Altro"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
+                android:textSize="10dp"
+                android:text="Altro"
+                android:onClick="goToCategory1"
+                android:background="@color/lightBrown"
+                android:textColor="@color/white"
+                android:layout_marginBottom="5dp"
+                />
 
     </LinearLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/addCategory"
         android:layout_width="match_parent"
