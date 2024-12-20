@@ -1,16 +1,18 @@
 package com.example.farfromhome;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homepage_main);
+        setContentView(R.layout.horizontal_menu);
+        TextView titolo= findViewById(R.id.title);
+        titolo.setText("Carrello");
 
 
     }
