@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:gravity="left"
+    android:gravity="start"
     android:background="@color/menuBackground">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_margin="8dp"
-        android:clickable="true"
-        android:onClick="goToHome">
+        android:layout_margin="8dp">
 
         <ImageView
             android:id="@+id/homeImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/cart" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_margin="8dp"
-        android:clickable="true"
-        android:onClick="openMapsApp">
+            android:focusable="true"
+            android:src="@drawable/cart"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:onClick="goToHome"/>
 
         <ImageView
-            android:id="@+id/carrelloImage"
+            android:id="@+id/shopImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/cart" />
+            android:focusable="true"
+            android:src="@drawable/cart"
+            android:clickable="true"
+            android:onClick="openMapsApp"/>
+    </LinearLayout>
 
+    <TextView
+        android:id="@+id/title"
+        android:textColor="@color/black"
+        android:fontFamily="@font/FunnelDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="TextView" />
 </LinearLayout>
