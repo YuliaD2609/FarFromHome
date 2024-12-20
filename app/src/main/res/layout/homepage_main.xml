@@ -35,9 +35,10 @@
         <Button
             android:id="@+id/shoppinglistbutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Lista della spesa"
             android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="12dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -47,9 +48,10 @@
         <Button
             android:id="@+id/pantrybutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Dispensa"
             android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
@@ -58,9 +60,10 @@
         <Button
             android:id="@+id/suitcasebutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Valigia"
             android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="24dp"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
