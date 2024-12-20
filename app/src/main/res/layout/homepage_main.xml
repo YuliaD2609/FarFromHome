@@ -12,6 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
         android:text="FarFromHome"
         android:fontFamily="@font/funneldisplay_extrabold"
         android:textSize="30dp"
@@ -33,8 +35,10 @@
         <Button
             android:id="@+id/shoppinglistbutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Lista della spesa"
+            android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="12dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -44,8 +48,10 @@
         <Button
             android:id="@+id/pantrybutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Dispensa"
+            android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
@@ -54,8 +60,10 @@
         <Button
             android:id="@+id/suitcasebutton"
             android:layout_weight="1"
-            android:background="#402E32"
+            android:backgroundTint="@color/black"
             android:text="Valigia"
+            android:textSize="35dp"
+            android:textColor="@color/white"
             android:layout_marginBottom="24dp"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
@@ -64,7 +72,7 @@
         <TextView
             android:id="@+id/warningtext"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:text="Avvisi dispensa"
             android:gravity="center"
             android:padding="16dp"
