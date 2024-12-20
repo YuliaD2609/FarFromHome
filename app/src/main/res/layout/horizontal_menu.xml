@@ -41,6 +41,7 @@
         android:layout_weight="1"
         android:fontFamily="@font/funneldisplay_medium"
         android:gravity="end"
+        android:layout_marginRight="10dp"
         android:layout_gravity="center_vertical"
         android:textSize="50sp"
         android:text="TextView"

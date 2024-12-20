@@ -27,7 +27,9 @@
                 android:text="Cucina"
                 android:onClick="goToCategory1"
                 android:background="@color/lightBrown"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:layout_marginBottom="5dp"
+                />
 
     </LinearLayout>
     </ScrollView>
