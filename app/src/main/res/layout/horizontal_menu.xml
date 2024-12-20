@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="start"
-    android:background="@color/menuBackground">
+    android:background="@color/brown">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,8 +21,7 @@
             android:focusable="true"
             android:src="@drawable/cart"
             android:layout_marginEnd="10dp"
-            android:clickable="true"
-            android:onClick="goToHome"/>
+            android:clickable="true"/>
 
         <ImageView
             android:id="@+id/shopImage"
@@ -31,15 +30,18 @@
             android:focusable="true"
             android:src="@drawable/cart"
             android:clickable="true"
-            android:onClick="openMapsApp"/>
+/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/title"
-        android:textColor="@color/black"
-        android:fontFamily="@font/FunnelDisplay-Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="TextView" />
+        android:fontFamily="@font/funneldisplay_medium"
+        android:gravity="end"
+        android:layout_gravity="center_vertical"
+        android:textSize="50sp"
+        android:text="TextView"
+        android:textColor="@color/black"/>
 </LinearLayout>
