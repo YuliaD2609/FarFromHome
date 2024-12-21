@@ -5,7 +5,7 @@
     android:background="#FBD39D"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,6 +29,7 @@
 
         <!-- Bottone Lista della spesa -->
         <LinearLayout
+            android:id="@+id/shoppinglistbutton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
@@ -53,6 +54,7 @@
 
         <!-- Bottone Dispensa -->
         <LinearLayout
+            android:id="@+id/pantrybutton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
@@ -77,6 +79,7 @@
 
         <!-- Bottone Valigia -->
         <LinearLayout
+            android:id="@+id/suitcasebutton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal"
