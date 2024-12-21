@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 
 public class Categories extends Activity {
 
@@ -70,11 +72,15 @@ public class Categories extends Activity {
         newCategoryButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
         newCategoryButton.setText(categoryName);
 
+        newCategoryButton.setPadding(0, 0, 0, 0);
+
         // Set the background color (light brown)
-        newCategoryButton.setBackgroundColor(getResources().getColor(R.color.lightBrown));
+        newCategoryButton.setBackgroundColor(getResources().getColor(R.color.brown));
 
         // Set the text color to white
-        newCategoryButton.setTextColor(getResources().getColor(R.color.white));
+        newCategoryButton.setTextColor(getResources().getColor(R.color.black));
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.funneldisplay_bold);
+        newCategoryButton.setTypeface(typeface);
 
         int buttonId = categoryName.hashCode();
         if (buttonId < 0) {
