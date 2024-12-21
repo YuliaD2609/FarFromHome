@@ -30,17 +30,18 @@
         <!-- Bottone Lista della spesa -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@color/brown"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="50dp">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/paperscaled"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,17 +54,18 @@
         <!-- Bottone Dispensa -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@color/brown"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="50dp">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/fridgescaled"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -76,17 +78,18 @@
         <!-- Bottone Valigia -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:background="@color/brown"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="50dp">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/suitcasescaled"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
