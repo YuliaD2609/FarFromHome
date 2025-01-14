@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,179 +12,35 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/vertical_menu"
+        layout="@layout/vertical_menu"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <include
-            android:id="@+id/vertical_menu"
-            layout="@layout/vertical_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@id/horizontal_menu"
-            android:layout_alignParentLeft="true"/>
+        android:layout_below="@id/horizontal_menu"
+        android:layout_alignParentLeft="true"/>
 
-        <!-- List Section -->
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/itemList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_toRightOf="@id/vertical_menu"
+            android:layout_below="@id/horizontal_menu"
+            android:padding="8dp" />
 
-            <!-- List item 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp">
-
-                <!-- Item Name -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Item 1"
-                    android:textColor="@android:color/black"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp" />
-
-                <!-- Color Changeable Square (Clickable) -->
-                <View
-                    android:id="@+id/color_square_1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:onClick="changeColor" />
-
-                <!-- Quantity Section -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <!-- Minus Button -->
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="16sp"
-                        android:onClick="decreaseQuantity" />
-
-                    <!-- Quantity Number (Square) -->
-                    <TextView
-                        android:id="@+id/quantity_1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:background="@android:color/white"
-                        android:text="0"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp" />
-
-                    <!-- Plus Button -->
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:textSize="16sp"
-                        android:onClick="increaseQuantity" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- List item 2 (You can copy the same structure for more items) -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp">
-
-                <!-- Item Name -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Item 2"
-                    android:textColor="@android:color/black"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp" />
-
-                <!-- Color Changeable Square (Clickable) -->
-                <View
-                    android:id="@+id/color_square_2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/darker_gray"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:onClick="changeColor" />
-
-                <!-- Quantity Section -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <!-- Minus Button -->
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textSize="16sp"
-                        android:onClick="decreaseQuantity" />
-
-                    <!-- Quantity Number (Square) -->
-                    <TextView
-                        android:id="@+id/quantity_2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:background="@android:color/white"
-                        android:text="0"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp" />
-
-                    <!-- Plus Button -->
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:textSize="16sp"
-                        android:onClick="increaseQuantity" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="16dp"/>
-
-
-            <Button
-                android:id="@+id/addCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Aggiungi elemento"
-                android:gravity="center"
-                android:layout_gravity="end"
-                android:onClick="addElement"
-                android:background="@color/brown"
-                android:textColor="@color/black"
-                android:fontFamily="@font/funneldisplay_bold"
-                android:padding="0dp"
-                android:layout_margin="8dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aggiungi elemento"
+        android:gravity="center"
+        android:layout_gravity="end"
+        android:onClick="addElement"
+        android:background="@color/brown"
+        android:textColor="@color/black"
+        android:fontFamily="@font/funneldisplay_bold"
+        android:padding="0dp"
+        android:layout_margin="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

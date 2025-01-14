@@ -30,8 +30,7 @@
             android:layout_height="50dp"
             android:focusable="true"
             android:src="@drawable/cart"
-            android:clickable="true"
-/>
+            android:clickable="true"/>
     </LinearLayout>
 
     <TextView
