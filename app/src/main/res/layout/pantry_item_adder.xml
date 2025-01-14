@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="#FBD39D"
     tools:context=".PantryAddProduct">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inserisci un prodotto per la tua dispensa"
+        android:textSize="30dp" />
 
     <EditText
         android:id="@+id/editTextProductName"
@@ -13,27 +20,49 @@
         android:layout_height="wrap_content"
         android:hint="Product Name" />
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteCategory"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categoria"
+        android:layout_marginTop="30dp"
+        android:textSize="20dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Select Category"
-        android:inputType="none" />
+        android:layout_marginTop="15dp" />
 
-    <ImageView
-        android:id="@+id/imageViewProduct"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Data di scadenza"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/editTextExpiryDate"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/darker_gray"
-        android:contentDescription="Product Image"
-        android:onClick="selectImage" />
+        android:layout_height="wrap_content"
+        android:hint="Data di scadenza (DD/MM/YYYY)"
+        android:inputType="date" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:text="Quantità">
+
+    </TextView>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
 
         <Button
             android:id="@+id/buttonDecreaseQuantity"
@@ -55,6 +84,26 @@
             android:layout_height="wrap_content"
             android:text="+" />
     </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Premi per inserire una immagine"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/imageViewProduct"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:src="@drawable/image_placeholder"
+        android:contentDescription="Product Image"
+        android:onClick="selectImage" />
+
+
 
     <Button
         android:id="@+id/buttonAddProduct"
