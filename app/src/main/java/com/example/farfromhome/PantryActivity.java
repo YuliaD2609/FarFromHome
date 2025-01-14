@@ -1,19 +1,19 @@
 package com.example.farfromhome;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PantryActivity extends Activity {
 
     private RecyclerView itemList;
-    private FloatingActionButton addItemButton;
+    private Button addItemButton;
     private ItemAdapter itemAdapter;
     private List<Item> items;
 
@@ -30,17 +30,16 @@ public class PantryActivity extends Activity {
 
         // Setup RecyclerView
         items = new ArrayList<>(); // Load items from database here
+        Item i=new Item("prova", 3, 1);
+        items.add(i);
         itemAdapter = new ItemAdapter(items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         itemList.setAdapter(itemAdapter);
 
         // Add Item Button Click Listener
-        addItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle adding a new item
-                Toast.makeText(PantryActivity.this, "Add Item Clicked", Toast.LENGTH_SHORT).show();
-            }
+        addItemButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
+            startActivity(intent);
         });
     }
 
