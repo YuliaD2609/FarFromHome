@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -38,8 +39,9 @@ public class PantryActivity extends Activity {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle adding a new item
-                Toast.makeText(PantryActivity.this, "Add Item Clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
+                startActivity(intent);
+                Toast.makeText(PantryActivity.this, "Aggiungi un prodotto", Toast.LENGTH_SHORT).show();
             }
         });
     }

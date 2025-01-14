@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FarFromHome</string>
+    <string-array name="category_array">
+        <item>Frutta</item>
+        <item>Verdura</item>
+        <item>Carne</item>
+        <item>Pesce</item>
+        <item>Snack</item>
+    </string-array>
 </resources>

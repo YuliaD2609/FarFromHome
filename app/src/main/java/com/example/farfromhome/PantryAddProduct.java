@@ -8,10 +8,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,7 @@ public class PantryAddProduct extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 2;
 
     private EditText editTextProductName;
-    private AutoCompleteTextView autoCompleteCategory;
+    private Spinner spinnerCategory;
     private ImageView imageViewProduct;
     private TextView textViewQuantity;
     private int quantity = 0;
@@ -34,17 +34,18 @@ public class PantryAddProduct extends AppCompatActivity {
         setContentView(R.layout.pantry_item_adder);
 
         editTextProductName = findViewById(R.id.editTextProductName);
-        autoCompleteCategory = findViewById(R.id.autoCompleteCategory);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
         imageViewProduct = findViewById(R.id.imageViewProduct);
         textViewQuantity = findViewById(R.id.textViewQuantity);
         Button buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         Button buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
         Button buttonAddProduct = findViewById(R.id.buttonAddProduct);
 
-        // Setup AutoCompleteTextView with an adapter
-        String[] categories = {"Category1"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, categories);
-        autoCompleteCategory.setAdapter(adapter);
+        // Set up Spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.category_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
 
         buttonDecreaseQuantity.setOnClickListener(v -> {
             if (quantity > 0) {
@@ -87,7 +88,7 @@ public class PantryAddProduct extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[]{
+            ActivityCompat.requestPermissions(this, new String[] {
                     Manifest.permission.CAMERA,
                     Manifest.permission.READ_EXTERNAL_STORAGE
             }, 100);
