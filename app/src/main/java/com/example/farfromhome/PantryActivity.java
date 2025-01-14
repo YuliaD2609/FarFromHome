@@ -8,14 +8,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PantryActivity extends Activity {
 
     private RecyclerView itemList;
     private Button addItemButton;
-    private ItemAdapter itemAdapter;
-    private List<Item> items;
+    private PantryItemAdapter itemAdapter;
+    private List<PantryItem> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,9 @@ public class PantryActivity extends Activity {
 
         // Setup RecyclerView
         items = new ArrayList<>(); // Load items from database here
-        Item i=new Item("prova", 3, 1);
+        PantryItem i=new PantryItem("prova", 3, 1, new Date(2025, 12, 12));
         items.add(i);
-        itemAdapter = new ItemAdapter(items);
+        itemAdapter = new PantryItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         itemList.setAdapter(itemAdapter);
 
@@ -45,7 +46,7 @@ public class PantryActivity extends Activity {
 
     // Update item quantity logic in ItemAdapter
     public void updateItemQuantity(int position, int change) {
-        Item item = items.get(position);
+        PantryItem item = items.get(position);
         int newQuantity = item.getQuantity() + change;
         if (newQuantity >= 0) {
             item.setQuantity(newQuantity);

@@ -68,6 +68,7 @@ public class PantryAddProduct extends AppCompatActivity {
         checkPermissions();
     }
 
+
     private void selectImage(View view) {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(pickPhoto, REQUEST_IMAGE_PICK);
@@ -76,11 +77,18 @@ public class PantryAddProduct extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
-            if (requestCode == REQUEST_IMAGE_PICK) {
-                Uri selectedImage = data.getData();
-                imageViewProduct.setImageURI(selectedImage);
+
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
+            // Immagine selezionata dall'utente
+            Uri selectedImageUri = data.getData();
+            if (selectedImageUri != null) {
+                ImageView imageView = findViewById(R.id.itemImage);
+                imageView.setImageURI(selectedImageUri);
             }
+        } else {
+            // Nessuna immagine selezionata, usa l'immagine di default
+            ImageView imageView = findViewById(R.id.itemImage);
+            imageView.setImageResource(R.drawable.home_icon);
         }
     }
 

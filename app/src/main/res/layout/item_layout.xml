@@ -13,11 +13,10 @@
 
     <ImageView
         android:id="@+id/itemImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:contentDescription="Item Image"
-        android:visibility="gone" />
+        android:contentDescription="Item Image"/>
 
     <TextView
         android:id="@+id/itemName"

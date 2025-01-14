@@ -34,4 +34,11 @@ public class HomeActivity extends Activity {
         Intent intent = new Intent(this, SuitcaseActivity.class);
         startActivity(intent);
     }
+
+    public void goToHome(View view) {
+        // In questo esempio, "MainActivity" funge da home. Puoi modificare il nome se necessario.
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish(); // Chiude la activity corrente per evitare ritorno premuto indietro
+    }
 }

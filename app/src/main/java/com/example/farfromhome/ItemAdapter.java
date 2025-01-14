@@ -39,14 +39,18 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.itemImage.setVisibility(View.GONE);
         }
 
+        // Increment Button
         holder.incrementButton.setOnClickListener(v -> {
-            item.incrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            item.setQuantity(item.getQuantity() + 1);
+            notifyItemChanged(position);
         });
 
+        // Decrement Button
         holder.decrementButton.setOnClickListener(v -> {
-            item.decrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            if (item.getQuantity() > 0) {
+                item.setQuantity(item.getQuantity() - 1);
+                notifyItemChanged(position);
+            }
         });
     }
 
