@@ -24,20 +24,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categoria"
+        android:layout_marginTop="30dp"
         android:textSize="20dp" />
 
     <Spinner
         android:id="@+id/spinnerCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="30dp"
         android:text="Data di scadenza"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/editTextExpiryDate"
@@ -50,6 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
         android:text="Quantità">
 
     </TextView>
