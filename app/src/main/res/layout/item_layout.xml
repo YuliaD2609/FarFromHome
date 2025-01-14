@@ -36,26 +36,30 @@
 
         <Button
             android:id="@+id/decrementButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/rounded_background"
             android:textColor="@color/black"
             android:text="-"/>
 
         <TextView
             android:id="@+id/itemQuantity"
-            android:layout_width="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="0"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"/>
 
         <Button
             android:id="@+id/incrementButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:text="+"
             android:textColor="@color/black"
             android:background="@drawable/rounded_background"/>
+
     </LinearLayout>
 </LinearLayout>

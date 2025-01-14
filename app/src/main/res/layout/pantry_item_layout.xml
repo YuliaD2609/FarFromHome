@@ -87,7 +87,9 @@
                 android:gravity="center"
                 android:text="0"
                 android:textSize="16sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
 
             <Button
                 android:id="@+id/incrementButton"
