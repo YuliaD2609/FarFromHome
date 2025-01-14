@@ -34,7 +34,6 @@
             android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@color/brown"
             android:layout_marginBottom="50dp">
 
             <ImageView
@@ -44,12 +43,23 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lista della spesa"
-                android:textSize="35dp"
-                android:textColor="@color/white" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_background"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lista della spesa"
+                    android:textSize="35dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Bottone Dispensa -->
@@ -59,7 +69,6 @@
             android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@color/brown"
             android:layout_marginBottom="50dp">
 
             <ImageView
@@ -69,12 +78,23 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dispensa"
-                android:textSize="35dp"
-                android:textColor="@color/white" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_background"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dispensa"
+                    android:textSize="35dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Bottone Valigia -->
@@ -84,7 +104,6 @@
             android:layout_height="60dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:background="@color/brown"
             android:layout_marginBottom="50dp">
 
             <ImageView
@@ -94,12 +113,23 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Valigia"
-                android:textSize="35dp"
-                android:textColor="@color/white" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_background"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Valigia"
+                    android:textSize="35dp"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- TextView per avvisi -->
