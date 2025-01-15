@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -114,7 +115,8 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void visualizza(String categoryName) {
-        // Your logic for visualizing the category goes here
-        Toast.makeText(requireContext(), "Visualizing category: " + categoryName, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(requireContext(), PantryActivity.class);
+        intent.putExtra("CATEGORY_NAME", categoryName);
+        startActivity(intent);
     }
 }
