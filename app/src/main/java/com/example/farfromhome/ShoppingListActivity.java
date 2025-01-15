@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -15,7 +16,8 @@ import java.util.List;
 public class ShoppingListActivity extends AppCompatActivity {
     private RecyclerView itemList;
     private ShoppingItemAdapter itemAdapter;
-    private List<Item> items;
+    private List<Item> items= new ArrayList<>();;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +41,20 @@ public class ShoppingListActivity extends AppCompatActivity {
         itemList = findViewById(R.id.ShoppingItemList);
         Button addItemButton = findViewById(R.id.addItemButton);
 
-        items = new ArrayList<>();
-        Item i=new Item("prova", 3, null);
-        items.add(i);
-        itemAdapter = new ShoppingItemAdapter(this, items);
-        itemList.setLayoutManager(new LinearLayoutManager(this));
-        itemList.setAdapter(itemAdapter);
+        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
+        dbHelper = new DatabaseHelper(this);
 
-        // Add Item Button Click Listener
+
+        if(categoryName!=null){
+            items = dbHelper.getPantryItemsByCategory(categoryName);;
+            itemAdapter = new ShoppingItemAdapter(this, items);
+            itemList.setLayoutManager(new LinearLayoutManager(this));
+            itemList.setAdapter(itemAdapter);
+        }
+
         //addItemButton.setOnClickListener(v -> {
-           // Intent intent = new Intent(ShoppingListActivity.this, ListAddProduct.class);
-           // startActivity(intent);
+            //Intent intent = new Intent(ShoppingListActivity.this, ListAddProduct.class);
+            //startActivity(intent);
         //});
     }
 

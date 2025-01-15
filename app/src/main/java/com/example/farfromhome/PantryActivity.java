@@ -18,7 +18,7 @@ public class PantryActivity extends AppCompatActivity {
     private RecyclerView itemList;
     private Button addItemButton;
     private PantryItemAdapter itemAdapter;
-    private List<Item> items;
+    private List<Item> items= new ArrayList<>();;
     DatabaseHelper dbHelper;
 
     @Override
@@ -44,7 +44,7 @@ public class PantryActivity extends AppCompatActivity {
         addItemButton = findViewById(R.id.addItemButton);
 
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
 
 
 
