@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.shoppingList;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -12,8 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.Item;
+import com.example.farfromhome.R;
+
 import java.util.List;
 
 public class ShoppingAddItem extends AppCompatActivity {

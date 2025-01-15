@@ -22,12 +22,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PantryActivity"/>
-        <activity android:name=".ShoppingListActivity"/>
-        <activity android:name=".SuitcaseActivity"/>
-        <activity android:name=".PantryAddItem"/>
-        <activity android:name=".ShoppingAddItem"/>
-        <activity android:name=".SuitcaseAddItem"/>
+        <activity android:name=".pantry.PantryActivity"/>
+        <activity android:name=".shoppingList.ShoppingListActivity"/>
+        <activity android:name=".suitcase.SuitcaseActivity"/>
+        <activity android:name=".pantry.PantryAddItem"/>
+        <activity android:name=".shoppingList.ShoppingAddItem"/>
+        <activity android:name=".suitcase.SuitcaseAddItem"/>
     </application>
 
 </manifest>

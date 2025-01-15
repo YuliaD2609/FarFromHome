@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.suitcase;
 
 public class SuitcaseItem {
     private String name;

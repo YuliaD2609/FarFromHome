@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.suitcase;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -7,15 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
+import com.example.farfromhome.R;
+
 import java.util.List;
-import java.util.Locale;
 
 public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapter.SuitcaseItemViewHolder> {
 

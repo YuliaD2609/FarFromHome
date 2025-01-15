@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBD39D"
-    tools:context=".PantryAddItem">
+    tools:context=".pantry.PantryAddItem">
 
     <FrameLayout
         android:id="@+id/horizontal_menu"

@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.farfromhome.pantry.PantryActivity;
+import com.example.farfromhome.shoppingList.ShoppingListActivity;
+import com.example.farfromhome.suitcase.SuitcaseActivity;
 
 public class HomeActivity extends AppCompatActivity {
 

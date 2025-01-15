@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.pantry;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.Item;
+import com.example.farfromhome.R;
 
 import java.util.ArrayList;
 import java.util.List;

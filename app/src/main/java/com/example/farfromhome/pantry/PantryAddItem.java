@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.pantry;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.Item;
+import com.example.farfromhome.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
