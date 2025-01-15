@@ -1,6 +1,8 @@
 package com.example.farfromhome;
 
 import androidx.core.content.ContextCompat;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -26,6 +28,15 @@ public class VerticalMenuFragment extends Fragment {
     private LinearLayout categoryList;
     private List<String> existingCategories=new ArrayList<>();
     DatabaseHelper dbHelper;
+    private PantryActivity pantryActivity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof PantryActivity) {
+            pantryActivity = (PantryActivity) context;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -124,9 +135,14 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void visualizza(String categoryName) {
+        if (pantryActivity != null) {
+            pantryActivity.updateCategory(categoryName);
+            return;
+        }
         Intent intent = new Intent(requireContext(), PantryActivity.class);
         intent.putExtra("CATEGORY_NAME", categoryName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
+
 }

@@ -17,9 +17,8 @@ public class PantryActivity extends AppCompatActivity {
 
     private RecyclerView itemList;
     private Button addItemButton;
-    private PantryItemAdapter itemAdapter;
-    private List<Item> items= new ArrayList<>();;
     DatabaseHelper dbHelper;
+    private PantryItemsFragment pantryItemFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,30 +37,31 @@ public class PantryActivity extends AppCompatActivity {
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
-        fragmentTransaction.commit();
-
-        itemList = findViewById(R.id.itemList);
-        addItemButton = findViewById(R.id.addItemButton);
-
-        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         dbHelper = new DatabaseHelper(this);
-
-
 
         Item i=new Item("prova", 3, new Date(2025, 12, 12));
         dbHelper.addPantryItem(i, "Cucina");
 
-
-        if(categoryName!=null){
-            items = dbHelper.getPantryItemsByCategory(categoryName);;
-            itemAdapter = new PantryItemAdapter(this, items);
-            itemList.setLayoutManager(new LinearLayoutManager(this));
-            itemList.setAdapter(itemAdapter);
+        pantryItemFragment = new PantryItemsFragment();
+        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
+        if (categoryName != null) {
+            Bundle pantryBundle = new Bundle();
+            pantryBundle.putString("CATEGORY_NAME", categoryName);
+            pantryItemFragment.setArguments(pantryBundle);
         }
+        fragmentTransaction.replace(R.id.item_fragment_container, pantryItemFragment);
+
+        fragmentTransaction.commit();
+
+        addItemButton = findViewById(R.id.addItemButton);
 
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
             startActivity(intent);
         });
+    }
+
+    public void updateCategory(String newCategory) {
+        pantryItemFragment.updateCategory(newCategory);
     }
 }

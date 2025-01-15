@@ -17,14 +17,15 @@
         android:layout_below="@id/horizontal_menu"
         android:layout_alignParentLeft="true"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/itemList"
+
+    <FrameLayout
+        android:id="@+id/item_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-    android:layout_below="@id/horizontal_menu"
-    android:layout_toRightOf="@id/vertical_menu"
-    android:layout_alignParentBottom="true"
-    android:padding="8dp"/>
+        android:layout_below="@id/horizontal_menu"
+        android:layout_toRightOf="@id/vertical_menu"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp" />
 
     <Button
         android:id="@+id/addItemButton"

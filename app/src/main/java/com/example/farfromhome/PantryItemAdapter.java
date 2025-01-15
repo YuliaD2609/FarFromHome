@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.PantryItemViewHolder> {
 
-    private final List<Item> items;
+    private List<Item> items;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -50,6 +50,11 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
             item.decrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
+    }
+
+    public void updateItems(List<Item> newItems) {
+        this.items = newItems;
+        notifyDataSetChanged();
     }
 
     @Override
