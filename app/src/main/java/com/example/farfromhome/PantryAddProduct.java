@@ -27,7 +27,6 @@ public class PantryAddProduct extends AppCompatActivity {
     private EditText editTextProductName;
     private Spinner spinnerCategory;
     private EditText editTextExpiryDate;
-    private ImageView imageViewProduct;
     private TextView textViewQuantity;
     private int quantity = 0;
     private Uri selectedImageUri;
@@ -59,7 +58,6 @@ public class PantryAddProduct extends AppCompatActivity {
         loadCategories();
 
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
-        imageViewProduct = findViewById(R.id.imageViewProduct);
         textViewQuantity = findViewById(R.id.textViewQuantity);
         Button buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         Button buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
@@ -76,8 +74,6 @@ public class PantryAddProduct extends AppCompatActivity {
             quantity++;
             textViewQuantity.setText(String.valueOf(quantity));
         });
-
-        imageViewProduct.setOnClickListener(this::selectImage);
 
         buttonAddProduct.setOnClickListener(v -> addProductToDatabase());
 
@@ -99,25 +95,6 @@ public class PantryAddProduct extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
-    }
-
-
-
-    private void selectImage(View view) {
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPhoto, REQUEST_IMAGE_PICK);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            imageViewProduct.setImageURI(selectedImageUri);
-        } else {
-            imageViewProduct.setImageResource(R.drawable.home_icon);
-        }
     }
 
     private void addProductToDatabase() {
