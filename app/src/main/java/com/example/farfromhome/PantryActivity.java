@@ -39,6 +39,13 @@ public class PantryActivity extends AppCompatActivity {
         itemList = findViewById(R.id.itemList);
         addItemButton = findViewById(R.id.addItemButton);
 
+        /*
+        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
+        items = loadItemsFromDatabase(categoryName);
+        itemAdapter = new PantryItemAdapter(this, items);
+        itemList.setLayoutManager(new LinearLayoutManager(this));
+        itemList.setAdapter(itemAdapter);*/
+
         // Setup RecyclerView
         items = new ArrayList<>(); // Load items from database here
         PantryItem i=new PantryItem("prova", 3, null, new Date(2025, 12, 12));
@@ -62,5 +69,20 @@ public class PantryActivity extends AppCompatActivity {
             item.setQuantity(newQuantity);
             itemAdapter.notifyItemChanged(position);
         }
+    }
+
+    private List<PantryItem> loadItemsFromDatabase(String categoryName) {
+        // Qui interroga il database per ottenere gli elementi della categoria specificata
+        // Questo è un esempio simulato
+        List<PantryItem> itemList = new ArrayList<>();
+
+        /* Esempio statico (da sostituire con l'interrogazione al database)
+        if ("Cucina".equals(categoryName)) {
+            itemList.add(new PantryItem("Pasta", 5, "Cucina", new Date(2025 - 1900, 11, 12)));
+            itemList.add(new PantryItem("Olio", 2, "Cucina", new Date(2025 - 1900, 5, 10)));
+        } else if ("Bagno".equals(categoryName)) {
+            itemList.add(new PantryItem("Sapone", 3, "Bagno", new Date(2024 - 1900, 10, 5)));
+        }*/
+        return itemList;
     }
 }
