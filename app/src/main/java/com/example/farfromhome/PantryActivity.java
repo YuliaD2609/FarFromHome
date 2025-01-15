@@ -49,7 +49,7 @@ public class PantryActivity extends AppCompatActivity {
 
 
         Item i=new Item("prova", 3, new Date(2025, 12, 12));
-        dbHelper.addItem(i, "Cucina");
+        dbHelper.addPantryItem(i, "Cucina");
 
 
         if(categoryName!=null){

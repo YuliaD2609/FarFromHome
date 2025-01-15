@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Aggiungi un item alla pantry con una categoria
-    public boolean addItem(Item item, String categoryName) {
+    public boolean addPantryItem(Item item, String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -149,6 +149,72 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Item> getAllPantryItems() {
         return getItemsFromTable(TABLE_PANTRY);
     }
+
+    public boolean addShoppingListItem(Item item, String categoryName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+
+        values.put(COLUMN_EXPIRY, (String) null);
+
+        // Inserisci l'item nella tabella pantry
+        long result = db.insert(TABLE_SHOPPING_LIST, null, values);
+
+        // Se l'inserimento è avvenuto con successo, associamo l'item alla categoria
+        if (result != -1 && categoryName != null && !categoryName.isEmpty()) {
+            // Aggiungi il nome della categoria all'item
+            ContentValues categoryValues = new ContentValues();
+            categoryValues.put("category_name", categoryName);
+
+            // Inserisci la categoria nell'item
+            long categoryResult = db.update(TABLE_SHOPPING_LIST, categoryValues, COLUMN_NAME + " = ?", new String[]{item.getName()});
+            db.close();
+            return categoryResult != -1;
+        }
+
+        db.close();
+        return result != -1;
+    }
+
+    public List<Item> getAllShoppingListItems() {
+        return getItemsFromTable(TABLE_SHOPPING_LIST);
+    }
+
+    // Method to remove an item from the pantry
+    public boolean removePantryItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_PANTRY, COLUMN_NAME + " = ?", new String[]{itemName});
+        db.close();
+        return rowsDeleted > 0; // Return true if at least one row was deleted
+    }
+
+    // Method to remove an item from the shopping list
+    public boolean removeShoppingListItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, COLUMN_NAME + " = ?", new String[]{itemName});
+        db.close();
+        return rowsDeleted > 0; // Return true if at least one row was deleted
+    }
+
+    // Metodo per rimuovere tutti gli elementi dalla dispensa
+    public boolean removeAllPantryItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_PANTRY, null, null); // Rimuove tutte le righe
+        db.close();
+        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+    }
+
+    // Metodo per rimuovere tutti gli elementi dalla lista della spesa
+    public boolean removeAllShoppingListItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, null, null); // Rimuove tutte le righe
+        db.close();
+        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+    }
+
+
 
     // Funzione generica per ottenere gli item da qualsiasi tabella
     public List<Item> getItemsFromTable(String tableName) {
