@@ -166,4 +166,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return items;
     }
+
+    public List<PantryItem> getItemsByCategory(String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<PantryItem> items = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM PantryItems WHERE category = ?", new String[]{category});
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
+                @SuppressLint("Range") Integer image = cursor.getInt(cursor.getColumnIndex("image_resource"));
+                @SuppressLint("Range") String expiryDate = cursor.getString(cursor.getColumnIndex("expiryDate"));
+
+                Date date = new Date(expiryDate);
+                items.add(new PantryItem(name, quantity, image, date));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return items;
+    }
 }
