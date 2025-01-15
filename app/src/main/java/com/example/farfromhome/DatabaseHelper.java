@@ -28,7 +28,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_QUANTITY = "quantity";
-    public static final String COLUMN_IMAGE_RESOURCE = "image_resource";
     public static final String COLUMN_EXPIRY = "expiry";
 
     private static final String CREATE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_CATEGORIES + " (" +
@@ -38,7 +37,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_PANTRY_TABLE = "CREATE TABLE " + TABLE_PANTRY + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " + // Il nome dell'item è unico
             COLUMN_QUANTITY + " INTEGER, " +
-            COLUMN_IMAGE_RESOURCE + " TEXT, " +
             COLUMN_EXPIRY + " TEXT, " +
             "category_name TEXT, " + // La categoria dell'item è il nome della categoria
             "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
@@ -47,14 +45,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_SHOPPING_LIST_TABLE = "CREATE TABLE " + TABLE_SHOPPING_LIST + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
-            COLUMN_IMAGE_RESOURCE + " TEXT, " +
             COLUMN_EXPIRY + " TEXT" +
             ")";
 
     private static final String CREATE_LUGGAGE_TABLE = "CREATE TABLE " + TABLE_LUGGAGE + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
-            COLUMN_IMAGE_RESOURCE + " TEXT, " +
             COLUMN_EXPIRY + " TEXT" +
             ")";
 
@@ -121,7 +117,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         values.put(COLUMN_NAME, item.getName());
         values.put(COLUMN_QUANTITY, item.getQuantity());
-        values.put(COLUMN_IMAGE_RESOURCE, item.getImageResource());
 
         if (item.getExpiry() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -167,7 +162,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 // Recupero dei dati dal cursor
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
-                @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
                 @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
 
                 // Converto la stringa di scadenza in oggetto Date
@@ -182,7 +176,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }*/
 
                 // Aggiungo l'item alla lista
-                Item item = new Item(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
+                Item item = new Item(name, quantity, expiryDate);
                 items.add(item);
             } while (cursor.moveToNext());
         }
@@ -213,7 +207,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private Item cursorToPantryItem(Cursor cursor) {
         @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
-        @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
         @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
 
         Date expiryDate = null;
@@ -226,6 +219,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        return new Item(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
+        return new Item(name, quantity, expiryDate);
     }
 }
