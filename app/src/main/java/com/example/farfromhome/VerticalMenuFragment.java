@@ -36,10 +36,18 @@ public class VerticalMenuFragment extends Fragment {
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
-        createCategoryButton("Cucina");
-        createCategoryButton("Bagno");
-        createCategoryButton("Frigo");
-        createCategoryButton("Altro");
+        if(existingCategories.isEmpty()){
+            createCategoryButton("Cucina");
+            createCategoryButton("Bagno");
+            createCategoryButton("Frigo");
+            createCategoryButton("Altro");
+        }else{
+            List<String> categoriesCopy = new ArrayList<>(existingCategories);
+            for (String cat : categoriesCopy) {
+                createCategoryButton(cat);
+            }
+        }
+
 
         Button addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
@@ -62,6 +70,10 @@ public class VerticalMenuFragment extends Fragment {
                 if (categoryName.length() > 10) {
                     Toast.makeText(requireContext(), "Il nome della categoria è troppo lungo", Toast.LENGTH_SHORT).show();
                 } else {
+                    if (existingCategories.contains(categoryName)) {
+                        Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     createCategoryButton(categoryName);
                 }
             } else {
@@ -78,11 +90,6 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-       if (existingCategories.contains(categoryName)) {
-            Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
-            return;
-       }
-
         Button newCategoryButton = new Button(requireContext());
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

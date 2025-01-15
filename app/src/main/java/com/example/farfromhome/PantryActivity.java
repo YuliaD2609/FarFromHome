@@ -19,6 +19,7 @@ public class PantryActivity extends AppCompatActivity {
     private Button addItemButton;
     private PantryItemAdapter itemAdapter;
     private List<Item> items;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +44,24 @@ public class PantryActivity extends AppCompatActivity {
         addItemButton = findViewById(R.id.addItemButton);
 
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
-        items = loadItemsFromDatabase(categoryName);
-        itemAdapter = new PantryItemAdapter(this, items);
-        itemList.setLayoutManager(new LinearLayoutManager(this));
-        itemList.setAdapter(itemAdapter);
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
 
-        items = new ArrayList<>();
+
+
         Item i=new Item("prova", 3, new Date(2025, 12, 12));
-        items.add(i);
-        itemAdapter = new PantryItemAdapter(this, items);
-        itemList.setLayoutManager(new LinearLayoutManager(this));
-        itemList.setAdapter(itemAdapter);
+        dbHelper.addItem(i, "Cucina");
+
+
+        if(categoryName!=null){
+            items = dbHelper.getPantryItemsByCategory(categoryName);;
+            itemAdapter = new PantryItemAdapter(this, items);
+            itemList.setLayoutManager(new LinearLayoutManager(this));
+            itemList.setAdapter(itemAdapter);
+        }
 
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
             startActivity(intent);
         });
-    }
-
-    private List<Item> loadItemsFromDatabase(String categoryName) {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        return dbHelper.getPantryItemsByCategory(categoryName);
     }
 }
