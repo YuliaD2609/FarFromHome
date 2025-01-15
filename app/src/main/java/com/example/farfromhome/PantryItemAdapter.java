@@ -67,7 +67,6 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
             itemName = itemView.findViewById(R.id.itemName);
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
             itemExpire = itemView.findViewById(R.id.itemExpire);
-            itemImage = itemView.findViewById(R.id.itemImage);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
         }

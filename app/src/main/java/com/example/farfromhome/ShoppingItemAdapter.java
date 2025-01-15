@@ -76,7 +76,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
-            itemImage = itemView.findViewById(R.id.itemImage);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
             colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
