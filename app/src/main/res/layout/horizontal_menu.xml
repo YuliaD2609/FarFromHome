@@ -29,9 +29,9 @@
             android:id="@+id/shopImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/cart"
-            android:clickable="true"/>
+            android:src="@drawable/shopping_cart" />
     </LinearLayout>
 
     <TextView
