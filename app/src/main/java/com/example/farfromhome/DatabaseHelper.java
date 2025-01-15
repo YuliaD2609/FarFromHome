@@ -182,6 +182,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getItemsFromTable(TABLE_SHOPPING_LIST);
     }
 
+    // Method to remove an item from the pantry
+    public boolean removePantryItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_PANTRY, COLUMN_NAME + " = ?", new String[]{itemName});
+        db.close();
+        return rowsDeleted > 0; // Return true if at least one row was deleted
+    }
+
+    // Method to remove an item from the shopping list
+    public boolean removeShoppingListItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, COLUMN_NAME + " = ?", new String[]{itemName});
+        db.close();
+        return rowsDeleted > 0; // Return true if at least one row was deleted
+    }
+
+    // Metodo per rimuovere tutti gli elementi dalla dispensa
+    public boolean removeAllPantryItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_PANTRY, null, null); // Rimuove tutte le righe
+        db.close();
+        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+    }
+
+    // Metodo per rimuovere tutti gli elementi dalla lista della spesa
+    public boolean removeAllShoppingListItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, null, null); // Rimuove tutte le righe
+        db.close();
+        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+    }
+
+
+
     // Funzione generica per ottenere gli item da qualsiasi tabella
     public List<Item> getItemsFromTable(String tableName) {
         List<Item> items = new ArrayList<>();

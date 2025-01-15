@@ -1,5 +1,7 @@
 package com.example.farfromhome;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -96,6 +100,10 @@ public class PantryAddProduct extends AppCompatActivity {
     }
 
     private void addProductToDatabase() {
+        if(quantity == 0){
+            Toast.makeText(this, "Non puoi inserire 0 elememti!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String productName = editTextProductName.getText().toString().trim();
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
         Date expiryDate = null;
