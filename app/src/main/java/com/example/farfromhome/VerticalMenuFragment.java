@@ -40,8 +40,8 @@ public class VerticalMenuFragment extends Fragment {
         Button addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
 
-        DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
-        existingCategories = dbHelper.getAllCategories();
+       // DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
+        //existingCategories = dbHelper.getAllCategories();
 
         return rootView;
     }
@@ -77,10 +77,10 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-        if (existingCategories.contains(categoryName)) {
-            Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
-            return;
-        }
+       // if (existingCategories.contains(categoryName)) {
+       //     Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
+        //    return;
+        //}
 
         Button newCategoryButton = new Button(requireContext());
 

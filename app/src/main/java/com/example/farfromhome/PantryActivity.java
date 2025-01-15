@@ -49,29 +49,17 @@ public class PantryActivity extends AppCompatActivity {
         itemList.setLayoutManager(new LinearLayoutManager(this));
         itemList.setAdapter(itemAdapter);*/
 
-        // Setup RecyclerView
-        items = new ArrayList<>(); // Load items from database here
+        items = new ArrayList<>();
         Item i=new Item("prova", 3, null, new Date(2025, 12, 12));
         items.add(i);
         itemAdapter = new PantryItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
         itemList.setAdapter(itemAdapter);
 
-        // Add Item Button Click Listener
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
             startActivity(intent);
         });
-    }
-
-    // Update item quantity logic in ItemAdapter
-    public void updateItemQuantity(int position, int change) {
-        Item item = items.get(position);
-        int newQuantity = item.getQuantity() + change;
-        if (newQuantity >= 0) {
-            item.setQuantity(newQuantity);
-            itemAdapter.notifyItemChanged(position);
-        }
     }
 
     private List<Item> loadItemsFromDatabase() {

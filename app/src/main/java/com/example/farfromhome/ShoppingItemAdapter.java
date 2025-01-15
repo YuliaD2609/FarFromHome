@@ -1,6 +1,7 @@
 package com.example.farfromhome;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.PantryItemViewHolder> {
+public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.ShoppingItemViewHolder> {
 
     private final List<Item> items;
     private final Context context;
@@ -28,16 +29,15 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
     @NonNull
     @Override
-    public PantryItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false);
-        return new PantryItemViewHolder(view);
+    public ShoppingItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.shopping_item_layout, parent, false);
+        return new ShoppingItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PantryItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ShoppingItemViewHolder holder, int position) {
         Item item = items.get(position);
 
-        // Assegna i dati al layout
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
 
@@ -48,7 +48,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             holder.itemImage.setVisibility(View.GONE);
         }
 
-        // Listener per i pulsanti
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
@@ -58,6 +57,15 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             item.decrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
+
+        holder.colorChangeView.setOnClickListener(v -> {
+            int currentColor = ((ColorDrawable) holder.colorChangeView.getBackground()).getColor();
+            if (currentColor == context.getResources().getColor(R.color.white)) {
+                holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
+            } else {
+                holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
+            }
+        });
     }
 
     @Override
@@ -65,18 +73,20 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         return items.size();
     }
 
-    public static class PantryItemViewHolder extends RecyclerView.ViewHolder {
+    public static class ShoppingItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity;
         ImageView itemImage;
         Button incrementButton, decrementButton;
+        View colorChangeView;
 
-        public PantryItemViewHolder(@NonNull View itemView) {
+        public ShoppingItemViewHolder(@NonNull View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
             itemImage = itemView.findViewById(R.id.itemImage);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
+            colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
         }
     }
 }

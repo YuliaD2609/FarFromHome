@@ -19,10 +19,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_main);
 
-        // Check if the database has been initialized
         checkAndInitializeDatabase();
 
-        // Configure listeners for buttons
         findViewById(R.id.shoppinglistbutton).setOnClickListener(view -> goToShoppingList());
         findViewById(R.id.pantrybutton).setOnClickListener(view -> goToPantry());
         findViewById(R.id.suitcasebutton).setOnClickListener(view -> goToSuitcase());
@@ -33,11 +31,9 @@ public class HomeActivity extends AppCompatActivity {
         boolean isDatabaseInitialized = preferences.getBoolean(KEY_DATABASE_INITIALIZED, false);
 
         if (!isDatabaseInitialized) {
-            // Initialize the database
             DatabaseHelper databaseHelper = new DatabaseHelper(this);
-            databaseHelper.getWritableDatabase(); // Ensures the database is created if it doesn't exist
+            databaseHelper.getWritableDatabase();
 
-            // Set the flag to true
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(KEY_DATABASE_INITIALIZED, true);
             editor.apply();
@@ -46,22 +42,25 @@ public class HomeActivity extends AppCompatActivity {
 
     private void goToShoppingList() {
         Intent intent = new Intent(this, ShoppingListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
     private void goToPantry() {
         Intent intent = new Intent(this, PantryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
     private void goToSuitcase() {
         Intent intent = new Intent(this, SuitcaseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
     public void goToHome(View view) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-        finish(); // Close the current activity to prevent back navigation
+        finish();
     }
 }

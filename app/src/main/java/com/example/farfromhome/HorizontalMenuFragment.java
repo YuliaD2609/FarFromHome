@@ -17,7 +17,7 @@ public class HorizontalMenuFragment extends Fragment {
         assert getArguments() != null;
         String title = getArguments().getString("TITLE", "Default Title");
 
-        TextView titleTextView = rootView.findViewById(R.id.activityTitle); // Assicurati che l'ID del TextView nel layout sia "title"
+        TextView titleTextView = rootView.findViewById(R.id.activityTitle);
         titleTextView.setText(title);
 
         titleTextView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {

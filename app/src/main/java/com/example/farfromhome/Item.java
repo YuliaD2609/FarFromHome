@@ -51,7 +51,6 @@ public class Item {
         this.quantity++;
     }
 
-    // Decrementa la quantità (minimo 0)
     public void decrementQuantity() {
         if (this.quantity > 0) {
             this.quantity--;
