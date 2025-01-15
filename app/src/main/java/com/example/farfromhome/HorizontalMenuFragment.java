@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,8 @@ public class HorizontalMenuFragment extends Fragment {
             }
         });
 
+        rootView.findViewById(R.id.homeImage).setOnClickListener(v -> goToHome());
+
         return rootView;
     }
 
@@ -43,5 +46,11 @@ public class HorizontalMenuFragment extends Fragment {
             textView.setTextSize(textSize);
             textWidth = textView.getPaint().measureText(textView.getText().toString());
         }
+    }
+
+    public void goToHome() {
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Clear the back stack to prevent going back to the current activity
+        startActivity(intent);
     }
 }

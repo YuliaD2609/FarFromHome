@@ -33,6 +33,8 @@ public class PantryItemsFragment extends Fragment {
         if (getArguments() != null) {
             categoryName = getArguments().getString("CATEGORY_NAME");
             loadItems(categoryName);
+        }else{
+            loadItems(null);
         }
 
         return rootView;
@@ -46,6 +48,7 @@ public class PantryItemsFragment extends Fragment {
     private void loadItems(String category) {
         if (category == null || category.isEmpty()) {
             items = dbHelper.getAllPantryItems();
+            System.out.println(items+"uwuwuw");
         } else {
             items = dbHelper.getPantryItemsByCategory(category);
         }

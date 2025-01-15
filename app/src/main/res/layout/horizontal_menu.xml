@@ -19,11 +19,11 @@
             android:id="@+id/homeImage"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:focusable="true"
-            android:src="@drawable/home_icon"
             android:layout_marginEnd="10dp"
             android:clickable="true"
-            android:onClick="goToHome"/>
+            android:focusable="true"
+            android:onClick="goToHome"
+            android:src="@drawable/home_icon" />
 
         <ImageView
             android:id="@+id/shopImage"

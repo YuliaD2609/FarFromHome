@@ -27,6 +27,7 @@ public class PantryAddItem extends AppCompatActivity {
     private EditText editTextExpiryDate;
     private TextView textViewQuantity;
     private int quantity = 0;
+    private String selectedCategory;
 
     private DatabaseHelper databaseHelper;
 
@@ -160,7 +161,7 @@ public class PantryAddItem extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String selectedCategory = spinnerCategory.getSelectedItem().toString();
+        selectedCategory = spinnerCategory.getSelectedItem().toString();
 
         Item item = new Item(productName, quantity, expiryDate);
 
@@ -169,6 +170,7 @@ public class PantryAddItem extends AppCompatActivity {
             inputCleaner();
             Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, PantryActivity.class);
+            intent.putExtra("CATEGORY_NAME", selectedCategory);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } else {

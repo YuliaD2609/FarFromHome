@@ -137,12 +137,7 @@ public class VerticalMenuFragment extends Fragment {
     private void visualizza(String categoryName) {
         if (pantryActivity != null) {
             pantryActivity.updateCategory(categoryName);
-            return;
         }
-        Intent intent = new Intent(requireContext(), PantryActivity.class);
-        intent.putExtra("CATEGORY_NAME", categoryName);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
     }
 
 }
