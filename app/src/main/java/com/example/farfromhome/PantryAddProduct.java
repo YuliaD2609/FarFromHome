@@ -111,7 +111,7 @@ public class PantryAddProduct extends AppCompatActivity {
 
         String selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        Item item = new Item(productName, quantity, null, expiryDate);
+        Item item = new Item(productName, quantity, expiryDate);
 
         boolean isInserted = databaseHelper.addItem(item,selectedCategory);
         if (isInserted) {
