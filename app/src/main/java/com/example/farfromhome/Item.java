@@ -5,13 +5,11 @@ import java.util.Date;
 public class Item {
     private String name;
     private int quantity;
-    private Integer imageResource;
     private Date expiry;
 
-    public Item(String name, int quantity, Integer imageResource, Date expiry) {
+    public Item(String name, int quantity, Date expiry) {
         this.name = name;
         this.quantity = quantity;
-        this.imageResource = imageResource;
         this.expiry = expiry;
     }
 
@@ -25,14 +23,6 @@ public class Item {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Integer getImageResource() {
-        return imageResource;
-    }
-
-    public void setImageResource(Integer imageResource) {
-        this.imageResource = imageResource;
     }
 
     public void setName(String name) {

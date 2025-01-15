@@ -40,7 +40,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         Button addItemButton = findViewById(R.id.addItemButton);
 
         items = new ArrayList<>();
-        Item i=new Item("prova", 3, null, null);
+        Item i=new Item("prova", 3, null);
         items.add(i);
         itemAdapter = new ShoppingItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));

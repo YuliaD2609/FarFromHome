@@ -41,13 +41,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
 
-        if (item.getImageResource() != null) {
-            holder.itemImage.setImageResource(item.getImageResource());
-            holder.itemImage.setVisibility(View.VISIBLE);
-        } else {
-            holder.itemImage.setVisibility(View.GONE);
-        }
-
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));

@@ -42,15 +42,14 @@ public class PantryActivity extends AppCompatActivity {
         itemList = findViewById(R.id.itemList);
         addItemButton = findViewById(R.id.addItemButton);
 
-        /*
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         items = loadItemsFromDatabase(categoryName);
         itemAdapter = new PantryItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
-        itemList.setAdapter(itemAdapter);*/
+        itemList.setAdapter(itemAdapter);
 
         items = new ArrayList<>();
-        Item i=new Item("prova", 3, null, new Date(2025, 12, 12));
+        Item i=new Item("prova", 3, new Date(2025, 12, 12));
         items.add(i);
         itemAdapter = new PantryItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
@@ -62,8 +61,8 @@ public class PantryActivity extends AppCompatActivity {
         });
     }
 
-    private List<Item> loadItemsFromDatabase() {
+    private List<Item> loadItemsFromDatabase(String categoryName) {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        return dbHelper.getAllPantryItems();
+        return dbHelper.getPantryItemsByCategory(categoryName);
     }
 }

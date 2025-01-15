@@ -41,13 +41,6 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
 
-        if (item.getImageResource() != null) {
-            holder.itemImage.setImageResource(item.getImageResource());
-            holder.itemImage.setVisibility(View.VISIBLE);
-        } else {
-            holder.itemImage.setVisibility(View.GONE);
-        }
-
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
