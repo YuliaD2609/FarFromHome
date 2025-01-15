@@ -19,11 +19,10 @@ import java.util.Locale;
 
 public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapter.SuitcaseItemViewHolder> {
 
-    private final List<Item> items;
+    private final List<SuitcaseItem> items;
     private final Context context;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-    public SuitcaseItemAdapter(Context context, List<Item> items) {
+    public SuitcaseItemAdapter(Context context, List<SuitcaseItem> items) {
         this.context = context;
         this.items = items;
     }
@@ -37,17 +36,10 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SuitcaseItemViewHolder holder, int position) {
-        Item item = items.get(position);
+        SuitcaseItem item = items.get(position);
 
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
-
-        if (item.getImageResource() != null) {
-            holder.itemImage.setImageResource(item.getImageResource());
-            holder.itemImage.setVisibility(View.VISIBLE);
-        } else {
-            holder.itemImage.setVisibility(View.GONE);
-        }
 
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
@@ -83,7 +75,6 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
     public static class SuitcaseItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity;
-        ImageView itemImage;
         Button incrementButton, decrementButton;
         View colorChangeView;
 
@@ -91,7 +82,6 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
-            itemImage = itemView.findViewById(R.id.itemImage);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
             colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza

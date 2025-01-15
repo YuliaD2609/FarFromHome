@@ -86,7 +86,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("category_name", categoryName);
 
         long result = db.insert(TABLE_CATEGORIES, null, values);
+
+        System.out.println(getAllCategories());
         db.close();
+
+
 
         return result != -1; // Success if result is not -1
     }

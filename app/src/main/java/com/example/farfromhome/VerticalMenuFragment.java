@@ -25,10 +25,14 @@ public class VerticalMenuFragment extends Fragment {
 
     private LinearLayout categoryList;
     private List<String> existingCategories=new ArrayList<>();
+    DatabaseHelper dbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.vertical_menu, container, false);
+
+        dbHelper = new DatabaseHelper(requireContext());
+        existingCategories = dbHelper.getAllCategories();
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
@@ -39,9 +43,6 @@ public class VerticalMenuFragment extends Fragment {
 
         Button addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
-
-       // DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
-        //existingCategories = dbHelper.getAllCategories();
 
         return rootView;
     }
@@ -77,10 +78,10 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-       // if (existingCategories.contains(categoryName)) {
-       //     Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
-        //    return;
-        //}
+       if (existingCategories.contains(categoryName)) {
+            Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
+            return;
+       }
 
         Button newCategoryButton = new Button(requireContext());
 
@@ -109,6 +110,7 @@ public class VerticalMenuFragment extends Fragment {
             visualizza(categoryName);
         });
 
+        dbHelper.addCategory(categoryName);
         existingCategories.add(categoryName);
 
         categoryList.addView(newCategoryButton);

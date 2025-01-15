@@ -15,7 +15,7 @@ import java.util.List;
 public class SuitcaseActivity extends AppCompatActivity {
     private RecyclerView itemList;
     private SuitcaseItemAdapter itemAdapter;
-    private List<Item> items;
+    private List<SuitcaseItem> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class SuitcaseActivity extends AppCompatActivity {
         Button addItemButton = findViewById(R.id.addItemButton);
 
         items = new ArrayList<>();
-        Item i=new Item("prova", 3, null, null);
+        SuitcaseItem i=new SuitcaseItem("prova", 3);
         items.add(i);
         itemAdapter = new SuitcaseItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
@@ -54,7 +54,7 @@ public class SuitcaseActivity extends AppCompatActivity {
     }
 
     public void updateItemQuantity(int position, int change) {
-        Item item = items.get(position);
+        SuitcaseItem item = items.get(position);
         int newQuantity = item.getQuantity() + change;
         if (newQuantity >= 0) {
             item.setQuantity(newQuantity);
