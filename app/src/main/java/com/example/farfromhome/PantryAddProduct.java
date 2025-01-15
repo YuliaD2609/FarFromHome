@@ -1,8 +1,6 @@
 package com.example.farfromhome;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,8 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PantryAddProduct extends AppCompatActivity {
 
@@ -24,24 +27,43 @@ public class PantryAddProduct extends AppCompatActivity {
 
     private EditText editTextProductName;
     private Spinner spinnerCategory;
+    private EditText editTextExpiryDate;
     private ImageView imageViewProduct;
     private TextView textViewQuantity;
     private int quantity = 0;
+    private Uri selectedImageUri;
+
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantry_item_adder);
 
+        databaseHelper = new DatabaseHelper(this);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("TITLE", "Dispensa");
+        horizontalFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
+
+        fragmentTransaction.commit();
+
+
+
         editTextProductName = findViewById(R.id.editTextProductName);
         spinnerCategory = findViewById(R.id.spinnerCategory);
+        editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
         imageViewProduct = findViewById(R.id.imageViewProduct);
         textViewQuantity = findViewById(R.id.textViewQuantity);
         Button buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         Button buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
         Button buttonAddProduct = findViewById(R.id.buttonAddProduct);
 
-        // Set up Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.category_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -61,13 +83,9 @@ public class PantryAddProduct extends AppCompatActivity {
 
         imageViewProduct.setOnClickListener(this::selectImage);
 
-        buttonAddProduct.setOnClickListener(v -> {
-            // Handle product addition logic here
-        });
+        buttonAddProduct.setOnClickListener(v -> addProductToDatabase());
 
-        checkPermissions();
     }
-
 
     private void selectImage(View view) {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -79,27 +97,35 @@ public class PantryAddProduct extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK && data != null) {
-            // Immagine selezionata dall'utente
-            Uri selectedImageUri = data.getData();
-            if (selectedImageUri != null) {
-                ImageView imageView = findViewById(R.id.itemImage);
-                imageView.setImageURI(selectedImageUri);
-            }
+            selectedImageUri = data.getData();
+            imageViewProduct.setImageURI(selectedImageUri);
         } else {
-            // Nessuna immagine selezionata, usa l'immagine di default
-            ImageView imageView = findViewById(R.id.itemImage);
-            imageView.setImageResource(R.drawable.home_icon);
+            imageViewProduct.setImageResource(R.drawable.home_icon);
         }
     }
 
-    private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+    private void addProductToDatabase() {
+        String productName = editTextProductName.getText().toString().trim();
+        String expiryDateStr = editTextExpiryDate.getText().toString().trim();
+        String imageUriStr = selectedImageUri != null ? selectedImageUri.toString() : null;
+        Date expiryDate = null;
 
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            }, 100);
+        try {
+            expiryDate = new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        PantryItem item = new PantryItem(productName, quantity, null, expiryDate);
+
+        boolean isInserted = databaseHelper.addPantryItem(item);
+        if (isInserted) {
+            finish(); // Close the activity
+            List<PantryItem> listpantry= databaseHelper.getAllPantryItems();
+            System.out.println(listpantry.toString());
+            System.out.println("sdhbfihusfdvjnisd");
+        } else {
+            // Handle error
         }
     }
 }

@@ -61,7 +61,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Creating the tables
         db.execSQL(CREATE_PANTRY_TABLE);
         db.execSQL(CREATE_SHOPPING_LIST_TABLE);
         db.execSQL(CREATE_LUGGAGE_TABLE);
@@ -69,66 +68,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Dropping the existing tables if they exist and creating new ones
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PANTRY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LUGGAGE);
         onCreate(db);
     }
 
-    // Generic method to add items to any table
-    public boolean addItem(String tableName, PantryItem item) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME, item.getName());
-        values.put(COLUMN_QUANTITY, item.getQuantity());
-        values.put(COLUMN_IMAGE_RESOURCE, item.getImageResource() != null ? item.getImageResource().toString() : null);
-        values.put(COLUMN_EXPIRY, item.getExpiry() != null ? item.getExpiry().toString() : null);
-
-        long result = db.insert(tableName, null, values);
-        db.close();
-        return result != -1;
-    }
-
-    // Add a Pantry item specifically
-    public boolean addPantryItem(PantryItem item) {
-        return addItem(TABLE_PANTRY, item);
-    }
-
-    // Method to get all pantry items
+    // Function to get all pantry items
     public List<PantryItem> getAllPantryItems() {
-        List<PantryItem> items = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_PANTRY;
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // Retrieving the data from the cursor
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
-                @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
-                @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
-
-                // Converting expiry string to Date object
-                Date expiryDate = null;
-                if (expiryStr != null) {
-                    try {
-                        expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Adding the item to the list
-                PantryItem item = new PantryItem(name, quantity, null, expiryDate);
-                items.add(item);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return items;
+        return getItemsFromTable(TABLE_PANTRY);
     }
 
     // Method to get items from any table
@@ -148,13 +96,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 // Converting expiry string to Date object
                 Date expiryDate = null;
-                if (expiryStr != null) {
-                    try {
-                        expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
+
+                /*IMPLEMENTAZIONE DATA RICHIESTA*/
 
                 // Adding the item to the list
                 PantryItem item = new PantryItem(name, quantity, null, expiryDate);
@@ -167,23 +110,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public List<PantryItem> getItemsByCategory(String category) {
+    // Function to get items from the pantry by category
+    public List<PantryItem> getPantryItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<PantryItem> items = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PANTRY + " WHERE category = ?", new String[]{category});
 
-        Cursor cursor = db.rawQuery("SELECT * FROM PantryItems WHERE category = ?", new String[]{category});
         if (cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
-                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-                @SuppressLint("Range") Integer image = cursor.getInt(cursor.getColumnIndex("image_resource"));
-                @SuppressLint("Range") String expiryDate = cursor.getString(cursor.getColumnIndex("expiryDate"));
-
-                Date date = new Date(expiryDate);
-                items.add(new PantryItem(name, quantity, image, date));
+                items.add(cursorToPantryItem(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         return items;
     }
+
+    // Function to add a PantryItem to the pantry table
+    public boolean addPantryItem(PantryItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put(COLUMN_IMAGE_RESOURCE, item.getImageResource());
+
+        if (item.getExpiry() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expiryString = dateFormat.format(item.getExpiry());
+            values.put(COLUMN_EXPIRY, expiryString);
+        } else {
+            values.putNull(COLUMN_EXPIRY);
+        }
+
+        long result = db.insert(TABLE_PANTRY, null, values);
+        db.close();
+
+        // Return true if the insert was successful, otherwise false
+        return result != -1;
+    }
+
+    // Helper method to convert a cursor to a PantryItem
+    private PantryItem cursorToPantryItem(Cursor cursor) {
+        @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+        @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+        @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
+        @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+
+        Date expiryDate = null;
+        if (expiryStr != null && !expiryStr.isEmpty()) {
+            try {
+                expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
+            } catch (ParseException e) {
+                e.printStackTrace(); // Log the error for debugging
+                expiryDate = null;  // Set to null if parsing fails
+            }
+        }
+
+        return new PantryItem(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
+    }
+
 }

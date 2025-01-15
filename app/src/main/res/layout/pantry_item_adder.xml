@@ -6,12 +6,11 @@
     android:background="#FBD39D"
     tools:context=".PantryAddProduct">
 
-    <include
+    <FrameLayout
         android:id="@+id/horizontal_menu"
-        layout="@layout/horizontal_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"/>
 
     <ScrollView
         android:layout_width="match_parent"

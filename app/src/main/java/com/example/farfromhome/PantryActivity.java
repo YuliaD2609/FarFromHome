@@ -75,8 +75,8 @@ public class PantryActivity extends AppCompatActivity {
         }
     }
 
-    private List<PantryItem> loadItemsFromDatabase(String categoryName) {
+    private List<PantryItem> loadItemsFromDatabase() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
-        return dbHelper.getItemsByCategory(categoryName);
+        return dbHelper.getAllPantryItems();
     }
 }
