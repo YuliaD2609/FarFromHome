@@ -8,24 +8,33 @@
     android:background="#FBD39D"
     tools:context=".PantryAddProduct">
 
+    <include
+        android:id="@+id/horizontal_menu"
+        layout="@layout/horizontal_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Inserisci un prodotto per la tua dispensa"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/editTextProductName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Product Name" />
+        android:hint="Nome prodotto" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categoria"
         android:layout_marginTop="30dp"
-        android:textSize="20dp" />
+        android:textSize="20dp"
+        android:textColor="@color/black"/>
 
     <Spinner
         android:id="@+id/spinnerCategory"
@@ -38,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Data di scadenza"
+        android:textColor="@color/black"
         android:textSize="20dp" />
 
     <EditText
@@ -53,6 +63,7 @@
         android:textSize="20dp"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
+        android:textColor="@color/black"
         android:text="Quantità">
 
     </TextView>
@@ -89,8 +100,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Premi per inserire una immagine"
+        android:text="Premi per inserire un'immagine"
         android:layout_marginTop="20dp"
+        android:textColor="@color/black"
         android:textSize="20dp" />
 
     <ImageView
@@ -104,12 +116,11 @@
         android:onClick="selectImage" />
 
 
-
     <Button
         android:id="@+id/buttonAddProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Add Product" />
+        android:text="Aggiungi Prodotto" />
 
 </LinearLayout>
