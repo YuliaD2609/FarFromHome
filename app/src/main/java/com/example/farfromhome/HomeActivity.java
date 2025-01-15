@@ -1,12 +1,13 @@
 package com.example.farfromhome;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class HomeActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("MissingInflatedId")
     @Override

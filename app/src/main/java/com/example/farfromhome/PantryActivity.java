@@ -1,6 +1,5 @@
 package com.example.farfromhome;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -27,13 +26,18 @@ public class PantryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantry_layout);
 
-        TextView titolo= findViewById(R.id.title);
-        titolo.setText("Dispensa");
-
-        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
         fragmentTransaction.replace(R.id.vertical_menu, categoriesFragment);
+
+        HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("TITLE", "Dispensa");
+        horizontalFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
+
         fragmentTransaction.commit();
 
         itemList = findViewById(R.id.itemList);

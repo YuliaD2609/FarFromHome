@@ -3,7 +3,9 @@ package com.example.farfromhome;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class SuitcaseActivity extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SuitcaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
