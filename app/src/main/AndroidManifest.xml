@@ -25,7 +25,7 @@
         <activity android:name=".PantryActivity"/>
         <activity android:name=".ShoppingListActivity"/>
         <activity android:name=".SuitcaseActivity"/>
-        <activity android:name=".PantryAddProduct"/>
+        <activity android:name=".PantryAddItem"/>
     </application>
 
 </manifest>

@@ -232,14 +232,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
                 // Converto la stringa di scadenza in oggetto Date
                 Date expiryDate = null;
-                /*if (expiryStr != null && !expiryStr.isEmpty()) {
+                if (expiryStr != null && !expiryStr.isEmpty()) {
                     try {
                         expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
                     } catch (ParseException e) {
                         e.printStackTrace(); // Log dell'errore
                         expiryDate = null;  // Imposta null se la conversione fallisce
                     }
-                }*/
+                }
 
                 // Aggiungo l'item alla lista
                 Item item = new Item(name, quantity, expiryDate);

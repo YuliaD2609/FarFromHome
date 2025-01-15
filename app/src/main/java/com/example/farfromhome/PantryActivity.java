@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,7 +57,7 @@ public class PantryActivity extends AppCompatActivity {
         addItemButton = findViewById(R.id.addItemButton);
 
         addItemButton.setOnClickListener(v -> {
-            Intent intent = new Intent(PantryActivity.this, PantryAddProduct.class);
+            Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
             startActivity(intent);
         });
     }

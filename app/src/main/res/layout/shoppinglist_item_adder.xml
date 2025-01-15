@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inserisci un prodotto per la tua dispensa"
+                android:text="Inserisci un prodotto per la lista della spesa"
                 android:textSize="30dp"
                 android:textColor="@color/black" />
 
@@ -50,21 +50,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Data di scadenza"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
-
-            <EditText
-                android:id="@+id/editTextExpiryDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Data di scadenza (DD/MM/YYYY)"
-                android:inputType="date" />
 
             <TextView
                 android:layout_width="wrap_content"
