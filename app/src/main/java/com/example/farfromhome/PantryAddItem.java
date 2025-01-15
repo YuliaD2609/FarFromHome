@@ -1,6 +1,8 @@
 package com.example.farfromhome;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +48,9 @@ public class PantryAddItem extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
+
+        editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
+        addDateInputFormat(editTextExpiryDate);
         editTextProductName = findViewById(R.id.editTextProductName);
         spinnerCategory = findViewById(R.id.spinnerCategory);
 
@@ -91,6 +96,54 @@ public class PantryAddItem extends AppCompatActivity {
         spinnerCategory.setAdapter(adapter);
     }
 
+    private void addDateInputFormat(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            private boolean isFormatting;
+            private final String dateFormat = "dd/MM/yyyy";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isFormatting) return;
+                isFormatting = true;
+
+                String input = s.toString();
+                StringBuilder formattedInput = new StringBuilder();
+
+                // Rimuovere qualsiasi carattere che non sia un numero
+                input = input.replaceAll("[^\\d]", "");
+
+                int length = input.length();
+                if (length > 2) {
+                    formattedInput.append(input.substring(0, 2)).append("/");
+                    if (length > 4) {
+                        formattedInput.append(input.substring(2, 4)).append("/");
+                        formattedInput.append(input.substring(4, Math.min(8, length)));
+                    } else {
+                        formattedInput.append(input.substring(2));
+                    }
+                } else {
+                    formattedInput.append(input);
+                }
+
+                editText.removeTextChangedListener(this); // Rimuove temporaneamente il watcher
+                editText.setText(formattedInput.toString());
+                editText.setSelection(formattedInput.length());
+                editText.addTextChangedListener(this); // Riaggiunge il watcher
+
+                isFormatting = false;
+            }
+        });
+    }
+
+
     private void addProductToDatabase() {
         if(quantity == 0){
             Toast.makeText(this, "Non puoi inserire 0 elememti!", Toast.LENGTH_SHORT).show();
@@ -110,14 +163,21 @@ public class PantryAddItem extends AppCompatActivity {
 
         Item item = new Item(productName, quantity, expiryDate);
 
-        boolean isInserted = databaseHelper.addPantryItem(item,selectedCategory);
+        boolean isInserted = databaseHelper.addPantryItem(item, selectedCategory);
         if (isInserted) {
-            finish(); // Close the activity
-            List<Item> listpantry= databaseHelper.getAllPantryItems();
-            System.out.println(listpantry.toString());
-            System.out.println("sdhbfihusfdvjnisd");
+            inputCleaner();
+            Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
         } else {
-            // Handle error
+            Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void inputCleaner(){
+        editTextProductName.setText("");
+        editTextExpiryDate.setText("");
+        spinnerCategory.setSelection(0);
+        quantity = 0;
+        textViewQuantity.setText(String.valueOf(quantity));
+    }
+
 }
