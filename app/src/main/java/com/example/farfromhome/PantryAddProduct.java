@@ -22,14 +22,12 @@ import java.util.List;
 
 public class PantryAddProduct extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_PICK = 2;
 
     private EditText editTextProductName;
     private Spinner spinnerCategory;
     private EditText editTextExpiryDate;
     private TextView textViewQuantity;
     private int quantity = 0;
-    private Uri selectedImageUri;
 
     private DatabaseHelper databaseHelper;
 
@@ -100,7 +98,6 @@ public class PantryAddProduct extends AppCompatActivity {
     private void addProductToDatabase() {
         String productName = editTextProductName.getText().toString().trim();
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
-        String imageUriStr = selectedImageUri != null ? selectedImageUri.toString() : null;
         Date expiryDate = null;
 
         try {
@@ -113,7 +110,7 @@ public class PantryAddProduct extends AppCompatActivity {
 
         Item item = new Item(productName, quantity, expiryDate);
 
-        boolean isInserted = databaseHelper.addItem(item,selectedCategory);
+        boolean isInserted = databaseHelper.addPantryItem(item,selectedCategory);
         if (isInserted) {
             finish(); // Close the activity
             List<Item> listpantry= databaseHelper.getAllPantryItems();

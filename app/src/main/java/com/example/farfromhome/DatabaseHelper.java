@@ -111,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Aggiungi un item alla pantry con una categoria
-    public boolean addItem(Item item, String categoryName) {
+    public boolean addPantryItem(Item item, String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -148,6 +148,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Funzione per ottenere tutti gli articoli nella pantry
     public List<Item> getAllPantryItems() {
         return getItemsFromTable(TABLE_PANTRY);
+    }
+
+    public boolean addShoppingListItem(Item item, String categoryName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+
+        values.put(COLUMN_EXPIRY, (String) null);
+
+        // Inserisci l'item nella tabella pantry
+        long result = db.insert(TABLE_SHOPPING_LIST, null, values);
+
+        // Se l'inserimento è avvenuto con successo, associamo l'item alla categoria
+        if (result != -1 && categoryName != null && !categoryName.isEmpty()) {
+            // Aggiungi il nome della categoria all'item
+            ContentValues categoryValues = new ContentValues();
+            categoryValues.put("category_name", categoryName);
+
+            // Inserisci la categoria nell'item
+            long categoryResult = db.update(TABLE_SHOPPING_LIST, categoryValues, COLUMN_NAME + " = ?", new String[]{item.getName()});
+            db.close();
+            return categoryResult != -1;
+        }
+
+        db.close();
+        return result != -1;
+    }
+
+    public List<Item> getAllShoppingListItems() {
+        return getItemsFromTable(TABLE_SHOPPING_LIST);
     }
 
     // Funzione generica per ottenere gli item da qualsiasi tabella
