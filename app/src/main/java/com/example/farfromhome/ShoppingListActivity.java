@@ -2,7 +2,6 @@ package com.example.farfromhome;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +15,7 @@ import java.util.List;
 public class ShoppingListActivity extends AppCompatActivity {
     private RecyclerView itemList;
     private ShoppingItemAdapter itemAdapter;
-    private List<PantryItem> items;
+    private List<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         Button addItemButton = findViewById(R.id.addItemButton);
 
         items = new ArrayList<>();
-        PantryItem i=new PantryItem("prova", 3, 1, null);
+        Item i=new Item("prova", 3, 1, null);
         items.add(i);
         itemAdapter = new ShoppingItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +54,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     public void updateItemQuantity(int position, int change) {
-        PantryItem item = items.get(position);
+        Item item = items.get(position);
         int newQuantity = item.getQuantity() + change;
         if (newQuantity >= 0) {
             item.setQuantity(newQuantity);

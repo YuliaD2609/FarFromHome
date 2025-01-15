@@ -3,7 +3,6 @@ package com.example.farfromhome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -19,7 +18,7 @@ public class PantryActivity extends AppCompatActivity {
     private RecyclerView itemList;
     private Button addItemButton;
     private PantryItemAdapter itemAdapter;
-    private List<PantryItem> items;
+    private List<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class PantryActivity extends AppCompatActivity {
 
         // Setup RecyclerView
         items = new ArrayList<>(); // Load items from database here
-        PantryItem i=new PantryItem("prova", 3, null, new Date(2025, 12, 12));
+        Item i=new Item("prova", 3, null, new Date(2025, 12, 12));
         items.add(i);
         itemAdapter = new PantryItemAdapter(this, items);
         itemList.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +66,7 @@ public class PantryActivity extends AppCompatActivity {
 
     // Update item quantity logic in ItemAdapter
     public void updateItemQuantity(int position, int change) {
-        PantryItem item = items.get(position);
+        Item item = items.get(position);
         int newQuantity = item.getQuantity() + change;
         if (newQuantity >= 0) {
             item.setQuantity(newQuantity);
@@ -75,7 +74,7 @@ public class PantryActivity extends AppCompatActivity {
         }
     }
 
-    private List<PantryItem> loadItemsFromDatabase() {
+    private List<Item> loadItemsFromDatabase() {
         DatabaseHelper dbHelper = new DatabaseHelper(this);
         return dbHelper.getAllPantryItems();
     }

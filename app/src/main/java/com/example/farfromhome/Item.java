@@ -2,13 +2,13 @@ package com.example.farfromhome;
 
 import java.util.Date;
 
-public class PantryItem {
+public class Item {
     private String name;
     private int quantity;
     private Integer imageResource;
     private Date expiry;
 
-    public PantryItem(String name, int quantity, Integer imageResource, Date expiry) {
+    public Item(String name, int quantity, Integer imageResource, Date expiry) {
         this.name = name;
         this.quantity = quantity;
         this.imageResource = imageResource;

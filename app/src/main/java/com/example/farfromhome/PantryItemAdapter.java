@@ -17,13 +17,13 @@ import java.util.Locale;
 
 public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.PantryItemViewHolder> {
 
-    private final List<PantryItem> pantryItems;
+    private final List<Item> items;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
-    public PantryItemAdapter(Context context, List<PantryItem> pantryItems) {
+    public PantryItemAdapter(Context context, List<Item> items) {
         this.context = context;
-        this.pantryItems = pantryItems;
+        this.items = items;
     }
 
     @NonNull
@@ -35,15 +35,15 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
     @Override
     public void onBindViewHolder(@NonNull PantryItemViewHolder holder, int position) {
-        PantryItem pantryItem = pantryItems.get(position);
+        Item item = items.get(position);
 
         // Assegna i dati al layout
-        holder.itemName.setText(pantryItem.getName());
-        holder.itemQuantity.setText(String.valueOf(pantryItem.getQuantity()));
-        holder.itemExpire.setText(dateFormat.format(pantryItem.getExpiry()));
+        holder.itemName.setText(item.getName());
+        holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+        holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
 
-        if (pantryItem.getImageResource() != null) {
-            holder.itemImage.setImageResource(pantryItem.getImageResource());
+        if (item.getImageResource() != null) {
+            holder.itemImage.setImageResource(item.getImageResource());
             holder.itemImage.setVisibility(View.VISIBLE);
         } else {
             holder.itemImage.setVisibility(View.GONE);
@@ -51,19 +51,19 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
         // Listener per i pulsanti
         holder.incrementButton.setOnClickListener(v -> {
-            pantryItem.incrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(pantryItem.getQuantity()));
+            item.incrementQuantity();
+            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
 
         holder.decrementButton.setOnClickListener(v -> {
-            pantryItem.decrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(pantryItem.getQuantity()));
+            item.decrementQuantity();
+            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
     }
 
     @Override
     public int getItemCount() {
-        return pantryItems.size();
+        return items.size();
     }
 
     public static class PantryItemViewHolder extends RecyclerView.ViewHolder {

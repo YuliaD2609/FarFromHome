@@ -75,13 +75,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Function to get all pantry items
-    public List<PantryItem> getAllPantryItems() {
+    public List<Item> getAllPantryItems() {
         return getItemsFromTable(TABLE_PANTRY);
     }
 
     // Method to get items from any table
-    public List<PantryItem> getItemsFromTable(String tableName) {
-        List<PantryItem> items = new ArrayList<>();
+    public List<Item> getItemsFromTable(String tableName) {
+        List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + tableName;
         Cursor cursor = db.rawQuery(query, null);
@@ -100,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 /*IMPLEMENTAZIONE DATA RICHIESTA*/
 
                 // Adding the item to the list
-                PantryItem item = new PantryItem(name, quantity, null, expiryDate);
+                Item item = new Item(name, quantity, null, expiryDate);
                 items.add(item);
             } while (cursor.moveToNext());
         }
@@ -111,9 +111,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Function to get items from the pantry by category
-    public List<PantryItem> getPantryItemsByCategory(String category) {
+    public List<Item> getPantryItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<PantryItem> items = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PANTRY + " WHERE category = ?", new String[]{category});
 
         if (cursor.moveToFirst()) {
@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Function to add a PantryItem to the pantry table
-    public boolean addPantryItem(PantryItem item) {
+    public boolean addPantryItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -151,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Helper method to convert a cursor to a PantryItem
-    private PantryItem cursorToPantryItem(Cursor cursor) {
+    private Item cursorToPantryItem(Cursor cursor) {
         @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
         @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
@@ -167,7 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        return new PantryItem(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
+        return new Item(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
     }
 
     public List<String> getAllCategories() {

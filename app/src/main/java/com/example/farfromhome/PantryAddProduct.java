@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -116,12 +115,12 @@ public class PantryAddProduct extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        PantryItem item = new PantryItem(productName, quantity, null, expiryDate);
+        Item item = new Item(productName, quantity, null, expiryDate);
 
         boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
             finish(); // Close the activity
-            List<PantryItem> listpantry= databaseHelper.getAllPantryItems();
+            List<Item> listpantry= databaseHelper.getAllPantryItems();
             System.out.println(listpantry.toString());
             System.out.println("sdhbfihusfdvjnisd");
         } else {
