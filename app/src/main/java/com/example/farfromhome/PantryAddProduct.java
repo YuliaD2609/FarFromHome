@@ -53,20 +53,17 @@ public class PantryAddProduct extends AppCompatActivity {
         fragmentTransaction.commit();
 
 
-
         editTextProductName = findViewById(R.id.editTextProductName);
         spinnerCategory = findViewById(R.id.spinnerCategory);
+
+        loadCategories();
+
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
         imageViewProduct = findViewById(R.id.imageViewProduct);
         textViewQuantity = findViewById(R.id.textViewQuantity);
         Button buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         Button buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
         Button buttonAddProduct = findViewById(R.id.buttonAddProduct);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.category_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
 
         buttonDecreaseQuantity.setOnClickListener(v -> {
             if (quantity > 0) {
@@ -85,6 +82,26 @@ public class PantryAddProduct extends AppCompatActivity {
         buttonAddProduct.setOnClickListener(v -> addProductToDatabase());
 
     }
+
+    private void loadCategories() {
+        // Fetch categories from the database
+        List<String> categories = databaseHelper.getAllCategories();
+        if (categories == null || categories.isEmpty()) {
+            System.out.println("No categories found in database.");
+            // Add a default category or handle the empty state if necessary
+            categories.add("N/A");
+        } else {
+            System.out.println("Categories fetched from database: " + categories);
+        }
+
+        // Populate spinner with categories
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, categories);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+    }
+
+
 
     private void selectImage(View view) {
         Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -115,9 +132,11 @@ public class PantryAddProduct extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        String selectedCategory = spinnerCategory.getSelectedItem().toString();
+
         Item item = new Item(productName, quantity, null, expiryDate);
 
-        boolean isInserted = databaseHelper.addPantryItem(item);
+        boolean isInserted = databaseHelper.addItem(item,selectedCategory);
         if (isInserted) {
             finish(); // Close the activity
             List<Item> listpantry= databaseHelper.getAllPantryItems();
