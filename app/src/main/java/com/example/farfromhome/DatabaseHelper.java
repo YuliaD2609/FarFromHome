@@ -130,40 +130,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return items;
     }
-
-    // Method to get items from any table
-    public List<PantryItem> getItemsFromTable(String tableName) {
-        List<PantryItem> items = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + tableName;
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                // Retrieving the data from the cursor
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
-                @SuppressLint("Range") String imageUriStr = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
-                @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
-
-                // Converting expiry string to Date object
-                Date expiryDate = null;
-                if (expiryStr != null) {
-                    try {
-                        expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                // Adding the item to the list
-                PantryItem item = new PantryItem(name, quantity, null, expiryDate);
-                items.add(item);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return items;
-    }
 }

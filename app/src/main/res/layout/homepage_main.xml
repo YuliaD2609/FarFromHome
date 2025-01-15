@@ -8,6 +8,7 @@
     tools:context=".HomeActivity">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -24,7 +25,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:layout_marginTop="20dp"
         android:layout_centerInParent="true"
+        android:layout_below="@id/title"
         android:padding="16dp">
 
         <!-- Bottone Lista della spesa -->
