@@ -1,5 +1,6 @@
 package com.example.farfromhome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -167,6 +168,9 @@ public class PantryAddItem extends AppCompatActivity {
         if (isInserted) {
             inputCleaner();
             Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, PantryActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
         }
