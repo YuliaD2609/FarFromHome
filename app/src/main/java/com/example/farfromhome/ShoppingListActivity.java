@@ -52,10 +52,10 @@ public class ShoppingListActivity extends AppCompatActivity {
             itemList.setAdapter(itemAdapter);
         }
 
-        //addItemButton.setOnClickListener(v -> {
-            //Intent intent = new Intent(ShoppingListActivity.this, ListAddProduct.class);
-            //startActivity(intent);
-        //});
+        addItemButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ShoppingListActivity.this, ShoppingAddItem.class);
+            startActivity(intent);
+        });
     }
 
     public void updateItemQuantity(int position, int change) {

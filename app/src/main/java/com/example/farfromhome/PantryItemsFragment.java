@@ -44,7 +44,12 @@ public class PantryItemsFragment extends Fragment {
     }
 
     private void loadItems(String category) {
-        items = dbHelper.getPantryItemsByCategory(category);
+        if (category == null || category.isEmpty()) {
+            items = dbHelper.getAllPantryItems();
+        } else {
+            items = dbHelper.getPantryItemsByCategory(category);
+        }
+
         if (itemAdapter == null) {
             itemAdapter = new PantryItemAdapter(requireContext(), items);
             itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -53,4 +58,5 @@ public class PantryItemsFragment extends Fragment {
             itemAdapter.updateItems(items);
         }
     }
+
 }
