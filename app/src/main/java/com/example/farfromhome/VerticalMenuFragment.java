@@ -1,7 +1,9 @@
 package com.example.farfromhome;
 
+import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -15,9 +17,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class VerticalMenuFragment extends Fragment {
 
     private LinearLayout categoryList;
+    private List<String> existingCategories=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,7 +32,6 @@ public class VerticalMenuFragment extends Fragment {
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
-        createSeparator();
         createCategoryButton("Cucina");
         createCategoryButton("Bagno");
         createCategoryButton("Frigo");
@@ -33,6 +39,9 @@ public class VerticalMenuFragment extends Fragment {
 
         Button addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(requireContext());
+        existingCategories = dbHelper.getAllCategories();
 
         return rootView;
     }
@@ -43,10 +52,9 @@ public class VerticalMenuFragment extends Fragment {
 
         final EditText input = new EditText(requireContext());
         input.setHint("Inserire il nome della categoria");
-        input.setTextColor(getResources().getColor(R.color.brown));
+        input.setTextColor(getResources().getColor(R.color.black));
         builder.setView(input);
 
-        // Set up the buttons
         builder.setPositiveButton("Add", (dialog, which) -> {
             String categoryName = input.getText().toString().trim();
             if (!categoryName.isEmpty()) {
@@ -61,10 +69,19 @@ public class VerticalMenuFragment extends Fragment {
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
-        builder.show();
+        AlertDialog dialog = builder.create();
+        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background_beige);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
+
+        dialog.show();
     }
 
     private void createCategoryButton(String categoryName) {
+        if (existingCategories.contains(categoryName)) {
+            Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Button newCategoryButton = new Button(requireContext());
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -92,21 +109,7 @@ public class VerticalMenuFragment extends Fragment {
             visualizza(categoryName);
         });
 
-        categoryList.addView(newCategoryButton);
-    }
-
-    private void createSeparator() {
-        Button newCategoryButton = new Button(requireContext());
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) (5 * getResources().getDisplayMetrics().density)
-        );
-        newCategoryButton.setClickable(false);
-        params.bottomMargin = (int) (5 * getResources().getDisplayMetrics().density);
-        newCategoryButton.setLayoutParams(params);
-        newCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
-        newCategoryButton.setTextColor(getResources().getColor(R.color.lightBrown));
-        newCategoryButton.setPadding(0, 0, 0, 0);
+        existingCategories.add(categoryName);
 
         categoryList.addView(newCategoryButton);
     }

@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#402E32</color>
     <color name="white">#FFF8EC</color>
-    <color name="brown">#BD861F</color>
+    <color name="brown">#B17227</color>
+    <color name="beige">#EDB96E</color>
     <color name="lightBrown">#FBD39D</color>
 </resources>

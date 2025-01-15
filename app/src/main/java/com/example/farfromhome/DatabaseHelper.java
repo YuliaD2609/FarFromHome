@@ -170,4 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new PantryItem(name, quantity, imageUriStr != null ? Integer.valueOf(imageUriStr) : null, expiryDate);
     }
 
+    public List<String> getAllCategories() {
+        return null;
+    }
 }

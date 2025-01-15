@@ -22,19 +22,25 @@ public class ShoppingListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_list_layout);
-        TextView titolo= findViewById(R.id.title);
-        titolo.setText("Lista della spesa");
 
-        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
         fragmentTransaction.replace(R.id.vertical_menu, categoriesFragment);
+
+        HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("TITLE", "Lista della spesa");
+        horizontalFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
+
         fragmentTransaction.commit();
 
         itemList = findViewById(R.id.ShoppingItemList);
         Button addItemButton = findViewById(R.id.addItemButton);
 
-        items = new ArrayList<>(); // Load items from database here
+        items = new ArrayList<>();
         PantryItem i=new PantryItem("prova", 3, 1, null);
         items.add(i);
         itemAdapter = new ShoppingItemAdapter(this, items);

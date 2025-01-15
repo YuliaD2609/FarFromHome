@@ -5,9 +5,8 @@
     android:orientation="vertical"
     android:background="@color/lightBrown">
 
-    <include
+    <FrameLayout
         android:id="@+id/horizontal_menu"
-        layout="@layout/horizontal_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"/>
