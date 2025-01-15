@@ -72,17 +72,7 @@ public class PantryActivity extends AppCompatActivity {
     }
 
     private List<PantryItem> loadItemsFromDatabase(String categoryName) {
-        // Qui interroga il database per ottenere gli elementi della categoria specificata
-        // Questo è un esempio simulato
-        List<PantryItem> itemList = new ArrayList<>();
-
-        /* Esempio statico (da sostituire con l'interrogazione al database)
-        if ("Cucina".equals(categoryName)) {
-            itemList.add(new PantryItem("Pasta", 5, "Cucina", new Date(2025 - 1900, 11, 12)));
-            itemList.add(new PantryItem("Olio", 2, "Cucina", new Date(2025 - 1900, 5, 10)));
-        } else if ("Bagno".equals(categoryName)) {
-            itemList.add(new PantryItem("Sapone", 3, "Bagno", new Date(2024 - 1900, 10, 5)));
-        }*/
-        return itemList;
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        return dbHelper.getItemsByCategory(categoryName);
     }
 }

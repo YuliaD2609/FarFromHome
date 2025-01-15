@@ -38,11 +38,9 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     public void addCategory(View v) {
-        // Create an AlertDialog with an input field
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle("Nuova categoria");
 
-        // Create an EditText to input the category name
         final EditText input = new EditText(requireContext());
         input.setHint("Inserire il nome della categoria");
         input.setTextColor(getResources().getColor(R.color.brown));
@@ -86,12 +84,11 @@ public class VerticalMenuFragment extends Fragment {
 
         int buttonId = categoryName.hashCode();
         if (buttonId < 0) {
-            buttonId = -buttonId; // Ensure the ID is non-negative
+            buttonId = -buttonId;
         }
         newCategoryButton.setId(buttonId);
 
         newCategoryButton.setOnClickListener(v -> {
-            // Handle button click
             visualizza(categoryName);
         });
 
