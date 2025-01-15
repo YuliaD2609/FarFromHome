@@ -17,7 +17,6 @@
         android:layout_below="@id/horizontal_menu"
         android:layout_alignParentLeft="true"/>
 
-
     <FrameLayout
         android:id="@+id/item_fragment_container"
         android:layout_width="match_parent"

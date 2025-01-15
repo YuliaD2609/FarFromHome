@@ -1,4 +1,4 @@
-package com.example.farfromhome.pantry;
+package com.example.farfromhome.suitcase;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PantryItemsFragment extends Fragment {
+public class SuitcaseItemFragment extends Fragment {
 
     private RecyclerView itemList;
-    private PantryItemAdapter itemAdapter;
-    private List<Item> items = new ArrayList<>();
+    private SuitcaseItemAdapter itemAdapter;
+    private List<SuitcaseItem> items = new ArrayList<>();
     private DatabaseHelper dbHelper;
     private String categoryName;
 
@@ -51,18 +50,19 @@ public class PantryItemsFragment extends Fragment {
 
     private void loadItems(String category) {
         if (category == null || category.isEmpty()) {
-            items = dbHelper.getAllPantryItems();
+           items = dbHelper.getAllSuitcaseItems();
         } else {
-            items = dbHelper.getPantryItemsByCategory(category);
+            items = dbHelper.getSuitcaseItemsByCategory(category);
         }
 
         if (itemAdapter == null) {
-            itemAdapter = new PantryItemAdapter(requireContext(), items);
+            itemAdapter = new SuitcaseItemAdapter(requireContext(), items);
             itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
             itemList.setAdapter(itemAdapter);
         } else {
             itemAdapter.updateItems(items);
         }
     }
+
 
 }

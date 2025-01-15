@@ -19,7 +19,6 @@ import java.util.Date;
 
 public class PantryActivity extends AppCompatActivity {
 
-    private RecyclerView itemList;
     private Button addItemButton;
     DatabaseHelper dbHelper;
     private PantryItemsFragment pantryItemFragment;

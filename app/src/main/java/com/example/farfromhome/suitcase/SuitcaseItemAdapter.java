@@ -12,13 +12,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
 import java.util.List;
 
 public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapter.SuitcaseItemViewHolder> {
 
-    private final List<SuitcaseItem> items;
+    private List<SuitcaseItem> items;
     private final Context context;
 
     public SuitcaseItemAdapter(Context context, List<SuitcaseItem> items) {
@@ -85,5 +86,10 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
             decrementButton = itemView.findViewById(R.id.decrementButton);
             colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
         }
+    }
+
+    public void updateItems(List<SuitcaseItem> newItems) {
+        this.items = newItems;
+        notifyDataSetChanged();
     }
 }

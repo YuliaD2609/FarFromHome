@@ -21,7 +21,7 @@ import java.util.Locale;
 
 public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.ShoppingItemViewHolder> {
 
-    private final List<Item> items;
+    private List<Item> items;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
@@ -83,5 +83,10 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             decrementButton = itemView.findViewById(R.id.decrementButton);
             colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
         }
+    }
+
+    public void updateItems(List<Item> newItems) {
+        this.items = newItems;
+        notifyDataSetChanged();
     }
 }

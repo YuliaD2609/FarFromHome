@@ -1,5 +1,6 @@
 package com.example.farfromhome.suitcase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SuitcaseActivity extends AppCompatActivity {
+
     private RecyclerView itemList;
     private SuitcaseItemAdapter itemAdapter;
     private List<SuitcaseItem> items;
@@ -50,19 +52,16 @@ public class SuitcaseActivity extends AppCompatActivity {
         itemList.setLayoutManager(new LinearLayoutManager(this));
         itemList.setAdapter(itemAdapter);
 
-        // Add Item Button Click Listener
-        //addItemButton.setOnClickListener(v -> {
-        // Intent intent = new Intent(ShoppingListActivity.this, ListAddProduct.class);
-        // startActivity(intent);
-        //});
+        addItemButton.setOnClickListener(v -> {
+         Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
+         startActivity(intent);
+        });
     }
 
-    public void updateItemQuantity(int position, int change) {
-        SuitcaseItem item = items.get(position);
-        int newQuantity = item.getQuantity() + change;
-        if (newQuantity >= 0) {
-            item.setQuantity(newQuantity);
-            itemAdapter.notifyItemChanged(position);
+    public void updateCategory(String newCategory) {
+        SuitcaseItemFragment fragment = (SuitcaseItemFragment) getSupportFragmentManager().findFragmentById(R.id.suitcaseItemList);
+        if (fragment != null) {
+            fragment.updateCategory(newCategory);  // Aggiorniamo il fragment in modo non statico
         }
     }
 }

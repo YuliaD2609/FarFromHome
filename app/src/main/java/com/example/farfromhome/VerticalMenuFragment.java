@@ -19,6 +19,8 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.farfromhome.pantry.PantryActivity;
+import com.example.farfromhome.shoppingList.ShoppingListActivity;
+import com.example.farfromhome.suitcase.SuitcaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +29,24 @@ import java.util.Objects;
 public class VerticalMenuFragment extends Fragment {
 
     private LinearLayout categoryList;
-    private List<String> existingCategories=new ArrayList<>();
+    private List<String> existingCategories = new ArrayList<>();
+    private Button selectedCategoryButton = null;
     DatabaseHelper dbHelper;
     private PantryActivity pantryActivity;
+    private ShoppingListActivity shoppingActivity;
+    private SuitcaseActivity suitcaseActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof PantryActivity) {
             pantryActivity = (PantryActivity) context;
+        }
+        if (context instanceof ShoppingListActivity) {
+            shoppingActivity = (ShoppingListActivity) context;
+        }
+        if (context instanceof SuitcaseActivity) {
+            suitcaseActivity = (SuitcaseActivity) context;
         }
     }
 
@@ -48,18 +59,16 @@ public class VerticalMenuFragment extends Fragment {
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
-        if(existingCategories.isEmpty()){
+        if (existingCategories.isEmpty()) {
             createCategoryButton("Cucina");
             createCategoryButton("Bagno");
             createCategoryButton("Frigo");
             createCategoryButton("Altro");
-        }else{
-            List<String> categoriesCopy = new ArrayList<>(existingCategories);
-            for (String cat : categoriesCopy) {
+        } else {
+            for (String cat : existingCategories) {
                 createCategoryButton(cat);
             }
         }
-
 
         Button addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
@@ -119,24 +128,31 @@ public class VerticalMenuFragment extends Fragment {
         newCategoryButton.setTypeface(typeface);
         newCategoryButton.setPadding(0, 0, 0, 0);
 
-        int buttonId = categoryName.hashCode();
-        if (buttonId < 0) {
-            buttonId = -buttonId;
-        }
-        newCategoryButton.setId(buttonId);
-
         newCategoryButton.setOnClickListener(v -> {
-            visualizza(categoryName);
+            handleCategorySelection(newCategoryButton, categoryName);
         });
-
-        dbHelper.addCategory(categoryName);
-        existingCategories.add(categoryName);
 
         categoryList.addView(newCategoryButton);
     }
 
-    private void visualizza(String categoryName) {
-        if (pantryActivity != null) {
+    private void handleCategorySelection(Button selectedButton, String categoryName) {
+        if (selectedCategoryButton != null) {
+            selectedCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
+            selectedCategoryButton.setTextColor(getResources().getColor(R.color.lightBrown));
+        }
+
+        if (selectedCategoryButton == selectedButton) {
+            selectedCategoryButton = null;
+            if(pantryActivity!=null)
+                pantryActivity.updateCategory(null);
+            if(shoppingActivity!=null)
+                shoppingActivity.updateCategory(null);
+            if(suitcaseActivity!=null)
+                suitcaseActivity.updateCategory(null);
+        } else {
+            selectedCategoryButton = selectedButton;
+            selectedCategoryButton.setBackgroundResource(R.drawable.menu_buttons_selected);
+            selectedCategoryButton.setTextColor(getResources().getColor(R.color.white));
             pantryActivity.updateCategory(categoryName);
         }
     }

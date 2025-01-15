@@ -1,4 +1,4 @@
-package com.example.farfromhome.pantry;
+package com.example.farfromhome.shoppingList;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,14 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
+import com.example.farfromhome.pantry.PantryItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PantryItemsFragment extends Fragment {
+public class ShoppingItemsFragment extends Fragment {
 
     private RecyclerView itemList;
-    private PantryItemAdapter itemAdapter;
+    private ShoppingItemAdapter itemAdapter;
     private List<Item> items = new ArrayList<>();
     private DatabaseHelper dbHelper;
     private String categoryName;
@@ -57,7 +58,7 @@ public class PantryItemsFragment extends Fragment {
         }
 
         if (itemAdapter == null) {
-            itemAdapter = new PantryItemAdapter(requireContext(), items);
+            itemAdapter = new ShoppingItemAdapter(requireContext(), items);
             itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
             itemList.setAdapter(itemAdapter);
         } else {

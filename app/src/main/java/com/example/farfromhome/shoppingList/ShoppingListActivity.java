@@ -64,12 +64,10 @@ public class ShoppingListActivity extends AppCompatActivity {
         });
     }
 
-    public void updateItemQuantity(int position, int change) {
-        Item item = items.get(position);
-        int newQuantity = item.getQuantity() + change;
-        if (newQuantity >= 0) {
-            item.setQuantity(newQuantity);
-            itemAdapter.notifyItemChanged(position);
+    public void updateCategory(String newCategory) {
+        ShoppingItemsFragment fragment = (ShoppingItemsFragment) getSupportFragmentManager().findFragmentById(R.id.ShoppingItemList);
+        if (fragment != null) {
+            fragment.updateCategory(newCategory);
         }
     }
 }
