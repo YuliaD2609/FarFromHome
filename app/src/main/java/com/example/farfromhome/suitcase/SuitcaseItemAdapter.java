@@ -103,8 +103,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
     public static class SuitcaseItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity;
-        Button incrementButton, decrementButton;
-        View colorChangeView;
+        View colorChangeView, incrementButton, decrementButton;
 
         public SuitcaseItemViewHolder(@NonNull View itemView) {
             super(itemView);

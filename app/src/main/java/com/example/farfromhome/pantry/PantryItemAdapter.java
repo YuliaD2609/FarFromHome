@@ -60,7 +60,11 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
-        holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
+        if(item.getExpiry()==null){
+            holder.itemExpire.setText("N/A");
+        }else {
+            holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
+        }
 
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {

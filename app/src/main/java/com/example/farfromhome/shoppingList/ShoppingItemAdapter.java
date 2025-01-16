@@ -2,6 +2,7 @@ package com.example.farfromhome.shoppingList;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -64,14 +65,23 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             }
         });
 
+
         holder.colorChangeView.setOnClickListener(v -> {
             int currentColor = ((ColorDrawable) holder.colorChangeView.getBackground()).getColor();
-            if (currentColor == context.getResources().getColor(R.color.white)) {
-                holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
-            } else {
+
+            if (currentColor == context.getResources().getColor(R.color.black)) {
                 holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
+                holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.incrementButton.setVisibility(View.VISIBLE);
+                holder.decrementButton.setVisibility(View.VISIBLE);
+            } else {
+                holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
+                holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                holder.incrementButton.setVisibility(View.GONE);
+                holder.decrementButton.setVisibility(View.GONE);
             }
         });
+
 }
 
     private void showConfirmDialog(Item item, int position) {

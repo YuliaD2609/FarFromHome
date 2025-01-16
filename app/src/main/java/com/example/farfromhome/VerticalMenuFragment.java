@@ -170,7 +170,13 @@ public class VerticalMenuFragment extends Fragment {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons_selected);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
                     .setTextColor(getResources().getColor(R.color.white));
-            pantryActivity.updateCategory(categoryName);
+
+            if (pantryActivity != null)
+                pantryActivity.updateCategory(null);
+            if (shoppingActivity != null)
+                shoppingActivity.updateCategory(categoryName);
+            if (suitcaseActivity != null)
+                suitcaseActivity.updateCategory(categoryName);
         }
     }
 }
