@@ -171,7 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getItemsFromShoppingListTable();
     }
 
-    public boolean addSuitcaseItem(Item item) {
+    public boolean addSuitcaseItem(SuitcaseItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
