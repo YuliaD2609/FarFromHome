@@ -85,36 +85,70 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal">
 
-                <Button
+                <LinearLayout
                     android:id="@+id/buttonDecreaseQuantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:background="@drawable/rounded_background"
-                    android:text="-" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textSize="14sp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/textViewQuantity"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:text="0"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/buttonIncreaseQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"/>
+
+                <LinearLayout
+                    android:id="@+id/buttonIncreaseQuantity"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:background="@drawable/rounded_background"
-                    android:text="+" />
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textSize="14sp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <Button
+            <LinearLayout
                 android:id="@+id/buttonAddProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Aggiungi Prodotto" />
+                android:background="@drawable/rounded_background"
+                android:gravity="center"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Aggiungi Prodotto"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
