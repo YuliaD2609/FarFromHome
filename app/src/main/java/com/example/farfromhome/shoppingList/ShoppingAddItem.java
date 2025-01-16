@@ -1,6 +1,7 @@
 package com.example.farfromhome.shoppingList;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,7 +19,10 @@ import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
+import com.example.farfromhome.pantry.PantryActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ShoppingAddItem extends AppCompatActivity {
@@ -28,6 +32,7 @@ public class ShoppingAddItem extends AppCompatActivity {
     private Spinner spinnerCategory;
     private TextView textViewQuantity;
     private int quantity = 0;
+    private String selectedCategory;
 
     private DatabaseHelper databaseHelper;
 
@@ -96,23 +101,47 @@ public class ShoppingAddItem extends AppCompatActivity {
     }
 
     private void addProductToDatabase() {
-        if(quantity == 0){
-            Toast.makeText(this, "Non puoi inserire 0 elememti!", Toast.LENGTH_SHORT).show();
+        String productName = editTextProductName.getText().toString().trim();
+        Date expiryDate = null;
+
+
+        // Check if quantity is 0
+        if (quantity == 0) {
+            Toast.makeText(this, "Non puoi inserire 0 elementi!", Toast.LENGTH_SHORT).show();
             return;
         }
-        String productName = editTextProductName.getText().toString().trim();
-        String selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        Item item = new Item(productName, quantity, null,selectedCategory);
+        // Retrieve selected category
+        selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        boolean isInserted = databaseHelper.addShoppingListItem(item);
+        // Check if the product name already exists in the database
+        boolean productExists = databaseHelper.doesProductShoppingListExist(productName);
+        if (productExists) {
+            Toast.makeText(this, "Un prodotto con questo nome esiste già!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a new Item instance
+        Item item = new Item(productName, quantity, expiryDate, selectedCategory);
+
+        // Insert the item into the database
+        boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
-            finish(); // Close the activity
-            List<Item> list= databaseHelper.getAllShoppingListItems();
-            System.out.println(list.toString());
-            System.out.println("sdhbfihusfdvjnisd");
+            inputCleaner();
+            Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ShoppingListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
         } else {
-            // Handle error
+            Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void inputCleaner(){
+        editTextProductName.setText("");
+        spinnerCategory.setSelection(0);
+        quantity = 0;
+        textViewQuantity.setText(String.valueOf(quantity));
+    }
+
 }
