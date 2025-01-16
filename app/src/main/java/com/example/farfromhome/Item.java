@@ -6,13 +6,13 @@ public class Item {
     private String name;
     private int quantity;
     private Date expiry;
-    private String cathegory;
+    private String category;
 
-    public Item(String name, int quantity, Date expiry, String cathegory) {
+    public Item(String name, int quantity, Date expiry, String category) {
         this.name = name;
         this.quantity = quantity;
         this.expiry = expiry;
-        this.cathegory=cathegory;
+        this.category=category;
     }
 
     public String getName() {
@@ -43,12 +43,12 @@ public class Item {
         this.quantity++;
     }
 
-    public String getCathegory() {
-        return cathegory;
+    public String getCategory() {
+        return category;
     }
 
-    public void setCathegory(String cathegory) {
-        this.cathegory = cathegory;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void decrementQuantity() {

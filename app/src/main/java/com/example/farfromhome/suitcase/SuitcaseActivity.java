@@ -3,6 +3,7 @@ package com.example.farfromhome.suitcase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -10,18 +11,21 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 import com.example.farfromhome.VerticalMenuFragment;
+import com.example.farfromhome.pantry.PantryItemsFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SuitcaseActivity extends AppCompatActivity {
 
-    private RecyclerView itemList;
-    private SuitcaseItemAdapter itemAdapter;
-    private List<SuitcaseItem> items;
+    DatabaseHelper dbHelper;
+    private SuitcaseItemFragment suitcaseItemFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +44,24 @@ public class SuitcaseActivity extends AppCompatActivity {
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
+        dbHelper = new DatabaseHelper(this);
+
+        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
+        dbHelper.addPantryItem(i, "Cucina");
+
+
+        suitcaseItemFragment = new SuitcaseItemFragment();
+        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
+        if (categoryName != null) {
+            Bundle pantryBundle = new Bundle();
+            pantryBundle.putString("CATEGORY_NAME", categoryName);
+            suitcaseItemFragment.setArguments(pantryBundle);
+        }
+        fragmentTransaction.replace(R.id.item_fragment_container, suitcaseItemFragment);
+
         fragmentTransaction.commit();
 
-        itemList = findViewById(R.id.suitcaseItemList);
         Button addItemButton = findViewById(R.id.addItemButton);
-
-        items = new ArrayList<>();
-        SuitcaseItem i=new SuitcaseItem("prova", 3);
-        items.add(i);
-        itemAdapter = new SuitcaseItemAdapter(this, items);
-        itemList.setLayoutManager(new LinearLayoutManager(this));
-        itemList.setAdapter(itemAdapter);
 
         addItemButton.setOnClickListener(v -> {
          Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
@@ -59,9 +70,6 @@ public class SuitcaseActivity extends AppCompatActivity {
     }
 
     public void updateCategory(String newCategory) {
-        SuitcaseItemFragment fragment = (SuitcaseItemFragment) getSupportFragmentManager().findFragmentById(R.id.suitcaseItemList);
-        if (fragment != null) {
-            fragment.updateCategory(newCategory);  // Aggiorniamo il fragment in modo non statico
-        }
+        suitcaseItemFragment.updateCategory(newCategory);
     }
 }

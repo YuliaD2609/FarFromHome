@@ -111,12 +111,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // Aggiungi un item alla pantry con una categoria
-    public boolean addPantryItem(Item item, String categoryName) {
+    public boolean addPantryItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_NAME, item.getName());
         values.put(COLUMN_QUANTITY, item.getQuantity());
+        ContentValues categoryValues = new ContentValues();
+        categoryValues.put("category_name", item.getCategory());
+        values.put("category_name", item.getCathegory());
 
         if (item.getExpiry() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -126,21 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.putNull(COLUMN_EXPIRY);
         }
 
-        // Inserisci l'item nella tabella pantry
         long result = db.insert(TABLE_PANTRY, null, values);
-
-        // Se l'inserimento è avvenuto con successo, associamo l'item alla categoria
-        if (result != -1 && categoryName != null && !categoryName.isEmpty()) {
-            // Aggiungi il nome della categoria all'item
-            ContentValues categoryValues = new ContentValues();
-            categoryValues.put("category_name", categoryName);
-
-            // Inserisci la categoria nell'item
-            long categoryResult = db.update(TABLE_PANTRY, categoryValues, COLUMN_NAME + " = ?", new String[]{item.getName()});
-            db.close();
-            return categoryResult != -1;
-        }
-
         db.close();
         return result != -1;
     }

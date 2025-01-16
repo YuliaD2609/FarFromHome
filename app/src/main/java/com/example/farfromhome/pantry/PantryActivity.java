@@ -42,7 +42,7 @@ public class PantryActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        Item i=new Item("prova", 3, new Date(2025, 12, 12));
+        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
         dbHelper.addPantryItem(i, "Cucina");
 
         pantryItemFragment = new PantryItemsFragment();
