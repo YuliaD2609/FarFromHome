@@ -33,9 +33,9 @@ public class VerticalMenuFragment extends Fragment {
     private List<String> existingCategories = new ArrayList<>();
     private View selectedCategoryView = null;
     DatabaseHelper dbHelper;
-    private PantryActivity pantryActivity;
-    private ShoppingListActivity shoppingActivity;
-    private SuitcaseActivity suitcaseActivity;
+    private PantryActivity pantryActivity=null;
+    private ShoppingListActivity shoppingActivity=null;
+    private SuitcaseActivity suitcaseActivity=null;
 
     @Override
     public void onAttach(Context context) {
@@ -112,19 +112,16 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-        // Creazione del layout della categoria
         LinearLayout newCategoryButton = new LinearLayout(requireContext());
         newCategoryButton.setOrientation(LinearLayout.VERTICAL);
         newCategoryButton.setGravity(Gravity.CENTER); // Centrare il contenuto nel layout
 
-        // Imposta i parametri del layout
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 (int) (60 * getResources().getDisplayMetrics().density) // Altezza maggiore
         );
         newCategoryButton.setLayoutParams(params);
 
-        // Creazione del testo della categoria
         TextView text = new TextView(requireContext());
         text.setText(categoryName);
         text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14); // Testo più grande
@@ -133,18 +130,15 @@ public class VerticalMenuFragment extends Fragment {
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
         text.setTypeface(typeface);
 
-        // Aggiungi il testo al layout
         newCategoryButton.addView(text);
 
-        // Imposta stile e comportamento del bottone
         newCategoryButton.setPadding(0, 0, 0, 0);
         newCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
-        // Gestisci l'evento click
+
         newCategoryButton.setOnClickListener(v -> {
             handleCategorySelection(newCategoryButton, categoryName);
         });
 
-        // Aggiungi la categoria al database e alla vista
         dbHelper.addCategory(categoryName);
         categoryList.addView(newCategoryButton);
     }
@@ -156,7 +150,6 @@ public class VerticalMenuFragment extends Fragment {
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
                     .setTextColor(getResources().getColor(R.color.lightBrown));
         }
-
         if (selectedCategoryView == selectedView) {
             selectedCategoryView = null;
             if (pantryActivity != null)
@@ -172,7 +165,7 @@ public class VerticalMenuFragment extends Fragment {
                     .setTextColor(getResources().getColor(R.color.white));
 
             if (pantryActivity != null)
-                pantryActivity.updateCategory(null);
+                pantryActivity.updateCategory(categoryName);
             if (shoppingActivity != null)
                 shoppingActivity.updateCategory(categoryName);
             if (suitcaseActivity != null)
