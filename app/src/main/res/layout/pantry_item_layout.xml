@@ -66,8 +66,8 @@
 
             <LinearLayout
                 android:id="@+id/decrementButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/rounded_background"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -76,8 +76,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
+                    android:textSize="20sp"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -94,8 +94,8 @@
 
             <LinearLayout
                 android:id="@+id/incrementButton"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/rounded_background"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -104,8 +104,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+"
-                    android:textSize="14sp"
-                    android:textColor="@color/black" />
+                    android:textSize="20sp"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 

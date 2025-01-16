@@ -8,8 +8,8 @@
 
     <View
         android:id="@+id/colorChangeView"
-        android:layout_width="8dp"
-        android:layout_height="8dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:background="@color/white"
         android:clickable="true"/>
 
@@ -29,10 +29,19 @@
         android:orientation="horizontal"
         android:gravity="center">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Quantità:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"/>
+
         <LinearLayout
             android:id="@+id/decrementButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/rounded_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -41,8 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="-"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:textSize="20sp"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -59,8 +68,8 @@
 
         <LinearLayout
             android:id="@+id/incrementButton"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/rounded_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -69,8 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="+"
-                android:textSize="14sp"
-                android:textColor="@color/black" />
+                android:textSize="20sp"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="+"
             android:textSize="14sp"
-            android:textColor="@color/lightBrown"
+            android:textColor="@color/white"
             android:fontFamily="@font/funneldisplay_bold"/>
     </LinearLayout>
 </LinearLayout>

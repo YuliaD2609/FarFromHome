@@ -79,11 +79,18 @@ public class VerticalMenuFragment extends Fragment {
 
     public void addCategory(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Nuova categoria");
+        TextView title = new TextView(requireContext());
+        title.setText("Nuova categoria");
+        title.setTextSize(20);
+        title.setTextColor(getResources().getColor(R.color.white));
+        title.setPadding(20, 30, 20, 10);
+        title.setGravity(Gravity.CENTER);
+
+        builder.setCustomTitle(title);
 
         final EditText input = new EditText(requireContext());
         input.setHint("Inserire il nome della categoria");
-        input.setTextColor(getResources().getColor(R.color.black));
+        input.setTextColor(getResources().getColor(R.color.white));
         builder.setView(input);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
@@ -107,7 +114,10 @@ public class VerticalMenuFragment extends Fragment {
         AlertDialog dialog = builder.create();
         Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background_beige);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
-
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.dark_white));
+        });
         dialog.show();
     }
 
@@ -124,9 +134,9 @@ public class VerticalMenuFragment extends Fragment {
 
         TextView text = new TextView(requireContext());
         text.setText(categoryName);
-        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14); // Testo più grande
-        text.setTextColor(getResources().getColor(R.color.lightBrown));
-        text.setGravity(Gravity.CENTER); // Centrare il testo nel TextView
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        text.setTextColor(getResources().getColor(R.color.white));
+        text.setGravity(Gravity.CENTER);
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
         text.setTypeface(typeface);
 
