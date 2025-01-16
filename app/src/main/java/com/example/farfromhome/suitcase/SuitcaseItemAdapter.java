@@ -77,7 +77,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
         dbHelper=new DatabaseHelper(context);
     }
 
-    private void showConfirmDialog(Item item, int position) {
+    private void showConfirmDialog(SuitcaseItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Aggiungere alla lista della spesa?");
         builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");

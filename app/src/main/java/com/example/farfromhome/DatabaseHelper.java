@@ -401,14 +401,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    public List<Item> getSuitcaseItemsByCategory(String category) {
+    public List<SuitcaseItem> getSuitcaseItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<Item> items = new ArrayList<>();
+        List<SuitcaseItem> items = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE category_name = ?", new String[]{category});
 
         if (cursor.moveToFirst()) {
             do {
-                items.add(cursorToShoppingListItem(cursor));
+                items.add(cursorToSuitcaseItem(cursor));
             } while (cursor.moveToNext());
         }
 
