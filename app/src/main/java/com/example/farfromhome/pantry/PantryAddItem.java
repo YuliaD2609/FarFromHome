@@ -177,6 +177,11 @@ public class PantryAddItem extends AppCompatActivity {
             }
         }
 
+        if(productName.isEmpty()){
+            HomeActivity.showCustomToast(this,"Il nome deve essere presente!");
+            return;
+        }
+
         // Check if quantity is 0
         if (quantity == 0) {
             HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");

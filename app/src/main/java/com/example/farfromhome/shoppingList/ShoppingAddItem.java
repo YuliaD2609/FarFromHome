@@ -103,6 +103,10 @@ public class ShoppingAddItem extends AppCompatActivity {
         String productName = editTextProductName.getText().toString().trim();
         Date expiryDate = null;
 
+        if(productName.isEmpty()){
+            HomeActivity.showCustomToast(this,"Il nome deve essere presente!");
+            return;
+        }
 
         // Check if quantity is 0
         if (quantity == 0) {
