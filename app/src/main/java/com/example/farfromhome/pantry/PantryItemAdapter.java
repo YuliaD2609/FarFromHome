@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
@@ -39,6 +40,20 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         return new PantryItemViewHolder(view);
     }
 
+    public static class PantryItemViewHolder extends RecyclerView.ViewHolder {
+        TextView itemName, itemQuantity, itemExpire;
+        View incrementButton, decrementButton;
+
+        public PantryItemViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemName = itemView.findViewById(R.id.itemName);
+            itemQuantity = itemView.findViewById(R.id.itemQuantity);
+            itemExpire = itemView.findViewById(R.id.itemExpire);
+            incrementButton = itemView.findViewById(R.id.incrementButton);
+            decrementButton = itemView.findViewById(R.id.decrementButton);
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull PantryItemViewHolder holder, int position) {
         Item item = items.get(position);
@@ -46,11 +61,6 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
-
-        holder.incrementButton.setOnClickListener(v -> {
-            item.incrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
-        });
 
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
@@ -61,7 +71,10 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
             }
         });
 
-        dbHelper=new DatabaseHelper(context);
+        holder.incrementButton.setOnClickListener(v -> {
+            item.incrementQuantity();
+            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+        });
     }
 
     private void showConfirmDialog(Item item, int position) {
@@ -98,19 +111,5 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
     @Override
     public int getItemCount() {
         return items.size();
-    }
-
-    public static class PantryItemViewHolder extends RecyclerView.ViewHolder {
-        TextView itemName, itemQuantity, itemExpire;
-        Button incrementButton, decrementButton;
-
-        public PantryItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            itemName = itemView.findViewById(R.id.itemName);
-            itemQuantity = itemView.findViewById(R.id.itemQuantity);
-            itemExpire = itemView.findViewById(R.id.itemExpire);
-            incrementButton = itemView.findViewById(R.id.incrementButton);
-            decrementButton = itemView.findViewById(R.id.decrementButton);
-        }
     }
 }

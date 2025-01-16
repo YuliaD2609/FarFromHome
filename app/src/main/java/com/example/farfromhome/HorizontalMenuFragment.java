@@ -50,7 +50,7 @@ public class HorizontalMenuFragment extends Fragment {
 
     public void goToHome() {
         Intent intent = new Intent(getActivity(), HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);  // Clear the back stack to prevent going back to the current activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

@@ -3,6 +3,7 @@ package com.example.farfromhome.shoppingList;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
@@ -31,6 +33,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     public ShoppingItemAdapter(Context context, List<Item> items) {
         this.context = context;
         this.items = items;
+        this.dbHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -61,6 +64,8 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             }
         });
 
+        holder.incrementButton.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_background_beige));
+
         holder.colorChangeView.setOnClickListener(v -> {
             int currentColor = ((ColorDrawable) holder.colorChangeView.getBackground()).getColor();
             if (currentColor == context.getResources().getColor(R.color.white)) {
@@ -69,9 +74,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
         });
-
-        dbHelper=new DatabaseHelper(context);
-    }
+}
 
     private void showConfirmDialog(Item item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
