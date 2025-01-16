@@ -1,7 +1,9 @@
 package com.example.farfromhome.pantry;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,16 +58,30 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PantryItemViewHolder holder, int position) {
         Item item = items.get(position);
 
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
-        if(item.getExpiry()==null){
+
+        if (item.getExpiry() == null) {
             holder.itemExpire.setText("N/A");
-        }else {
-            holder.itemExpire.setText(dateFormat.format(item.getExpiry()));
+            holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black)); // Default color
+        } else {
+            Date expiryDate = item.getExpiry();
+            Calendar calendar = Calendar.getInstance();
+            long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
+            long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
+
+            holder.itemExpire.setText(dateFormat.format(expiryDate));
+
+            if (daysToExpiry >= 0 && daysToExpiry <= 14) {
+                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.red)); // Rosso per scadenze ravvicinate
+            } else {
+                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black)); // Colore predefinito per scadenze lontane
+            }
         }
 
         holder.decrementButton.setOnClickListener(v -> {
