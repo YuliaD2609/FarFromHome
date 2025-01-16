@@ -93,10 +93,8 @@ public class ShoppingAddItem extends AppCompatActivity {
             System.out.println("Categories fetched from database: " + categories);
         }
 
-        // Populate spinner with categories
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
     }
 

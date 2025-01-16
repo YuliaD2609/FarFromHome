@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:textColorHint="#8E6062"
                 android:fontFamily="sans-serif-condensed"
                 android:hint="Nome prodotto" />
 
@@ -53,9 +54,10 @@
                 android:id="@+id/spinnerCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/brown"
+                android:textColorHint="#8E6062"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_marginTop="15dp" />
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -70,14 +72,15 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal">
 
                 <LinearLayout
                     android:id="@+id/buttonDecreaseQuantity"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@drawable/rounded_background"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -86,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="-"
-                        android:textSize="14sp"
+                        android:textSize="35dp"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -97,16 +100,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="0"
-                    android:textSize="16sp"
+                    android:textSize="35dp"
                     android:textColor="@color/black"
-                    android:fontFamily="sans-serif-condensed"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-condensed"
                     android:layout_marginLeft="10dp"/>
 
                 <LinearLayout
                     android:id="@+id/buttonIncreaseQuantity"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
                     android:background="@drawable/rounded_background"
                     android:gravity="center"
                     android:orientation="vertical">
@@ -115,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:textSize="14sp"
+                        android:textSize="35dp"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -124,8 +128,8 @@
             <LinearLayout
                 android:id="@+id/buttonAddProduct"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/rounded_background"
                 android:gravity="center"
                 android:padding="12dp"
@@ -135,9 +139,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Aggiungi Prodotto"
-                    android:textColor="@color/white"
-                    android:fontFamily="sans-serif-condensed"
-                    android:textSize="16sp" />
+                    android:textColor="@color/lightBrown"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:textSize="25dp" />
 
             </LinearLayout>
         </LinearLayout>
