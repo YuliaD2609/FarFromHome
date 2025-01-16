@@ -21,11 +21,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Table names
     public static final String TABLE_PANTRY = "pantry";
     public static final String TABLE_SHOPPING_LIST = "shopping_list";
-    public static final String TABLE_LUGGAGE = "luggage";
+    public static final String TABLE_SUITCASE = "luggage";
     public static final String TABLE_CATEGORIES = "categories"; // New categories table
 
     // Common column names
-    public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_QUANTITY = "quantity";
     public static final String COLUMN_EXPIRY = "expiry";
@@ -45,13 +44,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_SHOPPING_LIST_TABLE = "CREATE TABLE " + TABLE_SHOPPING_LIST + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
-            COLUMN_EXPIRY + " TEXT" +
+            COLUMN_EXPIRY + " TEXT," +
+            "category_name TEXT, " + // La categoria dell'item è il nome della categoria
+            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
             ")";
 
-    private static final String CREATE_LUGGAGE_TABLE = "CREATE TABLE " + TABLE_LUGGAGE + " (" +
+    private static final String CREATE_SUITCASE_TABLE = "CREATE TABLE " + TABLE_SUITCASE + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
-            COLUMN_EXPIRY + " TEXT" +
+            COLUMN_EXPIRY + " TEXT," +
+            "category_name TEXT, " + // La categoria dell'item è il nome della categoria
+            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
             ")";
 
     public DatabaseHelper(Context context) {
@@ -63,14 +66,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CATEGORIES_TABLE);
         db.execSQL(CREATE_PANTRY_TABLE);
         db.execSQL(CREATE_SHOPPING_LIST_TABLE);
-        db.execSQL(CREATE_LUGGAGE_TABLE);
+        db.execSQL(CREATE_SUITCASE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PANTRY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LUGGAGE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUITCASE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
         onCreate(db);
     }
@@ -119,7 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_QUANTITY, item.getQuantity());
         ContentValues categoryValues = new ContentValues();
         categoryValues.put("category_name", item.getCategory());
-        values.put("category_name", item.getCathegory());
+        values.put("category_name", item.getCategory());
 
         if (item.getExpiry() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -139,30 +142,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getItemsFromTable(TABLE_PANTRY);
     }
 
-    public boolean addShoppingListItem(Item item, String categoryName) {
+    public boolean addShoppingListItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_NAME, item.getName());
         values.put(COLUMN_QUANTITY, item.getQuantity());
+        ContentValues categoryValues = new ContentValues();
+        categoryValues.put("category_name", item.getCategory());
+        values.put("category_name", item.getCategory());
 
-        values.put(COLUMN_EXPIRY, (String) null);
-
-        // Inserisci l'item nella tabella pantry
-        long result = db.insert(TABLE_SHOPPING_LIST, null, values);
-
-        // Se l'inserimento è avvenuto con successo, associamo l'item alla categoria
-        if (result != -1 && categoryName != null && !categoryName.isEmpty()) {
-            // Aggiungi il nome della categoria all'item
-            ContentValues categoryValues = new ContentValues();
-            categoryValues.put("category_name", categoryName);
-
-            // Inserisci la categoria nell'item
-            long categoryResult = db.update(TABLE_SHOPPING_LIST, categoryValues, COLUMN_NAME + " = ?", new String[]{item.getName()});
-            db.close();
-            return categoryResult != -1;
+        if (item.getExpiry() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expiryString = dateFormat.format(item.getExpiry());
+            values.put(COLUMN_EXPIRY, expiryString);
+        } else {
+            values.putNull(COLUMN_EXPIRY);
         }
 
+        long result = db.insert(TABLE_SHOPPING_LIST, null, values);
         db.close();
         return result != -1;
     }
@@ -170,6 +168,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Item> getAllShoppingListItems() {
         return getItemsFromTable(TABLE_SHOPPING_LIST);
     }
+
+    public boolean addSuitcaseItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        ContentValues categoryValues = new ContentValues();
+        categoryValues.put("category_name", item.getCategory());
+        values.put("category_name", item.getCategory());
+
+        long result = db.insert(TABLE_SUITCASE, null, values);
+        db.close();
+        return result != -1;
+    }
+
 
     // Method to remove an item from the pantry
     public boolean removePantryItem(String itemName) {
@@ -183,6 +197,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean removeShoppingListItem(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, COLUMN_NAME + " = ?", new String[]{itemName});
+        db.close();
+        return rowsDeleted > 0; // Return true if at least one row was deleted
+    }
+
+    public boolean removeSuitcaseItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SUITCASE, COLUMN_NAME + " = ?", new String[]{itemName});
         db.close();
         return rowsDeleted > 0; // Return true if at least one row was deleted
     }
@@ -203,6 +224,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
     }
 
+    // Metodo per rimuovere tutti gli elementi dalla lista della spesa
+    public boolean removeAllSuitcaseItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsDeleted = db.delete(TABLE_SUITCASE, null, null); // Rimuove tutte le righe
+        db.close();
+        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+    }
+
 
 
     // Funzione generica per ottenere gli item da qualsiasi tabella
@@ -218,6 +247,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
                 @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
                 // Converto la stringa di scadenza in oggetto Date
                 Date expiryDate = null;
@@ -231,7 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
 
                 // Aggiungo l'item alla lista
-                Item item = new Item(name, quantity, expiryDate);
+                Item item = new Item(name, quantity, expiryDate, category);
                 items.add(item);
             } while (cursor.moveToNext());
         }
@@ -263,6 +293,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
         @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+        @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
         Date expiryDate = null;
         if (expiryStr != null && !expiryStr.isEmpty()) {
@@ -274,6 +305,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
 
-        return new Item(name, quantity, expiryDate);
+        return new Item(name, quantity, expiryDate,category);
     }
 }
