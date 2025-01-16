@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
@@ -167,19 +168,19 @@ public class PantryAddItem extends AppCompatActivity {
 
                 // If expiryDate is before currentDate, show a warning
                 if (expiryDate.before(currentDate)) {
-                    Toast.makeText(this, "La data di scadenza deve essere maggiore o uguale alla data attuale.", Toast.LENGTH_SHORT).show();
+                    HomeActivity.showCustomToast(this, "La data di scadenza deve essere maggiore o uguale alla data attuale.");
                     return;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Formato data non valido.", Toast.LENGTH_SHORT).show();
+                HomeActivity.showCustomToast(this, "Formato data non valido.");
                 return;
             }
         }
 
         // Check if quantity is 0
         if (quantity == 0) {
-            Toast.makeText(this, "Non puoi inserire 0 elementi!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
             return;
         }
 
@@ -189,7 +190,7 @@ public class PantryAddItem extends AppCompatActivity {
         // Check if the product name already exists in the database
         boolean productExists = databaseHelper.doesProductPantryExist(productName);
         if (productExists) {
-            Toast.makeText(this, "Un prodotto con questo nome esiste già!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this, "Un prodotto con questo nome esiste già!");
             return;
         }
 
