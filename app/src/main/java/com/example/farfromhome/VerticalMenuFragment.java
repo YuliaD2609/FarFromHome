@@ -101,16 +101,16 @@ public class VerticalMenuFragment extends Fragment {
             String categoryName = input.getText().toString().trim();
             if (!categoryName.isEmpty()) {
                 if (categoryName.length() > 10) {
-                    Toast.makeText(requireContext(), "Il nome della categoria è troppo lungo", Toast.LENGTH_SHORT).show();
+                    HomeActivity.showCustomToast(requireContext(),"Il nome della categoria è troppo lungo");
                 } else {
                     if (existingCategories.contains(categoryName)) {
-                        Toast.makeText(requireContext(), "Categoria già esistente", Toast.LENGTH_SHORT).show();
+                        HomeActivity.showCustomToast(requireContext(),"Categoria già esistente");
                         return;
                     }
                     createCategoryButton(categoryName);
                 }
             } else {
-                Toast.makeText(requireContext(), "Il nome della categoria non può essere vuoto", Toast.LENGTH_SHORT).show();
+                HomeActivity.showCustomToast(requireContext(),"Il nome della categoria non può essere vuoto");
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());

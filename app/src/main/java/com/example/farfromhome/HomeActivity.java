@@ -1,14 +1,20 @@
 package com.example.farfromhome;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -67,19 +73,30 @@ public class HomeActivity extends AppCompatActivity {
 
     private void goToShoppingList() {
         Intent intent = new Intent(this, ShoppingListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
     private void goToPantry() {
         Intent intent = new Intent(this, PantryActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
     private void goToSuitcase() {
         Intent intent = new Intent(this, SuitcaseActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
+    }
+
+    public static void showCustomToast(Context context, String message) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View customToastView = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView toastMessage = customToastView.findViewById(R.id.toastMessage);
+        toastMessage.setText(message);
+
+        Toast customToast = new Toast(context);
+        customToast.setView(customToastView);
+        customToast.setDuration(Toast.LENGTH_SHORT);
+        customToast.setGravity(Gravity.BOTTOM, 0, 300);
+        customToast.show();
     }
 }
