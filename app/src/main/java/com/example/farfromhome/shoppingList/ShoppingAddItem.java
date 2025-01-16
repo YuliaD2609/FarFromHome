@@ -102,9 +102,9 @@ public class ShoppingAddItem extends AppCompatActivity {
         String productName = editTextProductName.getText().toString().trim();
         String selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        Item item = new Item(productName, quantity, null);
+        Item item = new Item(productName, quantity, null,selectedCategory);
 
-        boolean isInserted = databaseHelper.addShoppingListItem(item,selectedCategory);
+        boolean isInserted = databaseHelper.addShoppingListItem(item);
         if (isInserted) {
             finish(); // Close the activity
             List<Item> list= databaseHelper.getAllShoppingListItems();

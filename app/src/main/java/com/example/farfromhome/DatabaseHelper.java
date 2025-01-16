@@ -115,6 +115,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categories;
     }
 
+    // Funzione per eliminare una categoria e tutti gli item associati
+    public boolean deleteCategory(String categoryName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PANTRY, "category_name = ?", new String[]{categoryName});
+        db.delete(TABLE_SHOPPING_LIST, "category_name = ?", new String[]{categoryName});
+        db.delete(TABLE_SUITCASE, "category_name = ?", new String[]{categoryName});
+        int rowsDeleted = db.delete(TABLE_CATEGORIES, "category_name = ?", new String[]{categoryName});
+
+        db.close();
+
+        // Ritorna true se la categoria è stata eliminata con successo
+        return rowsDeleted > 0;
+    }
+
+
+
     // Aggiungi un item alla pantry con una categoria
     public boolean addPantryItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
