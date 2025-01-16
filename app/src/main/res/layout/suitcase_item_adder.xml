@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBD39D"
-    tools:context=".shoppingList.ShoppingAddItem">
+    tools:context=".suitcase.SuitcaseAddItem">
 
     <FrameLayout
         android:id="@+id/horizontal_menu"
@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inserisci un prodotto per la lista della spesa"
+                android:text="Inserisci un oggetto per la valigia"
                 android:textSize="30dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textColor="@color/black" />

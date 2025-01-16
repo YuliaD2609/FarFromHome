@@ -180,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean doesProductShoppingListExist(String productName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
-                TABLE_CATEGORIES, // Nome della tabella
+                TABLE_SHOPPING_LIST, // Nome della tabella
                 new String[]{"name"}, // Colonne da selezionare
                 "name = ?", // Clausola WHERE
                 new String[]{productName}, // Argomento

@@ -125,7 +125,7 @@ public class ShoppingAddItem extends AppCompatActivity {
         Item item = new Item(productName, quantity, expiryDate, selectedCategory);
 
         // Insert the item into the database
-        boolean isInserted = databaseHelper.addPantryItem(item);
+        boolean isInserted = databaseHelper.addShoppingListItem(item);
         if (isInserted) {
             inputCleaner();
             Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
