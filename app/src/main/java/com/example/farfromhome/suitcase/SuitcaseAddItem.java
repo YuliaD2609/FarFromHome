@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
@@ -101,9 +102,14 @@ public class SuitcaseAddItem extends AppCompatActivity {
     private void addProductToDatabase() {
         String productName = editTextProductName.getText().toString().trim();
 
+        if(productName.isEmpty()){
+            HomeActivity.showCustomToast(this,"Il nome deve essere presente!");
+            return;
+        }
+
         // Check if quantity is 0
         if (quantity == 0) {
-            Toast.makeText(this, "Non puoi inserire 0 elementi!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Non puoi inserire 0 elementi!");
             return;
         }
 
@@ -113,7 +119,7 @@ public class SuitcaseAddItem extends AppCompatActivity {
         // Check if the product name already exists in the database
         boolean productExists = databaseHelper.doesProductSuitcaseExist(productName);
         if (productExists) {
-            Toast.makeText(this, "Un oggetto con questo nome esiste già!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Un oggetto con questo nome esiste già");
             return;
         }
 
@@ -124,12 +130,12 @@ public class SuitcaseAddItem extends AppCompatActivity {
         boolean isInserted = databaseHelper.addSuitcaseItem(item);
         if (isInserted) {
             inputCleaner();
-            Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Prodotto aggiunto con successo!");
             Intent intent = new Intent(this, SuitcaseActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Errore nell'aggiunta del prodotto");
         }
     }
 

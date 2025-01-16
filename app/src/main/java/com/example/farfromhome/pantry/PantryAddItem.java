@@ -179,6 +179,11 @@ public class PantryAddItem extends AppCompatActivity {
             }
         }
 
+        if(productName.isEmpty()){
+            HomeActivity.showCustomToast(this,"Il nome deve essere presente!");
+            return;
+        }
+
         // Check if quantity is 0
         if (quantity == 0) {
             HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
@@ -202,12 +207,12 @@ public class PantryAddItem extends AppCompatActivity {
         boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
             inputCleaner();
-            Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Prodotto aggiunto con successo!");
             Intent intent = new Intent(this, PantryActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
+            HomeActivity.showCustomToast(this,"Errore nell'aggiunta del prodotto");
         }
     }
 
