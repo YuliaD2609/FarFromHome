@@ -3,6 +3,7 @@ package com.example.farfromhome;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -83,6 +84,7 @@ public class VerticalMenuFragment extends Fragment {
         title.setText("Nuova categoria");
         title.setTextSize(20);
         title.setTextColor(getResources().getColor(R.color.white));
+        title.setTypeface(null, Typeface.BOLD);
         title.setPadding(20, 30, 20, 10);
         title.setGravity(Gravity.CENTER);
 
@@ -91,6 +93,8 @@ public class VerticalMenuFragment extends Fragment {
         final EditText input = new EditText(requireContext());
         input.setHint("Inserire il nome della categoria");
         input.setTextColor(getResources().getColor(R.color.white));
+        input.setHintTextColor(getResources().getColor(R.color.beige));
+        input.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dark_white)));
         builder.setView(input);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
@@ -112,7 +116,7 @@ public class VerticalMenuFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         AlertDialog dialog = builder.create();
-        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background_beige);
+        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
         dialog.setOnShowListener(d -> {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white));
