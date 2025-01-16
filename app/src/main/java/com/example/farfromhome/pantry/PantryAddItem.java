@@ -155,36 +155,61 @@ public class PantryAddItem extends AppCompatActivity {
 
 
     private void addProductToDatabase() {
-        if(quantity == 0){
-            Toast.makeText(this, "Non puoi inserire 0 elememti!", Toast.LENGTH_SHORT).show();
-            return;
-        }
         String productName = editTextProductName.getText().toString().trim();
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
         Date expiryDate = null;
 
-        try {
-            expiryDate = new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateStr);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Check if expiryDateStr is not empty, and parse the date
+        if (!expiryDateStr.isEmpty()) {
+            try {
+                expiryDate = new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateStr);
+                Date currentDate = new Date();
+
+                // If expiryDate is before currentDate, show a warning
+                if (expiryDate.before(currentDate)) {
+                    Toast.makeText(this, "La data di scadenza deve essere maggiore o uguale alla data attuale.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Formato data non valido.", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
 
+        // Check if quantity is 0
+        if (quantity == 0) {
+            Toast.makeText(this, "Non puoi inserire 0 elementi!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Retrieve selected category
         selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        Item item = new Item(productName, quantity, expiryDate,selectedCategory);
+        // Check if the product name already exists in the database
+        boolean productExists = databaseHelper.doesProductPantryExist(productName);
+        if (productExists) {
+            Toast.makeText(this, "Un prodotto con questo nome esiste già!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // Create a new Item instance
+        Item item = new Item(productName, quantity, expiryDate, selectedCategory);
+
+        // Insert the item into the database
         boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
             inputCleaner();
             Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, PantryActivity.class);
-            intent.putExtra("CATEGORY_NAME", selectedCategory);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Errore nell'aggiunta del prodotto.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     public void inputCleaner(){
         editTextProductName.setText("");

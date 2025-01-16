@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Table names
     public static final String TABLE_PANTRY = "pantry";
     public static final String TABLE_SHOPPING_LIST = "shopping_list";
-    public static final String TABLE_SUITCASE = "luggage";
+    public static final String TABLE_SUITCASE = "suitcase";
     public static final String TABLE_CATEGORIES = "categories"; // New categories table
 
     // Common column names
@@ -129,6 +129,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsDeleted > 0;
     }
 
+    public boolean doesProductPantryExist(String productName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_PANTRY, // Nome della tabella
+                new String[]{"name"}, // Colonne da selezionare
+                "name = ?", // Clausola WHERE
+                new String[]{productName}, // Argomento
+                null, // GROUP BY
+                null, // HAVING
+                null // ORDER BY
+        );
+
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
 
 
     // Aggiungi un item alla pantry con una categoria
@@ -160,6 +177,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return getItemsFromPantryTable();
     }
 
+    public boolean doesProductShoppingListExist(String productName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_CATEGORIES, // Nome della tabella
+                new String[]{"name"}, // Colonne da selezionare
+                "name = ?", // Clausola WHERE
+                new String[]{productName}, // Argomento
+                null, // GROUP BY
+                null, // HAVING
+                null // ORDER BY
+        );
+
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
     public boolean addShoppingListItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -185,6 +219,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Item> getAllShoppingListItems() {
         return getItemsFromShoppingListTable();
+    }
+
+    public boolean doesProductSuitcaseExist(String productName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(
+                TABLE_SUITCASE, // Nome della tabella
+                new String[]{"name"}, // Colonne da selezionare
+                "name = ?", // Clausola WHERE
+                new String[]{productName}, // Argomento
+                null, // GROUP BY
+                null, // HAVING
+                null // ORDER BY
+        );
+
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
     }
 
     public boolean addSuitcaseItem(SuitcaseItem item) {

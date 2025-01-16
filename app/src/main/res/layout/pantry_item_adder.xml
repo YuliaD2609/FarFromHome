@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="Inserisci un prodotto per la tua dispensa"
                 android:textSize="30dp"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:textColor="@color/black" />
 
             <EditText
@@ -36,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:fontFamily="sans-serif-condensed"
                 android:hint="Nome prodotto" />
 
             <TextView
@@ -44,6 +46,7 @@
                 android:text="Categoria"
                 android:layout_marginTop="30dp"
                 android:textSize="20dp"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:textColor="@color/black" />
 
             <Spinner
@@ -51,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:fontFamily="sans-serif-condensed"
                 android:layout_marginTop="15dp" />
 
             <TextView
@@ -59,6 +63,7 @@
                 android:layout_marginTop="30dp"
                 android:text="Data di scadenza"
                 android:textColor="@color/black"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:textSize="20dp" />
 
             <EditText
@@ -66,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:fontFamily="sans-serif-condensed"
                 android:hint="Data di scadenza (DD/MM/YYYY)"
                 android:inputType="date" />
 
@@ -76,6 +82,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:textColor="@color/black"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:text="Quantità" />
 
             <LinearLayout
@@ -111,6 +118,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"
                     android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-condensed"
                     android:layout_marginLeft="10dp"/>
 
                 <LinearLayout
@@ -146,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:text="Aggiungi Prodotto"
                     android:textColor="@color/white"
+                    android:fontFamily="sans-serif-condensed-medium"
                     android:textSize="16sp" />
 
             </LinearLayout>
