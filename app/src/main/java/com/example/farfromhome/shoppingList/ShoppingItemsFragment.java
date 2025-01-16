@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
+import com.example.farfromhome.suitcase.SuitcaseItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,18 @@ public class ShoppingItemsFragment extends Fragment {
         } else {
             itemAdapter.updateItems(items);
         }
+    }
+
+    public void removeMarkedItems() {
+        List<Item> itemsToRemove = new ArrayList<>();
+        for (Item item : items) {
+            if (item.isMarked()) {
+                itemsToRemove.add(item);
+                dbHelper.removeShoppingListItem(item.getName());
+            }
+        }
+        items.removeAll(itemsToRemove);
+        itemAdapter.updateItems(items);
     }
 
 }

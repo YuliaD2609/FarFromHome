@@ -64,5 +64,15 @@ public class SuitcaseItemFragment extends Fragment {
         }
     }
 
-
+    public void removeMarkedItems() {
+        List<SuitcaseItem> itemsToRemove = new ArrayList<>();
+        for (SuitcaseItem item : items) {
+            if (item.isMarked()) {
+                itemsToRemove.add(item);
+                dbHelper.removeSuitcaseItem(item.getName());
+            }
+        }
+        items.removeAll(itemsToRemove);
+        itemAdapter.updateItems(items);
+    }
 }

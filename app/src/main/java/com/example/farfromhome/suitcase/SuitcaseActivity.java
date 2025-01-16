@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -57,19 +58,27 @@ public class SuitcaseActivity extends AppCompatActivity {
             suitcaseBundle.putString("CATEGORY_NAME", categoryName);
             suitcaseItemFragment.setArguments(suitcaseBundle);
         }
-        fragmentTransaction.replace(R.id.item_fragment_container, suitcaseItemFragment);
+        fragmentTransaction.replace(R.id.suitcaseItemList, suitcaseItemFragment);
 
         fragmentTransaction.commit();
 
-        Button addItemButton = findViewById(R.id.addItemButton);
+        LinearLayout addItemButton = findViewById(R.id.addItemButton);
 
         addItemButton.setOnClickListener(v -> {
          Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
          startActivity(intent);
         });
+
+        LinearLayout suitcaseDoneButton = findViewById(R.id.suitcaseDone);
+        suitcaseDoneButton.setOnClickListener(v -> {
+            suitcaseItemFragment.removeMarkedItems();
+        });
     }
 
     public void updateCategory(String newCategory) {
-        suitcaseItemFragment.updateCategory(newCategory);
+        if (suitcaseItemFragment != null) {
+            suitcaseItemFragment.updateCategory(newCategory);
+        }
     }
+
 }

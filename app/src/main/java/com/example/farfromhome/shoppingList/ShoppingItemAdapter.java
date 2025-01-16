@@ -74,11 +74,13 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.incrementButton.setVisibility(View.VISIBLE);
                 holder.decrementButton.setVisibility(View.VISIBLE);
+                item.setMarked(false);
             } else {
                 holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
                 holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 holder.incrementButton.setVisibility(View.GONE);
                 holder.decrementButton.setVisibility(View.GONE);
+                item.setMarked(true);
             }
         });
 

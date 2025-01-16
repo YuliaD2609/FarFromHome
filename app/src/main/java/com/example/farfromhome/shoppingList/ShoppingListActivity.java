@@ -68,6 +68,11 @@ public class ShoppingListActivity extends AppCompatActivity {
             Intent intent = new Intent(ShoppingListActivity.this, ShoppingAddItem.class);
             startActivity(intent);
         });
+
+        LinearLayout suitcaseDoneButton = findViewById(R.id.shoppingDone);
+        suitcaseDoneButton.setOnClickListener(v -> {
+            shoppingItemFragment.removeMarkedItems();
+        });
     }
 
     public void updateCategory(String newCategory) {

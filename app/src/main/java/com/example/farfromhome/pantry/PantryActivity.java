@@ -56,12 +56,10 @@ public class PantryActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         addItemButton = findViewById(R.id.addItemButton);
-        if (addItemButton != null) {
-            addItemButton.setOnClickListener(v -> {
-                Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
-                startActivity(intent);
-            });
-        }
+        addItemButton.setOnClickListener(v -> {
+            Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
+            startActivity(intent);
+        });
     }
 
     public void updateCategory(String newCategory) {
