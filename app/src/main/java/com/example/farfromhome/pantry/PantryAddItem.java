@@ -168,9 +168,9 @@ public class PantryAddItem extends AppCompatActivity {
 
         selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        Item item = new Item(productName, quantity, expiryDate);
+        Item item = new Item(productName, quantity, expiryDate,selectedCategory);
 
-        boolean isInserted = databaseHelper.addPantryItem(item, selectedCategory);
+        boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
             inputCleaner();
             Toast.makeText(this, "Prodotto aggiunto con successo!", Toast.LENGTH_SHORT).show();

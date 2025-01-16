@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.farfromhome.suitcase.SuitcaseItem;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,7 +141,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Funzione per ottenere tutti gli articoli nella pantry
     public List<Item> getAllPantryItems() {
-        return getItemsFromTable(TABLE_PANTRY);
+        return getItemsFromPantryTable();
     }
 
     public boolean addShoppingListItem(Item item) {
@@ -166,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Item> getAllShoppingListItems() {
-        return getItemsFromTable(TABLE_SHOPPING_LIST);
+        return getItemsFromShoppingListTable();
     }
 
     public boolean addSuitcaseItem(Item item) {
@@ -182,6 +184,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_SUITCASE, null, values);
         db.close();
         return result != -1;
+    }
+    public List<SuitcaseItem> getAllSuitcaseItems() {
+        return getItemsFromSuitcaseTable();
     }
 
 
@@ -235,10 +240,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Funzione generica per ottenere gli item da qualsiasi tabella
-    public List<Item> getItemsFromTable(String tableName) {
+    public List<Item> getItemsFromPantryTable() {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + tableName;
+        String query = "SELECT * FROM " + TABLE_PANTRY;
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
@@ -306,5 +311,119 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return new Item(name, quantity, expiryDate,category);
+    }
+
+    // Funzione generica per ottenere gli item da qualsiasi tabella
+    public List<Item> getItemsFromShoppingListTable() {
+        List<Item> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_SHOPPING_LIST;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // Recupero dei dati dal cursor
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+                // Aggiungo l'item alla lista
+                Item item = new Item(name, quantity, null, category);
+                items.add(item);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    public List<Item> getShoppingListItemsByCategory(String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Item> items = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE category_name = ?", new String[]{category});
+
+        if (cursor.moveToFirst()) {
+            do {
+                items.add(cursorToShoppingListItem(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    // Funzione per convertire il cursor in un oggetto Item
+    private Item cursorToShoppingListItem(Cursor cursor) {
+        @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+        @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+        @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+        @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+        Date expiryDate = null;
+        if (expiryStr != null && !expiryStr.isEmpty()) {
+            try {
+                expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
+            } catch (ParseException e) {
+                e.printStackTrace(); // Log dell'errore per il debug
+                expiryDate = null;  // Imposta a null in caso di errore
+            }
+        }
+
+        return new Item(name, quantity, expiryDate,category);
+    }
+
+    // Funzione generica per ottenere gli item da qualsiasi tabella
+    public List<SuitcaseItem> getItemsFromSuitcaseTable() {
+        List<SuitcaseItem> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_SUITCASE;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // Recupero dei dati dal cursor
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+                // Aggiungo l'item alla lista
+                SuitcaseItem item = new SuitcaseItem(name, quantity, category);
+                items.add(item);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    public List<Item> getSuitcaseItemsByCategory(String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Item> items = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE category_name = ?", new String[]{category});
+
+        if (cursor.moveToFirst()) {
+            do {
+                items.add(cursorToShoppingListItem(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    // Funzione per convertire il cursor in un oggetto Item
+    private SuitcaseItem cursorToSuitcaseItem(Cursor cursor) {
+        @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+        @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+        @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+
+        return new SuitcaseItem(name, quantity,category);
     }
 }
