@@ -1,5 +1,6 @@
 package com.example.farfromhome.shoppingList;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -24,6 +26,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     private List<Item> items;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private DatabaseHelper dbHelper;
 
     public ShoppingItemAdapter(Context context, List<Item> items) {
         this.context = context;
@@ -50,8 +53,12 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         });
 
         holder.decrementButton.setOnClickListener(v -> {
-            item.decrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            if (item.getQuantity() > 1) {
+                item.decrementQuantity();
+                holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            } else {
+                showConfirmDialog(item, position);
+            }
         });
 
         holder.colorChangeView.setOnClickListener(v -> {
@@ -62,6 +69,27 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
         });
+
+        dbHelper=new DatabaseHelper(context);
+    }
+
+    private void showConfirmDialog(Item item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Rimuovere dalla lista?");
+        builder.setMessage("La quantità è 0. Vuoi rimuovere l'elemento dalla lista della spesa?");
+
+        builder.setPositiveButton("Sì", (dialog, which) -> {
+            dbHelper.removeShoppingListItem(item.getName());
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            item.setQuantity(1);
+            notifyItemChanged(position);
+        });
+
+        builder.create().show();
     }
 
     @Override
@@ -71,7 +99,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
     public static class ShoppingItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity;
-        ImageView itemImage;
         Button incrementButton, decrementButton;
         View colorChangeView;
 

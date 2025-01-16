@@ -52,9 +52,9 @@ public class ShoppingItemsFragment extends Fragment {
 
     private void loadItems(String category) {
         if (category == null || category.isEmpty()) {
-            items = dbHelper.getAllPantryItems();
+            items = dbHelper.getAllShoppingListItems();
         } else {
-            items = dbHelper.getPantryItemsByCategory(category);
+            items = dbHelper.getShoppingListItemsByCategory(category);
         }
 
         if (itemAdapter == null) {

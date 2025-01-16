@@ -20,7 +20,7 @@ import java.util.Date;
 public class PantryActivity extends AppCompatActivity {
 
     private Button addItemButton;
-    DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private PantryItemsFragment pantryItemFragment;
 
     @Override
@@ -43,7 +43,7 @@ public class PantryActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
-        dbHelper.addPantryItem(i, "Cucina");
+        dbHelper.addPantryItem(i);
 
         pantryItemFragment = new PantryItemsFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");

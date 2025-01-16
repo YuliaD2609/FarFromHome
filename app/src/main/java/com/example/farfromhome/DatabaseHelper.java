@@ -119,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_QUANTITY, item.getQuantity());
         ContentValues categoryValues = new ContentValues();
         categoryValues.put("category_name", item.getCategory());
-        values.put("category_name", item.getCathegory());
+        values.put("category_name", item.getCategory());
 
         if (item.getExpiry() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -70,7 +70,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {
-            dbHelper.addShoppingListItem(item, item.getCathegory());
+            dbHelper.addShoppingListItem(item, item.getCategory());
             dbHelper.removePantryItem(item.getName());
             items.remove(position);
             notifyItemRemoved(position);
@@ -102,7 +102,6 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
     public static class PantryItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity, itemExpire;
-        ImageView itemImage;
         Button incrementButton, decrementButton;
 
         public PantryItemViewHolder(@NonNull View itemView) {

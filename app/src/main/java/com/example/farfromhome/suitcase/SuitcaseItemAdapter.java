@@ -1,5 +1,6 @@
 package com.example.farfromhome.suitcase;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -21,6 +23,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
     private List<SuitcaseItem> items;
     private final Context context;
+    private DatabaseHelper dbHelper;
 
     public SuitcaseItemAdapter(Context context, List<SuitcaseItem> items) {
         this.context = context;
@@ -47,8 +50,12 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
         });
 
         holder.decrementButton.setOnClickListener(v -> {
-            item.decrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            if (item.getQuantity() > 1) {
+                item.decrementQuantity();
+                holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            } else {
+                showConfirmDialog(item, position);
+            }
         });
 
         holder.colorChangeView.setOnClickListener(v -> {
@@ -66,6 +73,27 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
                 holder.decrementButton.setVisibility(View.GONE);
             }
         });
+
+        dbHelper=new DatabaseHelper(context);
+    }
+
+    private void showConfirmDialog(Item item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Aggiungere alla lista della spesa?");
+        builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
+
+        builder.setPositiveButton("Sì", (dialog, which) -> {
+            dbHelper.removeSuitcaseItem(item.getName());
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            item.setQuantity(1);
+            notifyItemChanged(position);
+        });
+
+        builder.create().show();
     }
 
     @Override

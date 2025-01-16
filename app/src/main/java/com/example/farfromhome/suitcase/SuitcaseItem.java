@@ -3,10 +3,12 @@ package com.example.farfromhome.suitcase;
 public class SuitcaseItem {
     private String name;
     private int quantity;
+    private String category;
 
-    public SuitcaseItem(String name, int quantity) {
+    public SuitcaseItem(String name, int quantity, String category) {
         this.name = name;
         this.quantity = quantity;
+        this.category=category;
     }
 
     public String getName() {
@@ -26,6 +28,13 @@ public class SuitcaseItem {
         this.name = name;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public void incrementQuantity() {
         this.quantity++;

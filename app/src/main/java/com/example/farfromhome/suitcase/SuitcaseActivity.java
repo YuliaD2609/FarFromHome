@@ -46,16 +46,16 @@ public class SuitcaseActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
-        dbHelper.addPantryItem(i, "Cucina");
+        SuitcaseItem i=new SuitcaseItem("prova", 3, "Cucina");
+        dbHelper.addSuitcaseItem(i);
 
 
         suitcaseItemFragment = new SuitcaseItemFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         if (categoryName != null) {
-            Bundle pantryBundle = new Bundle();
-            pantryBundle.putString("CATEGORY_NAME", categoryName);
-            suitcaseItemFragment.setArguments(pantryBundle);
+            Bundle suitcaseBundle = new Bundle();
+            suitcaseBundle.putString("CATEGORY_NAME", categoryName);
+            suitcaseItemFragment.setArguments(suitcaseBundle);
         }
         fragmentTransaction.replace(R.id.item_fragment_container, suitcaseItemFragment);
 

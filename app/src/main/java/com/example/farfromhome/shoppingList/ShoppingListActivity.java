@@ -3,8 +3,10 @@ package com.example.farfromhome.shoppingList;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,15 +17,16 @@ import com.example.farfromhome.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 import com.example.farfromhome.VerticalMenuFragment;
+import com.example.farfromhome.pantry.PantryItemsFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity {
-    private RecyclerView itemList;
-    private ShoppingItemAdapter itemAdapter;
-    private List<Item> items= new ArrayList<>();;
+    private Button addItemButton;;
     DatabaseHelper dbHelper;
+    private ShoppingItemsFragment shoppingItemFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,21 +45,23 @@ public class ShoppingListActivity extends AppCompatActivity {
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
-        fragmentTransaction.commit();
-
-        itemList = findViewById(R.id.ShoppingItemList);
-        Button addItemButton = findViewById(R.id.addItemButton);
-
-        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         dbHelper = new DatabaseHelper(this);
 
+        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
+        dbHelper.addShoppingListItem(i);
 
-        if(categoryName!=null){
-            items = dbHelper.getPantryItemsByCategory(categoryName);;
-            itemAdapter = new ShoppingItemAdapter(this, items);
-            itemList.setLayoutManager(new LinearLayoutManager(this));
-            itemList.setAdapter(itemAdapter);
+        shoppingItemFragment = new ShoppingItemsFragment();
+        String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
+        if (categoryName != null) {
+            Bundle shoppingBundle = new Bundle();
+            shoppingBundle.putString("CATEGORY_NAME", categoryName);
+            shoppingItemFragment.setArguments(shoppingBundle);
         }
+        fragmentTransaction.replace(R.id.item_fragment_container, shoppingItemFragment);
+
+        fragmentTransaction.commit();
+
+        addItemButton = findViewById(R.id.addItemButton);
 
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingListActivity.this, ShoppingAddItem.class);
@@ -65,9 +70,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     }
 
     public void updateCategory(String newCategory) {
-        ShoppingItemsFragment fragment = (ShoppingItemsFragment) getSupportFragmentManager().findFragmentById(R.id.ShoppingItemList);
-        if (fragment != null) {
-            fragment.updateCategory(newCategory);
-        }
+        shoppingItemFragment.updateCategory(newCategory);
     }
 }
