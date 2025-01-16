@@ -58,7 +58,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             shoppingBundle.putString("CATEGORY_NAME", categoryName);
             shoppingItemFragment.setArguments(shoppingBundle);
         }
-        fragmentTransaction.replace(R.id.item_fragment_container, shoppingItemFragment);
+        fragmentTransaction.replace(R.id.ShoppingItemList, shoppingItemFragment);
 
         fragmentTransaction.commit();
 

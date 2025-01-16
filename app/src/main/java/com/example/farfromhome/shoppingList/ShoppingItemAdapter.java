@@ -64,8 +64,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             }
         });
 
-        holder.incrementButton.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_background_beige));
-
         holder.colorChangeView.setOnClickListener(v -> {
             int currentColor = ((ColorDrawable) holder.colorChangeView.getBackground()).getColor();
             if (currentColor == context.getResources().getColor(R.color.white)) {
@@ -110,6 +108,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
+            colorChangeView = itemView.findViewById(R.id.colorChangeView);
         }
     }
 

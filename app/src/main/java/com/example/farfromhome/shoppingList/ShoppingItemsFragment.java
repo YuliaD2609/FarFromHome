@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
-import com.example.farfromhome.pantry.PantryItemAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,7 @@ public class ShoppingItemsFragment extends Fragment {
         itemList = rootView.findViewById(R.id.itemList);
         dbHelper = new DatabaseHelper(requireContext());
 
+        System.out.println("preso helper");
         if (getArguments() != null) {
             categoryName = getArguments().getString("CATEGORY_NAME");
             loadItems(categoryName);
@@ -56,6 +56,8 @@ public class ShoppingItemsFragment extends Fragment {
         } else {
             items = dbHelper.getShoppingListItemsByCategory(category);
         }
+
+        System.out.println(items);
 
         if (itemAdapter == null) {
             itemAdapter = new ShoppingItemAdapter(requireContext(), items);
