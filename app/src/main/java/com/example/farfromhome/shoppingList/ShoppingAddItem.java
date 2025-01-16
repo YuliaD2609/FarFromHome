@@ -1,5 +1,6 @@
 package com.example.farfromhome.shoppingList;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class ShoppingAddItem extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
