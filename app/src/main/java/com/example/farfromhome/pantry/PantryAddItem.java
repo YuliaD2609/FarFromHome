@@ -6,6 +6,8 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,6 +72,8 @@ public class PantryAddItem extends AppCompatActivity {
         loadCategories();
 
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
+        editTextExpiryDate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
+
         textViewQuantity = findViewById(R.id.textViewQuantity);
         LinearLayout buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         LinearLayout buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
@@ -102,7 +106,13 @@ public class PantryAddItem extends AppCompatActivity {
             System.out.println("Categories fetched from database: " + categories);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.custom_spinner, categories) {
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position, convertView, parent);
+            }
+        };
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
 

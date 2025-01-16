@@ -2,6 +2,7 @@ package com.example.farfromhome.shoppingList;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class ShoppingAddItem extends AppCompatActivity {
 
 
         editTextProductName = findViewById(R.id.editTextProductName);
+        editTextProductName.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
         spinnerCategory = findViewById(R.id.spinnerCategory);
 
         loadCategories();
