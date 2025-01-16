@@ -1,5 +1,6 @@
 package com.example.farfromhome.pantry;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -23,6 +25,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
     private List<Item> items;
     private final Context context;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+    private DatabaseHelper dbHelper;
 
     public PantryItemAdapter(Context context, List<Item> items) {
         this.context = context;
@@ -50,9 +53,41 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         });
 
         holder.decrementButton.setOnClickListener(v -> {
-            item.decrementQuantity();
-            holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            if (item.getQuantity() > 1) {
+                item.decrementQuantity();
+                holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
+            } else {
+                showConfirmDialog(item, position);
+            }
         });
+
+        dbHelper=new DatabaseHelper(context);
+    }
+
+    private void showConfirmDialog(Item item, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Aggiungere alla lista della spesa?");
+        builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
+
+        builder.setPositiveButton("Sì", (dialog, which) -> {
+            dbHelper.addShoppingListItem(item, item.getCathegory());
+            dbHelper.removePantryItem(item.getName());
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            dbHelper.removePantryItem(item.getName());
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
+
+        builder.setNeutralButton("Annulla", (dialog, which) -> {
+            item.setQuantity(1);
+            notifyItemChanged(position);
+        });
+
+        builder.create().show();
     }
 
     public void updateItems(List<Item> newItems) {

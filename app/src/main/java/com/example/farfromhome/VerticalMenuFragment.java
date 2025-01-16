@@ -132,6 +132,7 @@ public class VerticalMenuFragment extends Fragment {
             handleCategorySelection(newCategoryButton, categoryName);
         });
 
+        dbHelper.addCategory(categoryName);
         categoryList.addView(newCategoryButton);
     }
 
