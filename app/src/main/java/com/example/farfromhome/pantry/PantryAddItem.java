@@ -2,6 +2,7 @@ package com.example.farfromhome.pantry;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -63,6 +64,7 @@ public class PantryAddItem extends AppCompatActivity {
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
         addDateInputFormat(editTextExpiryDate);
         editTextProductName = findViewById(R.id.editTextProductName);
+        editTextProductName.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
         spinnerCategory = findViewById(R.id.spinnerCategory);
 
         loadCategories();

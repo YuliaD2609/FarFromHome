@@ -3,6 +3,8 @@ package com.example.farfromhome.shoppingList;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,7 +95,13 @@ public class ShoppingAddItem extends AppCompatActivity {
             System.out.println("Categories fetched from database: " + categories);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.custom_spinner, categories) {
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                return super.getDropDownView(position, convertView, parent);
+            }
+        };
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
     }
