@@ -4,6 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,9 +30,19 @@ public class HomeActivity extends AppCompatActivity {
 
         checkAndInitializeDatabase();
 
-        findViewById(R.id.shoppinglistbutton).setOnClickListener(view -> goToShoppingList());
-        findViewById(R.id.pantrybutton).setOnClickListener(view -> goToPantry());
-        findViewById(R.id.suitcasebutton).setOnClickListener(view -> goToSuitcase());
+        View shoppingListButton = findViewById(R.id.shoppinglistbutton);
+        View pantryButton = findViewById(R.id.pantrybutton);
+        View suitcaseButton = findViewById(R.id.suitcasebutton);
+        TextView warningText = findViewById(R.id.warningtext);
+
+        startAnimation(shoppingListButton, 0);
+        startAnimation(pantryButton, 300);
+        startAnimation(suitcaseButton, 500);
+        startAnimation(warningText, 700);
+
+        shoppingListButton.setOnClickListener(view -> goToShoppingList());
+        pantryButton.setOnClickListener(view -> goToPantry());
+        suitcaseButton.setOnClickListener(view -> goToSuitcase());
     }
 
     private void checkAndInitializeDatabase() {
@@ -42,6 +57,12 @@ public class HomeActivity extends AppCompatActivity {
             editor.putBoolean(KEY_DATABASE_INITIALIZED, true);
             editor.apply();
         }
+    }
+
+    private void startAnimation(View view, long delay) {
+        Animation slideInLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        slideInLeft.setStartOffset(delay);
+        view.startAnimation(slideInLeft);
     }
 
     private void goToShoppingList() {

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,6 @@ public class ShoppingAddItem extends AppCompatActivity {
 
     private EditText editTextProductName;
     private Spinner spinnerCategory;
-    private EditText editTextExpiryDate;
     private TextView textViewQuantity;
     private int quantity = 0;
 
@@ -56,11 +56,10 @@ public class ShoppingAddItem extends AppCompatActivity {
 
         loadCategories();
 
-        editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
         textViewQuantity = findViewById(R.id.textViewQuantity);
-        Button buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
-        Button buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
-        Button buttonAddProduct = findViewById(R.id.buttonAddProduct);
+        LinearLayout buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
+        LinearLayout buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
+        LinearLayout buttonAddProduct = findViewById(R.id.buttonAddProduct);
 
         buttonDecreaseQuantity.setOnClickListener(v -> {
             if (quantity > 0) {
