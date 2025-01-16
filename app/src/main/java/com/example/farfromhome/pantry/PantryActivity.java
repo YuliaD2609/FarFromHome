@@ -2,12 +2,11 @@ package com.example.farfromhome.pantry;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HorizontalMenuFragment;
@@ -19,7 +18,7 @@ import java.util.Date;
 
 public class PantryActivity extends AppCompatActivity {
 
-    private Button addItemButton;
+    private LinearLayout addItemButton;
     private DatabaseHelper dbHelper;
     private PantryItemsFragment pantryItemFragment;
 
@@ -42,7 +41,7 @@ public class PantryActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
+        Item i = new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
         dbHelper.addPantryItem(i);
 
         pantryItemFragment = new PantryItemsFragment();
@@ -57,14 +56,17 @@ public class PantryActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         addItemButton = findViewById(R.id.addItemButton);
-
-        addItemButton.setOnClickListener(v -> {
-            Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
-            startActivity(intent);
-        });
+        if (addItemButton != null) {
+            addItemButton.setOnClickListener(v -> {
+                Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
+                startActivity(intent);
+            });
+        }
     }
 
     public void updateCategory(String newCategory) {
-        pantryItemFragment.updateCategory(newCategory);
+        if (pantryItemFragment != null) {
+            pantryItemFragment.updateCategory(newCategory);
+        }
     }
 }

@@ -29,13 +29,22 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
+        <LinearLayout
             android:id="@+id/decrementButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@drawable/rounded_background"
-            android:textColor="@color/black"
-            android:text="-"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/itemQuantity"
@@ -48,13 +57,22 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"/>
 
-        <Button
+        <LinearLayout
             android:id="@+id/incrementButton"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:text="+"
-            android:textColor="@color/black"
-            android:background="@drawable/rounded_background"/>
+            android:background="@drawable/rounded_background"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textSize="14sp"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

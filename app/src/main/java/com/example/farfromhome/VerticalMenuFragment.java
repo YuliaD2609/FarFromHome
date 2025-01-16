@@ -7,12 +7,13 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
@@ -30,7 +31,7 @@ public class VerticalMenuFragment extends Fragment {
 
     private LinearLayout categoryList;
     private List<String> existingCategories = new ArrayList<>();
-    private Button selectedCategoryButton = null;
+    private View selectedCategoryView = null;
     DatabaseHelper dbHelper;
     private PantryActivity pantryActivity;
     private ShoppingListActivity shoppingActivity;
@@ -70,7 +71,7 @@ public class VerticalMenuFragment extends Fragment {
             }
         }
 
-        Button addCategoryButton = rootView.findViewById(R.id.addCategory);
+        LinearLayout addCategoryButton = rootView.findViewById(R.id.addCategory);
         addCategoryButton.setOnClickListener(this::addCategory);
 
         return rootView;
@@ -111,51 +112,65 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-        Button newCategoryButton = new Button(requireContext());
+        // Creazione del layout della categoria
+        LinearLayout newCategoryButton = new LinearLayout(requireContext());
+        newCategoryButton.setOrientation(LinearLayout.VERTICAL);
+        newCategoryButton.setGravity(Gravity.CENTER); // Centrare il contenuto nel layout
 
+        // Imposta i parametri del layout
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) (50 * getResources().getDisplayMetrics().density)
+                (int) (60 * getResources().getDisplayMetrics().density) // Altezza maggiore
         );
-        params.bottomMargin = (int) (5 * getResources().getDisplayMetrics().density);
         newCategoryButton.setLayoutParams(params);
 
-        newCategoryButton.setText(categoryName);
-        newCategoryButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-        newCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
-        newCategoryButton.setTextColor(getResources().getColor(R.color.lightBrown));
+        // Creazione del testo della categoria
+        TextView text = new TextView(requireContext());
+        text.setText(categoryName);
+        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14); // Testo più grande
+        text.setTextColor(getResources().getColor(R.color.lightBrown));
+        text.setGravity(Gravity.CENTER); // Centrare il testo nel TextView
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
-        newCategoryButton.setTypeface(typeface);
-        newCategoryButton.setPadding(0, 0, 0, 0);
+        text.setTypeface(typeface);
 
+        // Aggiungi il testo al layout
+        newCategoryButton.addView(text);
+
+        // Imposta stile e comportamento del bottone
+        newCategoryButton.setPadding(0, 0, 0, 0);
+        newCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
+        // Gestisci l'evento click
         newCategoryButton.setOnClickListener(v -> {
             handleCategorySelection(newCategoryButton, categoryName);
         });
 
+        // Aggiungi la categoria al database e alla vista
         dbHelper.addCategory(categoryName);
         categoryList.addView(newCategoryButton);
     }
 
-    private void handleCategorySelection(Button selectedButton, String categoryName) {
-        if (selectedCategoryButton != null) {
-            selectedCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
-            selectedCategoryButton.setTextColor(getResources().getColor(R.color.lightBrown));
+
+    private void handleCategorySelection(View selectedView, String categoryName) {
+        if (selectedCategoryView != null) {
+            selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons);
+            ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
+                    .setTextColor(getResources().getColor(R.color.lightBrown));
         }
 
-        if (selectedCategoryButton == selectedButton) {
-            selectedCategoryButton = null;
-            if(pantryActivity!=null)
+        if (selectedCategoryView == selectedView) {
+            selectedCategoryView = null;
+            if (pantryActivity != null)
                 pantryActivity.updateCategory(null);
-            if(shoppingActivity!=null)
+            if (shoppingActivity != null)
                 shoppingActivity.updateCategory(null);
-            if(suitcaseActivity!=null)
+            if (suitcaseActivity != null)
                 suitcaseActivity.updateCategory(null);
         } else {
-            selectedCategoryButton = selectedButton;
-            selectedCategoryButton.setBackgroundResource(R.drawable.menu_buttons_selected);
-            selectedCategoryButton.setTextColor(getResources().getColor(R.color.white));
+            selectedCategoryView = selectedView;
+            selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons_selected);
+            ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
+                    .setTextColor(getResources().getColor(R.color.white));
             pantryActivity.updateCategory(categoryName);
         }
     }
-
 }

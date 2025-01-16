@@ -102,8 +102,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
     public static class ShoppingItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemName, itemQuantity;
-        Button incrementButton, decrementButton;
-        View colorChangeView;
+        View incrementButton, decrementButton, colorChangeView;
 
         public ShoppingItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -111,7 +110,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
-            colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
         }
     }
 
