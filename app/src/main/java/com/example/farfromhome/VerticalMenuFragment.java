@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,36 +127,69 @@ public class VerticalMenuFragment extends Fragment {
     }
 
     private void createCategoryButton(String categoryName) {
-        LinearLayout newCategoryButton = new LinearLayout(requireContext());
-        newCategoryButton.setOrientation(LinearLayout.VERTICAL);
-        newCategoryButton.setGravity(Gravity.CENTER); // Centrare il contenuto nel layout
+        LinearLayout categoryContainer = new LinearLayout(requireContext());
+        categoryContainer.setOrientation(LinearLayout.HORIZONTAL);
+        categoryContainer.setGravity(Gravity.CENTER_VERTICAL);
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) (60 * getResources().getDisplayMetrics().density) // Altezza maggiore
+                (int) (50 * getResources().getDisplayMetrics().density)
         );
-        newCategoryButton.setLayoutParams(params);
+        categoryContainer.setLayoutParams(params);
+        categoryContainer.setPadding(8, 8, 2, 8);
+        categoryContainer.setBackgroundResource(R.drawable.menu_buttons);
 
-        TextView text = new TextView(requireContext());
-        text.setText(categoryName);
-        text.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
-        text.setTextColor(getResources().getColor(R.color.white));
-        text.setGravity(Gravity.CENTER);
+        TextView categoryText = new TextView(requireContext());
+        categoryText.setText(categoryName);
+        categoryText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        categoryText.setTextColor(getResources().getColor(R.color.white));
+        categoryText.setGravity(Gravity.CENTER);
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
-        text.setTypeface(typeface);
+        categoryText.setTypeface(typeface);
+        categoryText.setLayoutParams(new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
 
-        newCategoryButton.addView(text);
+        ImageView deleteIcon = new ImageView(requireContext());
+        deleteIcon.setImageResource(R.drawable.x_icon);
+        deleteIcon.setLayoutParams(new LinearLayout.LayoutParams(
+                (int) (30 * getResources().getDisplayMetrics().density),
+                (int) (30 * getResources().getDisplayMetrics().density)
+        ));
+        deleteIcon.setPadding(20, 0, -30, 70);
 
-        newCategoryButton.setPadding(0, 0, 0, 0);
-        newCategoryButton.setBackgroundResource(R.drawable.menu_buttons);
-
-        newCategoryButton.setOnClickListener(v -> {
-            handleCategorySelection(newCategoryButton, categoryName);
+        categoryContainer.setOnClickListener(v -> {
+            handleCategorySelection(categoryContainer, categoryName);
         });
 
+        deleteIcon.setOnClickListener(v -> {
+            confirmAndDeleteCategory(categoryName, categoryContainer);
+        });
+
+        categoryContainer.addView(categoryText);
+        categoryContainer.addView(deleteIcon);
+
+        categoryList.addView(categoryContainer);
+
         dbHelper.addCategory(categoryName);
-        categoryList.addView(newCategoryButton);
     }
+
+    private void confirmAndDeleteCategory(String categoryName, View categoryContainer) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Elimina Categoria")
+                .setMessage("Sei sicuro di voler eliminare la categoria \"" + categoryName + "\"?\nGli elementi al suo interno saranno eliminati.")
+                .setPositiveButton("Elimina", (dialog, which) -> {
+                    dbHelper.deleteCategory(categoryName);
+                    categoryList.removeView(categoryContainer);
+                    HomeActivity.showCustomToast(requireContext(), "Categoria eliminata");
+                    handleCategorySelection(categoryContainer, null);
+                })
+                .setNegativeButton("Annulla", (dialog, which) -> {
+                    handleCategorySelection(categoryContainer, categoryName);
+                })
+                .show();
+    }
+
+
 
 
     private void handleCategorySelection(View selectedView, String categoryName) {
