@@ -54,8 +54,10 @@
                 android:id="@+id/spinnerCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/CustomSpinnerStyle"
-                android:layout_marginTop="15dp"/>
+                android:textColor="@color/brown"
+                android:textColorHint="#8E6062"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_marginTop="15dp" />
 
 
             <TextView

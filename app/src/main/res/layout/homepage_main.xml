@@ -135,19 +135,24 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- TextView per avvisi -->
-        <TextView
-            android:id="@+id/warningtext"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:text="Avvisi dispensa"
-            android:gravity="center"
-            android:padding="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/border_warning_text"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:clickable="false" />
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/border_warning_text">
+
+            <TextView
+                android:id="@+id/warningtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Avvisi dispensa"
+                android:padding="10dp"
+                android:textSize="16dp"
+                android:textColor="#000000"
+                android:clickable="false" />
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>

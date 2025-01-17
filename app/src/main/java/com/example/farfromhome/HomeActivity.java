@@ -1,8 +1,6 @@
 package com.example.farfromhome;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,12 +11,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +33,6 @@ import com.example.farfromhome.pantry.PantryActivity;
 import com.example.farfromhome.shoppingList.ShoppingListActivity;
 import com.example.farfromhome.suitcase.SuitcaseActivity;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,8 +52,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_main);
-
-        //deleteDatabase("farfromhomedb.db");
 
         checkAndInitializeDatabase();
         createNotificationChannel();
@@ -85,17 +82,18 @@ public class HomeActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private boolean checkAndRequestPermissions() {
-        boolean hasStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         boolean hasNotificationPermission = true;
 
-        // Controlla il permesso di notifica solo su Android 13 e successivi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             hasNotificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
         }
 
-        if (!hasStoragePermission || !hasNotificationPermission) {
+        // Log per il debugging
+        Log.d("Permissions", "Notification permission granted: " + hasNotificationPermission);
+
+        if (!hasNotificationPermission) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.POST_NOTIFICATIONS},
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
                     PERMISSION_REQUEST_CODE);
             return false;
         }
@@ -107,14 +105,17 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
-                boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                boolean notificationAccepted = (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) || grantResults[1] == PackageManager.PERMISSION_GRANTED;
+            // Log per il debugging
+            Log.d("Permissions", "onRequestPermissionsResult called");
 
-                if (storageAccepted && notificationAccepted) {
+            if (grantResults.length > 0) {
+                boolean notificationAccepted = (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) || (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+
+                Log.d("Permissions", "Notification accepted: " + notificationAccepted);
+
+                if (notificationAccepted) {
                     initializeSystem();
                 } else {
-                    // I permessi non sono stati concessi, informa l'utente
                     showPermissionDeniedMessage();
                 }
             }
@@ -127,25 +128,33 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showPermissionDeniedMessage() {
-        HomeActivity.showCustomToast(this,"I permessi di archivio e notifica sono richiesti per il corretto funzionamento dell'app");
+        HomeActivity.showCustomToast(this, "Il permesso di notifica è richiesto per il corretto funzionamento dell'app");
     }
 
     private void loadExpiringProducts() {
         new Handler().post(() -> {
             List<Item> pantryItems = databaseHelper.getAllPantryItems();
-            StringBuilder warnings = new StringBuilder("Prodotti in scadenza:\n");
+            StringBuilder warnings = new StringBuilder();
+            warnings.append("Prodotti in scadenza:\n\n");
+
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Calendar calendar = Calendar.getInstance();
             boolean notify = false;
 
+            int maxProductNameLength = 25; // Lunghezza massima per il nome del prodotto
+            int totalWidth = 40; // Larghezza totale per l'allineamento
+
             for (Item item : pantryItems) {
-                Date expiryDate =item.getExpiry();
+                Date expiryDate = item.getExpiry();
                 long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
                 long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
                 if (daysToExpiry >= 0 && daysToExpiry <= 14) {
-                    warnings.append(item.getName()).append(" - mancano ")
-                            .append(daysToExpiry).append(" giorni alla scadenza\n");
+                    String productName = item.getName();
+                    String daysString = daysToExpiry + " giorni";
+
+                    // Formatta la riga con un punto iniziale, nome del prodotto, e giorni allineati
+                    warnings.append(String.format(". %-"+maxProductNameLength+"s %" + (totalWidth - maxProductNameLength) + "s\n", productName, daysString));
 
                     if (daysToExpiry <= 7) {
                         notify = true;
@@ -153,7 +162,11 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            warningText.setText(warnings.toString());
+            // Converti in SpannableString per applicare il grassetto
+            SpannableString spannableWarnings = new SpannableString(warnings.toString());
+            spannableWarnings.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, 21, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            warningText.setText(spannableWarnings);
 
             if (notify) {
                 sendNotification();
@@ -165,7 +178,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification_icon)
