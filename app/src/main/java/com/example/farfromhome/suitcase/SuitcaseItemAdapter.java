@@ -44,6 +44,18 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
 
+        if (item.isMarked()) {
+            holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.incrementButton.setVisibility(View.GONE);
+            holder.decrementButton.setVisibility(View.GONE);
+        } else {
+            holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.incrementButton.setVisibility(View.VISIBLE);
+            holder.decrementButton.setVisibility(View.VISIBLE);
+        }
+
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
@@ -82,7 +94,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
     private void showConfirmDialog(SuitcaseItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Aggiungere alla lista della spesa?");
-        builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
+        builder.setMessage("La quantità di "+item.getName()+ " è 0. Vuoi rimuovere l'elemento dalla valigia?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {
             dbHelper.removeSuitcaseItem(item.getName());

@@ -51,6 +51,18 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         holder.itemName.setText(item.getName());
         holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
 
+        if (item.isMarked()) {
+            holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.black));
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.incrementButton.setVisibility(View.GONE);
+            holder.decrementButton.setVisibility(View.GONE);
+        } else {
+            holder.colorChangeView.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.itemName.setPaintFlags(holder.itemName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.incrementButton.setVisibility(View.VISIBLE);
+            holder.decrementButton.setVisibility(View.VISIBLE);
+        }
+
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
@@ -89,7 +101,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     private void showConfirmDialog(Item item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Rimuovere dalla lista?");
-        builder.setMessage("La quantità è 0. Vuoi rimuovere l'elemento dalla lista della spesa?");
+        builder.setMessage("La quantità di "+item.getName()+ " è 0. Vuoi rimuovere l'elemento dalla lista della spesa?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {
             dbHelper.removeShoppingListItem(item.getName());

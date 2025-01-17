@@ -102,7 +102,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
     private void showConfirmDialog(Item item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Aggiungere alla lista della spesa?");
-        builder.setMessage("La quantità è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
+        builder.setMessage("La quantità di "+item.getName()+ " è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {
             dbHelper.addShoppingListItem(item);

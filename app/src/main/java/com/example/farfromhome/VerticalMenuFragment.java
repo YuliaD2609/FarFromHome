@@ -162,7 +162,7 @@ public class VerticalMenuFragment extends Fragment {
         if (selectedCategoryView != null) {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
-                    .setTextColor(getResources().getColor(R.color.lightBrown));
+                    .setTextColor(getResources().getColor(R.color.white));
         }
         if (selectedCategoryView == selectedView) {
             selectedCategoryView = null;
@@ -176,7 +176,7 @@ public class VerticalMenuFragment extends Fragment {
             selectedCategoryView = selectedView;
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons_selected);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
-                    .setTextColor(getResources().getColor(R.color.white));
+                    .setTextColor(getResources().getColor(R.color.lightBrown));
 
             if (pantryActivity != null)
                 pantryActivity.updateCategory(categoryName);
