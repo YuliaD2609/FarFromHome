@@ -26,7 +26,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:background="@drawable/add_category_button"
-        android:onClick="addCategory"
+        android:onClick="addSuitcaseCategory"
         android:padding="0dp">
 
         <TextView

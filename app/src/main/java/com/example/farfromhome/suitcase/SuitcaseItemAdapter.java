@@ -58,12 +58,15 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
+            dbHelper.updateSuitcaseItem(item);
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
 
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.decrementQuantity();
+
+                dbHelper.updateSuitcaseItem(item);
                 holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
             } else {
                 showConfirmDialog(item, position);
@@ -125,7 +128,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
             itemQuantity = itemView.findViewById(R.id.itemQuantity);
             incrementButton = itemView.findViewById(R.id.incrementButton);
             decrementButton = itemView.findViewById(R.id.decrementButton);
-            colorChangeView = itemView.findViewById(R.id.colorChangeView); // Inizializza
+            colorChangeView = itemView.findViewById(R.id.colorChangeView);
         }
     }
 
