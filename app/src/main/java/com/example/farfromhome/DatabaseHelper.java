@@ -543,4 +543,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return new SuitcaseItem(name, quantity,category);
     }
+
+    // Metodo per modificare un elemento nella pantry
+    public boolean updatePantryItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put("category_name", item.getCategory());
+
+        if (item.getExpiry() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expiryString = dateFormat.format(item.getExpiry());
+            values.put(COLUMN_EXPIRY, expiryString);
+        } else {
+            values.putNull(COLUMN_EXPIRY);
+        }
+
+        int rowsAffected = db.update(TABLE_PANTRY, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    // Metodo per modificare un elemento nella shopping list
+    public boolean updateShoppingListItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put("category_name", item.getCategory());
+
+        if (item.getExpiry() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expiryString = dateFormat.format(item.getExpiry());
+            values.put(COLUMN_EXPIRY, expiryString);
+        } else {
+            values.putNull(COLUMN_EXPIRY);
+        }
+
+        int rowsAffected = db.update(TABLE_SHOPPING_LIST, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+    // Metodo per modificare un elemento nella suitcase
+    public boolean updateSuitcaseItem(SuitcaseItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put("category_name", item.getCategory());
+
+        int rowsAffected = db.update(TABLE_SUITCASE, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+        return rowsAffected > 0;
+    }
+
+
 }
