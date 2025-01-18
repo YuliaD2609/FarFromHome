@@ -96,11 +96,9 @@ public class PantryAddItem extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        // Fetch categories from the database
         List<String> categories = databaseHelper.getAllCategories();
         if (categories == null || categories.isEmpty()) {
             System.out.println("No categories found in database.");
-            // Add a default category or handle the empty state if necessary
             categories.add("N/A");
         } else {
             System.out.println("Categories fetched from database: " + categories);
@@ -139,7 +137,6 @@ public class PantryAddItem extends AppCompatActivity {
                 String input = s.toString();
                 StringBuilder formattedInput = new StringBuilder();
 
-                // Rimuovere qualsiasi carattere che non sia un numero
                 input = input.replaceAll("[^\\d]", "");
 
                 int length = input.length();
@@ -155,10 +152,10 @@ public class PantryAddItem extends AppCompatActivity {
                     formattedInput.append(input);
                 }
 
-                editText.removeTextChangedListener(this); // Rimuove temporaneamente il watcher
+                editText.removeTextChangedListener(this);
                 editText.setText(formattedInput.toString());
                 editText.setSelection(formattedInput.length());
-                editText.addTextChangedListener(this); // Riaggiunge il watcher
+                editText.addTextChangedListener(this);
 
                 isFormatting = false;
             }
@@ -171,13 +168,12 @@ public class PantryAddItem extends AppCompatActivity {
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
         Date expiryDate = null;
 
-        // Check if expiryDateStr is not empty, and parse the date
+
         if (!expiryDateStr.isEmpty()) {
             try {
                 expiryDate = new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateStr);
                 Date currentDate = new Date();
 
-                // If expiryDate is before currentDate, show a warning
                 if (expiryDate.before(currentDate)) {
                     HomeActivity.showCustomToast(this, "La data di scadenza deve essere maggiore della data attuale.");
                     return;
@@ -194,26 +190,25 @@ public class PantryAddItem extends AppCompatActivity {
             return;
         }
 
-        // Check if quantity is 0
+
         if (quantity == 0) {
             HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
             return;
         }
 
-        // Retrieve selected category
+
         selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        // Check if the product name already exists in the database
+
         boolean productExists = databaseHelper.doesProductPantryExist(productName);
         if (productExists) {
             HomeActivity.showCustomToast(this, "Un prodotto con questo nome esiste già!");
             return;
         }
 
-        // Create a new Item instance
+
         Item item = new Item(productName, quantity, expiryDate, selectedCategory);
 
-        // Insert the item into the database
         boolean isInserted = databaseHelper.addPantryItem(item);
         if (isInserted) {
             inputCleaner();
