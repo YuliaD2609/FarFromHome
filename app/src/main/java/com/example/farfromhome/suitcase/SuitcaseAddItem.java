@@ -82,11 +82,9 @@ public class SuitcaseAddItem extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        // Fetch categories from the database
         List<String> categories = databaseHelper.getAllCategories();
         if (categories == null || categories.isEmpty()) {
             System.out.println("No categories found in database.");
-            // Add a default category or handle the empty state if necessary
             categories.add("N/A");
         } else {
             System.out.println("Categories fetched from database: " + categories);
@@ -111,26 +109,21 @@ public class SuitcaseAddItem extends AppCompatActivity {
             return;
         }
 
-        // Check if quantity is 0
         if (quantity == 0) {
             HomeActivity.showCustomToast(this,"Non puoi inserire 0 elementi!");
             return;
         }
 
-        // Retrieve selected category
         selectedCategory = spinnerCategory.getSelectedItem().toString();
 
-        // Check if the product name already exists in the database
         boolean productExists = databaseHelper.doesProductSuitcaseExist(productName);
         if (productExists) {
             HomeActivity.showCustomToast(this,"Un oggetto con questo nome esiste già");
             return;
         }
 
-        // Create a new Item instance
         SuitcaseItem item = new SuitcaseItem(productName, quantity, selectedCategory);
 
-        // Insert the item into the database
         boolean isInserted = databaseHelper.addSuitcaseItem(item);
         if (isInserted) {
             inputCleaner();

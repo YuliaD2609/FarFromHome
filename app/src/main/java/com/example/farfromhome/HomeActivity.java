@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_main);
 
+
         checkAndInitializeDatabase();
         createNotificationChannel();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -89,7 +90,6 @@ public class HomeActivity extends AppCompatActivity {
             hasNotificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
         }
 
-        // Log per il debugging
         Log.d("Permissions", "Notification permission granted: " + hasNotificationPermission);
 
         if (!hasNotificationPermission) {
@@ -106,7 +106,6 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            // Log per il debugging
             Log.d("Permissions", "onRequestPermissionsResult called");
 
             if (grantResults.length > 0) {
@@ -125,7 +124,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initializeSystem() {
         setContentView(R.layout.homepage_main);
-        // Avvia il sistema qui
     }
 
     private void showPermissionDeniedMessage() {
@@ -152,14 +150,12 @@ public class HomeActivity extends AppCompatActivity {
                     hasExpiringItems = true;
                     notify = daysToExpiry <= 7 || notify;
 
-                    // Creazione di una riga per l'elemento
                     LinearLayout row = new LinearLayout(this);
                     row.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT));
                     row.setOrientation(LinearLayout.HORIZONTAL);
 
-                    // TextView per il nome con punto
                     TextView itemNameView = new TextView(this);
                     itemNameView.setLayoutParams(new LinearLayout.LayoutParams(
                             0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
@@ -167,7 +163,6 @@ public class HomeActivity extends AppCompatActivity {
                     itemNameView.setTextSize(16);
                     itemNameView.setTextColor(getResources().getColor(R.color.black));
 
-                    // TextView per la data
                     TextView expiryDateView = new TextView(this);
                     expiryDateView.setLayoutParams(new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -175,17 +170,14 @@ public class HomeActivity extends AppCompatActivity {
                     expiryDateView.setTextSize(16);
                     expiryDateView.setTextColor(getResources().getColor(R.color.black));
 
-                    // Aggiungi i TextView alla riga
                     row.addView(itemNameView);
                     row.addView(expiryDateView);
 
-                    // Aggiungi la riga al contenitore
                     warningContainer.addView(row);
                 }
             }
 
             if (!hasExpiringItems) {
-                // Se non ci sono elementi in scadenza, mostra il messaggio di default
                 TextView noItemsView = new TextView(this);
                 noItemsView.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,

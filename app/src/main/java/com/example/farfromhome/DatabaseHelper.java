@@ -100,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-        return result != -1; // Success if result is not -1
+        return result != -1;
     }
 
     // Aggiungi una categoria
@@ -114,10 +114,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         System.out.println(getAllSuitcaseCategories());
         db.close();
 
-        return result != -1; // Success if result is not -1
+        return result != -1;
     }
 
-    // Ottieni tutte le categorie
     @SuppressLint("Range")
     public List<String> getAllCategories() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -154,7 +153,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categories;
     }
 
-    // Funzione per eliminare una categoria e tutti gli item associati
     public boolean deleteCategory(String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PANTRY, "category_name = ?", new String[]{categoryName});
@@ -163,11 +161,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        // Ritorna true se la categoria è stata eliminata con successo
         return rowsDeleted > 0;
     }
 
-    // Funzione per eliminare una categoria e tutti gli item associati
     public boolean deleteSuitcaseCategory(String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SUITCASE, "category_name = ?", new String[]{categoryName});
@@ -175,20 +171,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        // Ritorna true se la categoria è stata eliminata con successo
         return rowsDeleted > 0;
     }
 
     public boolean doesProductPantryExist(String productName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
-                TABLE_PANTRY, // Nome della tabella
-                new String[]{"name"}, // Colonne da selezionare
-                "name = ?", // Clausola WHERE
-                new String[]{productName}, // Argomento
-                null, // GROUP BY
-                null, // HAVING
-                null // ORDER BY
+                TABLE_PANTRY,
+                new String[]{"name"},
+                "name = ?",
+                new String[]{productName},
+                null,
+                null,
+                null
         );
 
         boolean exists = cursor.moveToFirst();
@@ -222,7 +217,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Funzione per ottenere tutti gli articoli nella pantry
     public List<Item> getAllPantryItems() {
         return getItemsFromPantryTable();
     }
@@ -230,13 +224,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean doesProductShoppingListExist(String productName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
-                TABLE_SHOPPING_LIST, // Nome della tabella
-                new String[]{"name"}, // Colonne da selezionare
-                "name = ?", // Clausola WHERE
-                new String[]{productName}, // Argomento
-                null, // GROUP BY
-                null, // HAVING
-                null // ORDER BY
+                TABLE_SHOPPING_LIST,
+                new String[]{"name"},
+                "name = ?",
+                new String[]{productName},
+                null,
+                null,
+                null
         );
 
         boolean exists = cursor.moveToFirst();
@@ -274,13 +268,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean doesProductSuitcaseExist(String productName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(
-                TABLE_SUITCASE, // Nome della tabella
-                new String[]{"name"}, // Colonne da selezionare
-                "name = ?", // Clausola WHERE
-                new String[]{productName}, // Argomento
-                null, // GROUP BY
-                null, // HAVING
-                null // ORDER BY
+                TABLE_SUITCASE,
+                new String[]{"name"},
+                "name = ?",
+                new String[]{productName},
+                null,
+                null,
+                null
         );
 
         boolean exists = cursor.moveToFirst();
@@ -312,7 +306,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_PANTRY, COLUMN_NAME + " = ?", new String[]{itemName});
         db.close();
-        return rowsDeleted > 0; // Return true if at least one row was deleted
+        return rowsDeleted > 0;
     }
 
     // Method to remove an item from the shopping list
@@ -320,38 +314,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, COLUMN_NAME + " = ?", new String[]{itemName});
         db.close();
-        return rowsDeleted > 0; // Return true if at least one row was deleted
+        return rowsDeleted > 0;
     }
 
     public boolean removeSuitcaseItem(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_SUITCASE, COLUMN_NAME + " = ?", new String[]{itemName});
         db.close();
-        return rowsDeleted > 0; // Return true if at least one row was deleted
+        return rowsDeleted > 0;
     }
 
-    // Metodo per rimuovere tutti gli elementi dalla dispensa
     public boolean removeAllPantryItems() {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete(TABLE_PANTRY, null, null); // Rimuove tutte le righe
+        int rowsDeleted = db.delete(TABLE_PANTRY, null, null);
         db.close();
-        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+        return rowsDeleted > 0;
     }
 
-    // Metodo per rimuovere tutti gli elementi dalla lista della spesa
     public boolean removeAllShoppingListItems() {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, null, null); // Rimuove tutte le righe
+        int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, null, null);
         db.close();
-        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+        return rowsDeleted > 0;
     }
 
-    // Metodo per rimuovere tutti gli elementi dalla lista della spesa
     public boolean removeAllSuitcaseItems() {
         SQLiteDatabase db = this.getWritableDatabase();
-        int rowsDeleted = db.delete(TABLE_SUITCASE, null, null); // Rimuove tutte le righe
+        int rowsDeleted = db.delete(TABLE_SUITCASE, null, null);
         db.close();
-        return rowsDeleted > 0; // Ritorna true se almeno una riga è stata eliminata
+        return rowsDeleted > 0;
     }
 
 
@@ -359,30 +350,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<Item> getItemsFromPantryTable() {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        // Aggiunta di ORDER BY per ordinare per data di scadenza crescente
         String query = "SELECT * FROM " + TABLE_PANTRY + " ORDER BY " + COLUMN_EXPIRY + " ASC";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
-                // Recupero dei dati dal cursor
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
                 @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
                 @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
-                // Converto la stringa di scadenza in oggetto Date
                 Date expiryDate = null;
                 if (expiryStr != null && !expiryStr.isEmpty()) {
                     try {
                         expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
                     } catch (ParseException e) {
-                        e.printStackTrace(); // Log dell'errore
-                        expiryDate = null;  // Imposta null se la conversione fallisce
+                        e.printStackTrace();
+                        expiryDate = null;
                     }
                 }
 
-                // Aggiungo l'item alla lista
                 Item item = new Item(name, quantity, expiryDate, category);
                 items.add(item);
             } while (cursor.moveToNext());
@@ -393,7 +380,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    // Funzione per ottenere gli articoli della pantry per categoria
     public List<Item> getPantryItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Item> items = new ArrayList<>();
@@ -410,7 +396,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    // Funzione per convertire il cursor in un oggetto Item
     private Item cursorToPantryItem(Cursor cursor) {
         @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
@@ -422,15 +407,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
             } catch (ParseException e) {
-                e.printStackTrace(); // Log dell'errore per il debug
-                expiryDate = null;  // Imposta a null in caso di errore
+                e.printStackTrace();
+                expiryDate = null;
             }
         }
 
         return new Item(name, quantity, expiryDate,category);
     }
 
-    // Funzione generica per ottenere gli item da qualsiasi tabella
     public List<Item> getItemsFromShoppingListTable() {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -439,12 +423,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                // Recupero dei dati dal cursor
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
                 @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
-                // Aggiungo l'item alla lista
                 Item item = new Item(name, quantity, null, category);
                 items.add(item);
 
@@ -492,7 +474,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new Item(name, quantity, expiryDate,category);
     }
 
-    // Funzione generica per ottenere gli item da qualsiasi tabella
     public List<SuitcaseItem> getItemsFromSuitcaseTable() {
         List<SuitcaseItem> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -501,12 +482,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                // Recupero dei dati dal cursor
                 @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
                 @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
-                // Aggiungo l'item alla lista
+
                 SuitcaseItem item = new SuitcaseItem(name, quantity, category);
                 items.add(item);
 
@@ -534,7 +514,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
-    // Funzione per convertire il cursor in un oggetto Item
     private SuitcaseItem cursorToSuitcaseItem(Cursor cursor) {
         @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
         @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
@@ -544,7 +523,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return new SuitcaseItem(name, quantity,category);
     }
 
-    // Metodo per modificare un elemento nella pantry
     public boolean updatePantryItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -566,7 +544,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-    // Metodo per modificare un elemento nella shopping list
     public boolean updateShoppingListItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -588,7 +565,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-    // Metodo per modificare un elemento nella suitcase
     public boolean updateSuitcaseItem(SuitcaseItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
