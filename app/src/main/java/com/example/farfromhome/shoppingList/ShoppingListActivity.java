@@ -2,13 +2,16 @@ package com.example.farfromhome.shoppingList;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
@@ -64,6 +67,23 @@ public class ShoppingListActivity extends AppCompatActivity {
         LinearLayout suitcaseDoneButton = findViewById(R.id.shoppingDone);
         suitcaseDoneButton.setOnClickListener(v -> {
             shoppingItemFragment.removeMarkedItems();
+        });
+
+        EditText searchInput = findViewById(R.id.search_input);
+        LinearLayout searchButton = findViewById(R.id.search_button);
+
+        searchButton.setOnClickListener(v -> {
+            String query = searchInput.getText().toString().trim().toLowerCase();
+            if (!query.isEmpty()) {
+                boolean exists = dbHelper.doesProductShoppingListExist(query);
+                if (exists) {
+                    HomeActivity.showCustomToast(this, "L'elemento è presente nella lista della spesa.");
+                } else {
+                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella lista della spesa.");
+                }
+            } else {
+                HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+            }
         });
     }
 

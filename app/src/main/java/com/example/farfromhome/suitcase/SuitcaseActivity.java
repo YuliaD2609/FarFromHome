@@ -2,13 +2,16 @@ package com.example.farfromhome.suitcase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragmentSuitcase;
@@ -62,6 +65,23 @@ public class SuitcaseActivity extends AppCompatActivity {
         LinearLayout suitcaseDoneButton = findViewById(R.id.suitcaseDone);
         suitcaseDoneButton.setOnClickListener(v -> {
             suitcaseItemFragment.removeMarkedItems();
+        });
+
+        EditText searchInput = findViewById(R.id.search_input);
+        LinearLayout searchButton = findViewById(R.id.search_button);
+
+        searchButton.setOnClickListener(v -> {
+            String query = searchInput.getText().toString().trim().toLowerCase();
+            if (!query.isEmpty()) {
+                boolean exists = dbHelper.doesProductSuitcaseExist(query);
+                if (exists) {
+                    HomeActivity.showCustomToast(this, "L'elemento è presente nella valigia.");
+                } else {
+                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella valigia.");
+                }
+            } else {
+                HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+            }
         });
     }
 

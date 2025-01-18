@@ -177,7 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 TABLE_PANTRY,
                 new String[]{"name"},
-                "name = ?",
+                "LOWER(name) = ?",
                 new String[]{productName},
                 null,
                 null,
@@ -224,7 +224,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 TABLE_SHOPPING_LIST,
                 new String[]{"name"},
-                "name = ?",
+                "LOWER(name) = ?",
                 new String[]{productName},
                 null,
                 null,
@@ -268,7 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(
                 TABLE_SUITCASE,
                 new String[]{"name"},
-                "name = ?",
+                "LOWER(name) = ?",
                 new String[]{productName},
                 null,
                 null,

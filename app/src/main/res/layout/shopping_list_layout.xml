@@ -18,11 +18,50 @@
         android:layout_below="@id/horizontal_menu"
         android:layout_alignParentLeft="true"/>
 
+    <LinearLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horizontal_menu"
+        android:layout_toRightOf="@id/vertical_menu"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Cerca un prodotto"
+            android:background="@drawable/rounded_background_search"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/rounded_background"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search2"
+                android:gravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/ShoppingItemList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/horizontal_menu"
+        android:layout_below="@id/search_bar"
         android:layout_toRightOf="@id/vertical_menu"
         android:layout_alignParentBottom="true"
         android:padding="8dp"

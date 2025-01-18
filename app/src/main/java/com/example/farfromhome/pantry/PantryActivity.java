@@ -2,13 +2,16 @@ package com.example.farfromhome.pantry;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
@@ -60,6 +63,24 @@ public class PantryActivity extends AppCompatActivity {
             Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
             startActivity(intent);
         });
+
+        EditText searchInput = findViewById(R.id.search_input);
+        LinearLayout searchButton = findViewById(R.id.search_button);
+
+        searchButton.setOnClickListener(v -> {
+            String query = searchInput.getText().toString().trim().toLowerCase();
+            if (!query.isEmpty()) {
+                boolean exists = dbHelper.doesProductPantryExist(query);
+                if (exists) {
+                    HomeActivity.showCustomToast(this, "L'elemento è presente nella dispensa.");
+                } else {
+                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella dispensa.");
+                }
+            } else {
+                HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+            }
+        });
+
     }
 
     public void updateCategory(String newCategory) {
