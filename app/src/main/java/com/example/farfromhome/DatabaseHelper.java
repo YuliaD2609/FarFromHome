@@ -26,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_SHOPPING_LIST = "shopping_list";
     public static final String TABLE_SUITCASE = "suitcase";
     public static final String TABLE_CATEGORIES = "categories"; // New categories table
+    public static final String TABLE_SUITCASE_CATEGORIES = "suitcase_categories"; // New categories table
 
     // Common column names
     public static final String COLUMN_NAME = "name";
@@ -33,6 +34,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EXPIRY = "expiry";
 
     private static final String CREATE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_CATEGORIES + " (" +
+            "category_name TEXT PRIMARY KEY" + // Il nome della categoria è la chiave primaria
+            ")";
+    private static final String CREATE_SUITCASE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_SUITCASE_CATEGORIES + " (" +
             "category_name TEXT PRIMARY KEY" + // Il nome della categoria è la chiave primaria
             ")";
 
@@ -67,6 +71,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_CATEGORIES_TABLE);
+        db.execSQL(CREATE_SUITCASE_CATEGORIES_TABLE);
         db.execSQL(CREATE_PANTRY_TABLE);
         db.execSQL(CREATE_SHOPPING_LIST_TABLE);
         db.execSQL(CREATE_SUITCASE_TABLE);
@@ -78,6 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUITCASE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUITCASE_CATEGORIES);
         onCreate(db);
     }
 
@@ -307,11 +313,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    // Funzione generica per ottenere gli item da qualsiasi tabella
     public List<Item> getItemsFromPantryTable() {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_PANTRY;
+        // Aggiunta di ORDER BY per ordinare per data di scadenza crescente
+        String query = "SELECT * FROM " + TABLE_PANTRY + " ORDER BY " + COLUMN_EXPIRY + " ASC";
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {

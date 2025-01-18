@@ -179,7 +179,7 @@ public class PantryAddItem extends AppCompatActivity {
 
                 // If expiryDate is before currentDate, show a warning
                 if (expiryDate.before(currentDate)) {
-                    HomeActivity.showCustomToast(this, "La data di scadenza deve essere maggiore o uguale alla data attuale.");
+                    HomeActivity.showCustomToast(this, "La data di scadenza deve essere maggiore della data attuale.");
                     return;
                 }
             } catch (Exception e) {
