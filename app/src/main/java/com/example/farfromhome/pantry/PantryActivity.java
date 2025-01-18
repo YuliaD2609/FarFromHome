@@ -9,10 +9,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
-import com.example.farfromhome.VerticalMenuFragment;
+import com.example.farfromhome.menu.VerticalMenuFragment;
 
 import java.util.Date;
 

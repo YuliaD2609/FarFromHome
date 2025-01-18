@@ -2,27 +2,19 @@ package com.example.farfromhome.shoppingList;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
-import com.example.farfromhome.VerticalMenuFragment;
-import com.example.farfromhome.pantry.PantryItemsFragment;
+import com.example.farfromhome.menu.VerticalMenuFragment;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity {
     private LinearLayout addItemButton;;

@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.menu;
 
 import androidx.core.content.ContextCompat;
 
@@ -20,6 +20,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
+import com.example.farfromhome.R;
 import com.example.farfromhome.pantry.PantryActivity;
 import com.example.farfromhome.shoppingList.ShoppingListActivity;
 import com.example.farfromhome.suitcase.SuitcaseActivity;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class VerticalMenuFragmentSuitcase extends Fragment {
+public class VerticalMenuFragment extends Fragment {
 
     private LinearLayout categoryList;
     private List<String> existingCategories = new ArrayList<>();
@@ -57,13 +60,14 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         View rootView = inflater.inflate(R.layout.vertical_menu, container, false);
 
         dbHelper = new DatabaseHelper(requireContext());
-        existingCategories = dbHelper.getAllSuitcaseCategories();
+        existingCategories = dbHelper.getAllCategories();
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
         if (existingCategories.isEmpty()) {
             createCategoryButton("Cucina");
             createCategoryButton("Bagno");
+            createCategoryButton("Frigo");
             createCategoryButton("Altro");
         } else {
             for (String cat : existingCategories) {
@@ -72,12 +76,12 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         }
 
         LinearLayout addCategoryButton = rootView.findViewById(R.id.addCategory);
-        addCategoryButton.setOnClickListener(this::addSuitcaseCategory);
+        addCategoryButton.setOnClickListener(this::addCategory);
 
         return rootView;
     }
 
-    public void addSuitcaseCategory(View v) {
+    public void addCategory(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         TextView title = new TextView(requireContext());
         title.setText("Nuova categoria");
@@ -169,7 +173,7 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
 
         categoryList.addView(categoryContainer);
 
-        dbHelper.addSuitcaseCategory(categoryName);
+        dbHelper.addCategory(categoryName);
     }
 
     private void confirmAndDeleteCategory(String categoryName, View categoryContainer) {
@@ -177,7 +181,7 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
                 .setTitle("Elimina Categoria")
                 .setMessage("Sei sicuro di voler eliminare la categoria \"" + categoryName + "\"?\nGli elementi al suo interno saranno eliminati.")
                 .setPositiveButton("Elimina", (dialog, which) -> {
-                    dbHelper.deleteSuitcaseCategory(categoryName);
+                    dbHelper.deleteCategory(categoryName);
                     categoryList.removeView(categoryContainer);
                     HomeActivity.showCustomToast(requireContext(), "Categoria eliminata");
                     handleCategorySelection(categoryContainer, null);

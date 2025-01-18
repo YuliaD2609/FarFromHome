@@ -9,9 +9,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.R;
-import com.example.farfromhome.VerticalMenuFragmentSuitcase;
+import com.example.farfromhome.menu.VerticalMenuFragmentSuitcase;
 
 public class SuitcaseActivity extends AppCompatActivity {
 

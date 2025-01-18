@@ -1,4 +1,4 @@
-package com.example.farfromhome;
+package com.example.farfromhome.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.view.ViewTreeObserver;
 import androidx.fragment.app.Fragment;
+
+import com.example.farfromhome.HomeActivity;
+import com.example.farfromhome.R;
 
 public class HorizontalMenuFragment extends Fragment {
 

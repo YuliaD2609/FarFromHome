@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -20,12 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HomeActivity;
-import com.example.farfromhome.HorizontalMenuFragment;
+import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
-import com.example.farfromhome.pantry.PantryActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
