@@ -19,7 +19,6 @@
         android:textSize="40dp"
         android:textColor="#402E32" />
 
-    <!-- Contenitore verticale centrato -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +29,6 @@
         android:layout_below="@id/title"
         android:padding="16dp">
 
-        <!-- Bottone Lista della spesa -->
         <LinearLayout
             android:id="@+id/shoppinglistbutton"
             android:layout_width="match_parent"
@@ -65,7 +63,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Bottone Dispensa -->
         <LinearLayout
             android:id="@+id/pantrybutton"
             android:layout_width="match_parent"
@@ -100,7 +97,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Bottone Valigia -->
         <LinearLayout
             android:id="@+id/suitcasebutton"
             android:layout_width="match_parent"
