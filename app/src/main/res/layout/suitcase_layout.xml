@@ -25,7 +25,8 @@
         android:layout_below="@id/horizontal_menu"
         android:layout_toRightOf="@id/vertical_menu"
         android:layout_alignParentBottom="true"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:layout_marginBottom="70dp" />
 
     <LinearLayout
         android:id="@+id/suitcaseDone"

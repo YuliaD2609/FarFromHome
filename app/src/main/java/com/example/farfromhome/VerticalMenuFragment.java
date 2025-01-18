@@ -101,7 +101,7 @@ public class VerticalMenuFragment extends Fragment {
         builder.setPositiveButton("Add", (dialog, which) -> {
             String categoryName = input.getText().toString().trim();
             if (!categoryName.isEmpty()) {
-                if (categoryName.length() > 10) {
+                if (categoryName.length() > 8) {
                     HomeActivity.showCustomToast(requireContext(),"Il nome della categoria è troppo lungo");
                 } else {
                     if (existingCategories.contains(categoryName)) {
@@ -136,26 +136,27 @@ public class VerticalMenuFragment extends Fragment {
                 (int) (50 * getResources().getDisplayMetrics().density)
         );
         categoryContainer.setLayoutParams(params);
-        categoryContainer.setPadding(8, 8, 2, 8);
+        categoryContainer.setPadding(8, 8, 0, 8);
         categoryContainer.setBackgroundResource(R.drawable.menu_buttons);
 
         TextView categoryText = new TextView(requireContext());
         categoryText.setText(categoryName);
-        categoryText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+        categoryText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
         categoryText.setTextColor(getResources().getColor(R.color.white));
         categoryText.setGravity(Gravity.CENTER);
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
         categoryText.setTypeface(typeface);
-        categoryText.setLayoutParams(new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
-
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        textParams.setMargins(0, 0, -70, 0);
+        categoryText.setLayoutParams(textParams);
         ImageView deleteIcon = new ImageView(requireContext());
         deleteIcon.setImageResource(R.drawable.x_icon);
         deleteIcon.setLayoutParams(new LinearLayout.LayoutParams(
-                (int) (30 * getResources().getDisplayMetrics().density),
-                (int) (30 * getResources().getDisplayMetrics().density)
+                (int) (31 * getResources().getDisplayMetrics().density),
+                (int) (31 * getResources().getDisplayMetrics().density)
         ));
-        deleteIcon.setPadding(20, 0, -30, 70);
+        deleteIcon.setPadding(0, 0, -30, 70);
 
         categoryContainer.setOnClickListener(v -> {
             handleCategorySelection(categoryContainer, categoryName);

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     private DatabaseHelper databaseHelper;
-    private TextView warningText;
+    private LinearLayout warningText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
         View shoppingListButton = findViewById(R.id.shoppinglistbutton);
         View pantryButton = findViewById(R.id.pantrybutton);
         View suitcaseButton = findViewById(R.id.suitcasebutton);
-        warningText = findViewById(R.id.warningtext);
+        warningText = findViewById(R.id.warningLayout);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -134,15 +135,13 @@ public class HomeActivity extends AppCompatActivity {
     private void loadExpiringProducts() {
         new Handler().post(() -> {
             List<Item> pantryItems = databaseHelper.getAllPantryItems();
-            StringBuilder warnings = new StringBuilder();
-            warnings.append("Prodotti in scadenza:\n\n");
+            LinearLayout warningContainer = findViewById(R.id.warningContainer);
+            warningContainer.removeAllViews();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Calendar calendar = Calendar.getInstance();
             boolean notify = false;
-
-            int maxProductNameLength = 25; // Lunghezza massima per il nome del prodotto
-            int totalWidth = 40; // Larghezza totale per l'allineamento
+            boolean hasExpiringItems = false;
 
             for (Item item : pantryItems) {
                 Date expiryDate = item.getExpiry();
@@ -150,29 +149,61 @@ public class HomeActivity extends AppCompatActivity {
                 long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
                 if (daysToExpiry >= 0 && daysToExpiry <= 14) {
-                    String productName = item.getName();
-                    String daysString = daysToExpiry + " giorni";
+                    hasExpiringItems = true;
+                    notify = daysToExpiry <= 7 || notify;
 
-                    // Formatta la riga con un punto iniziale, nome del prodotto, e giorni allineati
-                    warnings.append(String.format(". %-"+maxProductNameLength+"s %" + (totalWidth - maxProductNameLength) + "s\n", productName, daysString));
+                    // Creazione di una riga per l'elemento
+                    LinearLayout row = new LinearLayout(this);
+                    row.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                    row.setOrientation(LinearLayout.HORIZONTAL);
 
-                    if (daysToExpiry <= 7) {
-                        notify = true;
-                    }
+                    // TextView per il nome con punto
+                    TextView itemNameView = new TextView(this);
+                    itemNameView.setLayoutParams(new LinearLayout.LayoutParams(
+                            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                    itemNameView.setText("• " + item.getName());
+                    itemNameView.setTextSize(16);
+                    itemNameView.setTextColor(getResources().getColor(R.color.black));
+
+                    // TextView per la data
+                    TextView expiryDateView = new TextView(this);
+                    expiryDateView.setLayoutParams(new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    expiryDateView.setText(sdf.format(expiryDate));
+                    expiryDateView.setTextSize(16);
+                    expiryDateView.setTextColor(getResources().getColor(R.color.black));
+
+                    // Aggiungi i TextView alla riga
+                    row.addView(itemNameView);
+                    row.addView(expiryDateView);
+
+                    // Aggiungi la riga al contenitore
+                    warningContainer.addView(row);
                 }
             }
 
-            // Converti in SpannableString per applicare il grassetto
-            SpannableString spannableWarnings = new SpannableString(warnings.toString());
-            spannableWarnings.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, 21, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            warningText.setText(spannableWarnings);
+            if (!hasExpiringItems) {
+                // Se non ci sono elementi in scadenza, mostra il messaggio di default
+                TextView noItemsView = new TextView(this);
+                noItemsView.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                noItemsView.setText("Non ci sono elementi in scadenza");
+                noItemsView.setTextSize(16);
+                noItemsView.setTextColor(getResources().getColor(R.color.black));
+                noItemsView.setGravity(Gravity.CENTER);
+                warningContainer.addView(noItemsView);
+            }
 
             if (notify) {
                 sendNotification();
             }
         });
     }
+
+
 
     private void sendNotification() {
         Intent intent = new Intent(this, HomeActivity.class);
