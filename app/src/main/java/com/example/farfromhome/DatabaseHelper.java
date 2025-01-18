@@ -103,6 +103,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1; // Success if result is not -1
     }
 
+    // Aggiungi una categoria
+    public boolean addSuitcaseCategory(String categoryName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("category_name", categoryName);
+
+        long result = db.insert(TABLE_SUITCASE_CATEGORIES, null, values);
+
+        System.out.println(getAllSuitcaseCategories());
+        db.close();
+
+        return result != -1; // Success if result is not -1
+    }
+
     // Ottieni tutte le categorie
     @SuppressLint("Range")
     public List<String> getAllCategories() {
@@ -122,13 +136,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categories;
     }
 
+    @SuppressLint("Range")
+    public List<String> getAllSuitcaseCategories() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<String> categories = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT category_name FROM " + TABLE_SUITCASE_CATEGORIES, null);
+        if (cursor.moveToFirst()) {
+            do {
+                categories.add(cursor.getString(cursor.getColumnIndex("category_name")));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return categories;
+    }
+
     // Funzione per eliminare una categoria e tutti gli item associati
     public boolean deleteCategory(String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PANTRY, "category_name = ?", new String[]{categoryName});
         db.delete(TABLE_SHOPPING_LIST, "category_name = ?", new String[]{categoryName});
-        db.delete(TABLE_SUITCASE, "category_name = ?", new String[]{categoryName});
         int rowsDeleted = db.delete(TABLE_CATEGORIES, "category_name = ?", new String[]{categoryName});
+
+        db.close();
+
+        // Ritorna true se la categoria è stata eliminata con successo
+        return rowsDeleted > 0;
+    }
+
+    // Funzione per eliminare una categoria e tutti gli item associati
+    public boolean deleteSuitcaseCategory(String categoryName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_SUITCASE, "category_name = ?", new String[]{categoryName});
+        int rowsDeleted = db.delete(TABLE_SUITCASE_CATEGORIES, "category_name = ?", new String[]{categoryName});
 
         db.close();
 
