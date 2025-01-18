@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@drawable/rounded_background"
+            android:background="@drawable/brown_border"
             android:orientation="horizontal"
             android:gravity="center"
             android:paddingRight="10dp"
@@ -44,7 +44,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search2"
+                android:src="@drawable/search"
                 android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
