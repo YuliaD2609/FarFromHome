@@ -3,12 +3,9 @@ package com.example.farfromhome.pantry;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +32,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
     public PantryItemAdapter(Context context, List<Item> items) {
         this.context = context;
         this.items = items;
+        dbHelper=new DatabaseHelper(context);
     }
 
     @NonNull
@@ -87,6 +85,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.decrementQuantity();
+                dbHelper.updatePantryItem(item);
                 holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
             } else {
                 showConfirmDialog(item, position);
@@ -95,6 +94,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
+            dbHelper.updatePantryItem(item);
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
     }

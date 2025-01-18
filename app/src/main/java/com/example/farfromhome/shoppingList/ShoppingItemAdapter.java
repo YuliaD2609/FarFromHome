@@ -65,12 +65,14 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
         holder.incrementButton.setOnClickListener(v -> {
             item.incrementQuantity();
+            dbHelper.updateShoppingListItem(item);
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
 
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.decrementQuantity();
+                dbHelper.updateShoppingListItem(item);
                 holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
             } else {
                 showConfirmDialog(item, position);
