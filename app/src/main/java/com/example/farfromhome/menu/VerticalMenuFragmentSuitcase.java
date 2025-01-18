@@ -143,7 +143,7 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         TextView categoryText = new TextView(requireContext());
         categoryText.setText(categoryName);
         categoryText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-        categoryText.setTextColor(getResources().getColor(R.color.white));
+        categoryText.setTextColor(getResources().getColor(R.color.black));
         categoryText.setGravity(Gravity.CENTER);
         Typeface typeface = ResourcesCompat.getFont(requireContext(), R.font.funneldisplay_bold);
         categoryText.setTypeface(typeface);
@@ -198,7 +198,7 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         if (selectedCategoryView != null) {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
-                    .setTextColor(getResources().getColor(R.color.white));
+                    .setTextColor(getResources().getColor(R.color.black));
         }
         if (selectedCategoryView == selectedView) {
             selectedCategoryView = null;
@@ -212,7 +212,7 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
             selectedCategoryView = selectedView;
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons_selected);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
-                    .setTextColor(getResources().getColor(R.color.lightBrown));
+                    .setTextColor(getResources().getColor(R.color.brown));
 
             if (pantryActivity != null)
                 pantryActivity.updateCategory(categoryName);

@@ -6,7 +6,7 @@
     android:layout_weight="0.1"
     android:orientation="horizontal"
     android:gravity="start"
-    android:background="@drawable/menu_buttons">
+    android:background="@color/brown">
 
     <LinearLayout
         android:layout_width="wrap_content"

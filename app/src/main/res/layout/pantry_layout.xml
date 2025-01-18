@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@drawable/brown_border"
+            android:background="@drawable/brown_border_round"
             android:orientation="horizontal"
             android:gravity="center"
             android:paddingRight="10dp"
@@ -53,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_below="@id/horizontal_menu"
+        android:background="@drawable/brown_border_round"
         android:layout_alignParentLeft="true"/>
 
     <FrameLayout
@@ -69,25 +70,24 @@
         android:id="@+id/addItemButton"
         android:layout_width="90dp"
         android:layout_height="50dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="end"
-        android:onClick="addElement"
-        android:background="@drawable/rounded_background_accent"
-        android:padding="8dp"
-        android:layout_margin="8dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        >
+        android:layout_gravity="end"
+        android:layout_margin="8dp"
+        android:background="@drawable/brown_border_accent_round"
+        android:gravity="center"
+        android:onClick="addElement"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+"
-            android:textColor="@color/white"
-            android:textSize="25sp"
             android:fontFamily="@font/funneldisplay_bold"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="+"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
     </LinearLayout>
 
 </RelativeLayout>
