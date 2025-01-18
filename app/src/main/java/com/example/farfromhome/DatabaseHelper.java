@@ -87,7 +87,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Aggiungi una categoria
     public boolean addCategory(String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -103,7 +102,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Aggiungi una categoria
     public boolean addSuitcaseCategory(String categoryName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
