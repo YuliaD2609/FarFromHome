@@ -25,6 +25,7 @@ import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -166,16 +167,44 @@ public class PantryAddItem extends AppCompatActivity {
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
         Date expiryDate = null;
 
-
         if (!expiryDateStr.isEmpty()) {
             try {
-                expiryDate = new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateStr);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                sdf.setLenient(false);
+                expiryDate = sdf.parse(expiryDateStr);
+
                 Date currentDate = new Date();
 
                 if (expiryDate.before(currentDate)) {
                     HomeActivity.showCustomToast(this, "La data di scadenza deve essere maggiore della data attuale.");
                     return;
                 }
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(currentDate);
+                calendar.add(Calendar.YEAR, 15);
+                Date maxDate = calendar.getTime();
+
+                if (expiryDate.after(maxDate)) {
+                    HomeActivity.showCustomToast(this, "La data di scadenza non può essere oltre 15 anni da oggi.");
+                    return;
+                }
+
+                Calendar expiryCalendar = Calendar.getInstance();
+                expiryCalendar.setTime(expiryDate);
+                int day = expiryCalendar.get(Calendar.DAY_OF_MONTH);
+                int month = expiryCalendar.get(Calendar.MONTH) + 1;
+
+                if (day < 1 || day > 31) {
+                    HomeActivity.showCustomToast(this, "Il giorno deve essere compreso tra 1 e 31.");
+                    return;
+                }
+
+                if (month < 1 || month > 12) {
+                    HomeActivity.showCustomToast(this, "Il mese deve essere compreso tra 1 e 12.");
+                    return;
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 HomeActivity.showCustomToast(this, "Formato data non valido.");
@@ -188,22 +217,18 @@ public class PantryAddItem extends AppCompatActivity {
             return;
         }
 
-
         if (quantity == 0) {
             HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
             return;
         }
 
-
         selectedCategory = spinnerCategory.getSelectedItem().toString();
-
 
         boolean productExists = databaseHelper.doesProductPantryExist(productName);
         if (productExists) {
             HomeActivity.showCustomToast(this, "Un prodotto con questo nome esiste già!");
             return;
         }
-
 
         Item item = new Item(productName, quantity, expiryDate, selectedCategory);
 
@@ -218,6 +243,7 @@ public class PantryAddItem extends AppCompatActivity {
             HomeActivity.showCustomToast(this,"Errore nell'aggiunta del prodotto");
         }
     }
+
 
 
 
