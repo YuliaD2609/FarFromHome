@@ -66,9 +66,9 @@
 
             <LinearLayout
                 android:id="@+id/decrementButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/rounded_background"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/round_buttons"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -76,8 +76,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="-"
-                    android:textSize="20sp"
-                    android:textColor="@color/white" />
+                    android:textSize="15sp"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -89,14 +89,14 @@
                 android:text="0"
                 android:textSize="16sp"
                 android:textColor="@color/black"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
 
             <LinearLayout
                 android:id="@+id/incrementButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/rounded_background"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/round_buttons"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -104,8 +104,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="+"
-                    android:textSize="20sp"
-                    android:textColor="@color/white" />
+                    android:textSize="15sp"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
