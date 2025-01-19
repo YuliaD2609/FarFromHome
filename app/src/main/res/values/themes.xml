@@ -5,7 +5,7 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
     <style name="DefaultButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:background">@drawable/brown_border_round</item>
         <item name="android:textColor">@color/black</item>
     </style>
     <style name="Theme.FarFromHome" parent="Base.Theme.FarFromHome" />
