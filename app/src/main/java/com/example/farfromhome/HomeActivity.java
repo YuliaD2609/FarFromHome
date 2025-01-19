@@ -87,17 +87,20 @@ public class HomeActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private boolean checkAndRequestPermissions() {
         boolean hasNotificationPermission = true;
+        boolean hasLocationPermission = true;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             hasNotificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
         }
 
-        Log.d("Permissions", "Notification permission granted: " + hasNotificationPermission);
+        hasLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        if (!hasNotificationPermission) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    PERMISSION_REQUEST_CODE);
+        if (!hasNotificationPermission || !hasLocationPermission) {
+            String[] permissionsToRequest = new String[]{
+                    Manifest.permission.POST_NOTIFICATIONS,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            };
+            ActivityCompat.requestPermissions(this, permissionsToRequest, PERMISSION_REQUEST_CODE);
             return false;
         }
 
@@ -108,28 +111,36 @@ public class HomeActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            Log.d("Permissions", "onRequestPermissionsResult called");
+            boolean notificationAccepted = false;
+            boolean locationAccepted = false;
 
-            if (grantResults.length > 0) {
-                boolean notificationAccepted = (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) || (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
-
-                Log.d("Permissions", "Notification accepted: " + notificationAccepted);
-
-                if (notificationAccepted) {
-                    initializeSystem();
-                } else {
-                    showPermissionDeniedMessage();
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equals(Manifest.permission.POST_NOTIFICATIONS)) {
+                    notificationAccepted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
+                } else if (permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    locationAccepted = grantResults[i] == PackageManager.PERMISSION_GRANTED;
                 }
             }
+
+            if (notificationAccepted && locationAccepted) {
+                initializeSystem();
+            } else {
+                showPermissionDeniedMessage(notificationAccepted, locationAccepted);
+            }
+        }
+    }
+
+    private void showPermissionDeniedMessage(boolean notificationAccepted, boolean locationAccepted) {
+        if (!notificationAccepted) {
+            showCustomToast(this, "Il permesso di notifica è richiesto per il corretto funzionamento dell'app");
+        }
+        if (!locationAccepted) {
+            showCustomToast(this, "Il permesso di posizione è richiesto per il corretto funzionamento dell'app");
         }
     }
 
     private void initializeSystem() {
         setContentView(R.layout.homepage_main);
-    }
-
-    private void showPermissionDeniedMessage() {
-        HomeActivity.showCustomToast(this, "Il permesso di notifica è richiesto per il corretto funzionamento dell'app");
     }
 
     private void loadExpiringProducts() {
