@@ -34,34 +34,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_EXPIRY = "expiry";
 
     private static final String CREATE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_CATEGORIES + " (" +
-            "category_name TEXT PRIMARY KEY" + // Il nome della categoria è la chiave primaria
+            "category_name TEXT PRIMARY KEY" +
             ")";
     private static final String CREATE_SUITCASE_CATEGORIES_TABLE = "CREATE TABLE " + TABLE_SUITCASE_CATEGORIES + " (" +
-            "category_name TEXT PRIMARY KEY" + // Il nome della categoria è la chiave primaria
+            "category_name TEXT PRIMARY KEY" +
             ")";
 
     private static final String CREATE_PANTRY_TABLE = "CREATE TABLE " + TABLE_PANTRY + " (" +
-            COLUMN_NAME + " TEXT PRIMARY KEY, " + // Il nome dell'item è unico
+            COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
             COLUMN_EXPIRY + " TEXT, " +
-            "category_name TEXT, " + // La categoria dell'item è il nome della categoria
-            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
+            "category_name TEXT, " +
+            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" +
             ")";
 
     private static final String CREATE_SHOPPING_LIST_TABLE = "CREATE TABLE " + TABLE_SHOPPING_LIST + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
             COLUMN_EXPIRY + " TEXT," +
-            "category_name TEXT, " + // La categoria dell'item è il nome della categoria
-            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
+            "category_name TEXT, " +
+            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" +
             ")";
 
     private static final String CREATE_SUITCASE_TABLE = "CREATE TABLE " + TABLE_SUITCASE + " (" +
             COLUMN_NAME + " TEXT PRIMARY KEY, " +
             COLUMN_QUANTITY + " INTEGER, " +
             COLUMN_EXPIRY + " TEXT," +
-            "category_name TEXT, " + // La categoria dell'item è il nome della categoria
-            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" + // Referenza alla categoria
+            "category_name TEXT, " +
+            "FOREIGN KEY(category_name) REFERENCES categories(category_name)" +
             ")";
 
     public DatabaseHelper(Context context) {

@@ -82,7 +82,7 @@ public class SuitcaseAddItem extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        List<String> categories = databaseHelper.getAllCategories();
+        List<String> categories = databaseHelper.getAllSuitcaseCategories();
         if (categories == null || categories.isEmpty()) {
             System.out.println("No categories found in database.");
             categories.add("N/A");
