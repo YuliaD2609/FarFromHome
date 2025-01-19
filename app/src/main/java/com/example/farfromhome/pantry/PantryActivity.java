@@ -61,6 +61,7 @@ public class PantryActivity extends AppCompatActivity {
         addItemButton = findViewById(R.id.addItemButton);
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
 

@@ -69,15 +69,13 @@ public class HomeActivity extends AppCompatActivity {
         View pantryButton = findViewById(R.id.pantrybutton);
         View suitcaseButton = findViewById(R.id.suitcasebutton);
         warningText = findViewById(R.id.warningLayout);
-        ImageView suitcaseLogo=findViewById(R.id.suitcaseLogo);
 
         databaseHelper = new DatabaseHelper(this);
 
         startAnimation(shoppingListButton, 0);
         startAnimation(pantryButton, 300);
         startAnimation(suitcaseButton, 500);
-        startAnimation(warningText, 700);
-        startAnimation(suitcaseLogo, 800);
+        startBottomAnimation(warningText, 700);
 
         loadExpiringProducts();
 
@@ -236,6 +234,12 @@ public class HomeActivity extends AppCompatActivity {
 
     private void startAnimation(View view, long delay) {
         Animation slideInLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+        slideInLeft.setStartOffset(delay);
+        view.startAnimation(slideInLeft);
+    }
+
+    private void startBottomAnimation(View view, long delay) {
+        Animation slideInLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom);
         slideInLeft.setStartOffset(delay);
         view.startAnimation(slideInLeft);
     }

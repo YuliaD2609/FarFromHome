@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -59,6 +58,7 @@ public class SuitcaseActivity extends AppCompatActivity {
 
         addItemButton.setOnClickListener(v -> {
          Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
          startActivity(intent);
         });
 

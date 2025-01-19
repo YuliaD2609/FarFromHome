@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="10dp"
         android:layout_centerInParent="true"
         android:layout_below="@id/title"
         android:padding="16dp">
@@ -130,7 +130,7 @@
             android:id="@+id/warningLayout"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:orientation="vertical"
@@ -158,17 +158,6 @@
                     android:layout_marginLeft="10dp"/>
             </ScrollView>
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/suitcaseLogo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/logo_suitcase"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_toEndOf="@id/warningLayout"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"/>
 
     </LinearLayout>
 

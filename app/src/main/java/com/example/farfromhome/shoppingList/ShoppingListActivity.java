@@ -61,6 +61,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingListActivity.this, ShoppingAddItem.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
 
