@@ -576,5 +576,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
+    // Metodo per ottenere un elemento specifico dalla pantry
+    public Item getPantryItem(String itemName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Item item = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PANTRY + " WHERE " + COLUMN_NAME + " = ?", new String[]{itemName});
+
+        if (cursor.moveToFirst()) {
+            item = cursorToPantryItem(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return item;
+    }
+
+    // Metodo per ottenere un elemento specifico dalla shopping list
+    public Item getShoppingListItem(String itemName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Item item = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE " + COLUMN_NAME + " = ?", new String[]{itemName});
+
+        if (cursor.moveToFirst()) {
+            item = cursorToShoppingListItem(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return item;
+    }
+
+    // Metodo per ottenere un elemento specifico dalla suitcase
+    public SuitcaseItem getSuitcaseItem(String itemName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        SuitcaseItem item = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUITCASE + " WHERE " + COLUMN_NAME + " = ?", new String[]{itemName});
+
+        if (cursor.moveToFirst()) {
+            item = cursorToSuitcaseItem(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return item;
+    }
+
+    // Metodo per ottenere una categoria specifica
+    @SuppressLint("Range")
+    public String getCategory(String categoryName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String category = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_CATEGORIES + " WHERE category_name = ?", new String[]{categoryName});
+
+        if (cursor.moveToFirst()) {
+            category = cursor.getString(cursor.getColumnIndex("category_name"));
+        }
+
+        cursor.close();
+        db.close();
+        return category;
+    }
+
+    // Metodo per ottenere una categoria specifica dalla suitcase_categories
+    @SuppressLint("Range")
+    public String getSuitcaseCategory(String categoryName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String category = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUITCASE_CATEGORIES + " WHERE category_name = ?", new String[]{categoryName});
+
+        if (cursor.moveToFirst()) {
+            category = cursor.getString(cursor.getColumnIndex("category_name"));
+        }
+
+        cursor.close();
+        db.close();
+        return category;
+    }
+
 
 }
