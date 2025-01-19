@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -85,19 +86,28 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         TextView title = new TextView(requireContext());
         title.setText("Nuova categoria");
         title.setTextSize(20);
-        title.setTextColor(getResources().getColor(R.color.white));
+        title.setTextColor(getResources().getColor(R.color.darkerBrown));
         title.setTypeface(null, Typeface.BOLD);
         title.setPadding(20, 30, 20, 10);
         title.setGravity(Gravity.CENTER);
-
         builder.setCustomTitle(title);
+
+        FrameLayout container = new FrameLayout(requireContext());
+        int margin = (int) (16 * requireContext().getResources().getDisplayMetrics().density);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(margin, margin, margin, margin);
 
         final EditText input = new EditText(requireContext());
         input.setHint("Inserire il nome della categoria");
-        input.setTextColor(getResources().getColor(R.color.white));
-        input.setHintTextColor(getResources().getColor(R.color.beige));
-        input.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dark_white)));
-        builder.setView(input);
+        input.setTextColor(getResources().getColor(R.color.darkerBrown));
+        input.setHintTextColor(getResources().getColor(R.color.brown));
+        input.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.darkerBrown)));
+        input.setLayoutParams(params);
+        container.addView(input);
+        builder.setView(container);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
             String categoryName = input.getText().toString().trim();
@@ -118,11 +128,13 @@ public class VerticalMenuFragmentSuitcase extends Fragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
 
         AlertDialog dialog = builder.create();
-        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.rounded_background);
+        Drawable background = ContextCompat.getDrawable(requireContext(), R.drawable.popup);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
         dialog.setOnShowListener(d -> {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white));
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.dark_white));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.darkerBrown));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.brown));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(null, Typeface.BOLD);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(null, Typeface.BOLD);
         });
         dialog.show();
     }
