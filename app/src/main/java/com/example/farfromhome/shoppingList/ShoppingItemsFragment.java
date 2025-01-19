@@ -76,6 +76,12 @@ public class ShoppingItemsFragment extends Fragment {
         for (Item item : items) {
             if (item.isMarked()) {
                 itemsToRemove.add(item);
+                if(dbHelper.doesProductPantryExist(item.getName())){
+                    Item itemPantry=dbHelper.getPantryItem(item.getName());
+                    int quantity=item.getQuantity()+itemPantry.getQuantity();
+                    item.setQuantity(quantity);
+                }
+                dbHelper.updatePantryItem(item);
                 dbHelper.removeShoppingListItem(item.getName());
             }
         }

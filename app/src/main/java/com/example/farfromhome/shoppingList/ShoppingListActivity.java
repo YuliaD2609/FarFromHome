@@ -65,8 +65,8 @@ public class ShoppingListActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        LinearLayout suitcaseDoneButton = findViewById(R.id.shoppingDone);
-        suitcaseDoneButton.setOnClickListener(v -> {
+        LinearLayout shoppingDoneButton = findViewById(R.id.shoppingDone);
+        shoppingDoneButton.setOnClickListener(v -> {
             shoppingItemFragment.removeMarkedItems();
         });
 
