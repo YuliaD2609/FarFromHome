@@ -156,37 +156,39 @@ public class HomeActivity extends AppCompatActivity {
 
             for (Item item : pantryItems) {
                 Date expiryDate = item.getExpiry();
-                long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
-                long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
+                if(expiryDate!=null) {
+                    long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
+                    long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
-                if (daysToExpiry >= 0 && daysToExpiry <= 14) {
-                    hasExpiringItems = true;
-                    notify = daysToExpiry <= 7 || notify;
+                    if (daysToExpiry >= 0 && daysToExpiry <= 14) {
+                        hasExpiringItems = true;
+                        notify = daysToExpiry <= 7 || notify;
 
-                    LinearLayout row = new LinearLayout(this);
-                    row.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-                    row.setOrientation(LinearLayout.HORIZONTAL);
+                        LinearLayout row = new LinearLayout(this);
+                        row.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                        row.setOrientation(LinearLayout.HORIZONTAL);
 
-                    TextView itemNameView = new TextView(this);
-                    itemNameView.setLayoutParams(new LinearLayout.LayoutParams(
-                            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-                    itemNameView.setText("• " + item.getName());
-                    itemNameView.setTextSize(16);
-                    itemNameView.setTextColor(getResources().getColor(R.color.black));
+                        TextView itemNameView = new TextView(this);
+                        itemNameView.setLayoutParams(new LinearLayout.LayoutParams(
+                                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+                        itemNameView.setText("• " + item.getName());
+                        itemNameView.setTextSize(16);
+                        itemNameView.setTextColor(getResources().getColor(R.color.black));
 
-                    TextView expiryDateView = new TextView(this);
-                    expiryDateView.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    expiryDateView.setText(sdf.format(expiryDate));
-                    expiryDateView.setTextSize(16);
-                    expiryDateView.setTextColor(getResources().getColor(R.color.black));
+                        TextView expiryDateView = new TextView(this);
+                        expiryDateView.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                        expiryDateView.setText(sdf.format(expiryDate));
+                        expiryDateView.setTextSize(16);
+                        expiryDateView.setTextColor(getResources().getColor(R.color.black));
 
-                    row.addView(itemNameView);
-                    row.addView(expiryDateView);
+                        row.addView(itemNameView);
+                        row.addView(expiryDateView);
 
-                    warningContainer.addView(row);
+                        warningContainer.addView(row);
+                    }
                 }
             }
 
