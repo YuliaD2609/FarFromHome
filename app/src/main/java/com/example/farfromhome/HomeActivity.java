@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
         View pantryButton = findViewById(R.id.pantrybutton);
         View suitcaseButton = findViewById(R.id.suitcasebutton);
         warningText = findViewById(R.id.warningLayout);
+        ImageView suitcaseLogo=findViewById(R.id.suitcaseLogo);
 
         databaseHelper = new DatabaseHelper(this);
 
@@ -75,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         startAnimation(pantryButton, 300);
         startAnimation(suitcaseButton, 500);
         startAnimation(warningText, 700);
+        startAnimation(suitcaseLogo, 800);
 
         loadExpiringProducts();
 

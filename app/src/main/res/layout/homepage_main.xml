@@ -7,24 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <TextView
+    <ImageView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="129dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="FarFromHome"
-        android:fontFamily="@font/funneldisplay_extrabold"
-        android:textSize="40dp"
-        android:textColor="#402E32" />
+        android:src="@drawable/logo_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="-10dp"
         android:layout_centerInParent="true"
         android:layout_below="@id/title"
         android:padding="16dp">
@@ -163,6 +158,18 @@
                     android:layout_marginLeft="10dp"/>
             </ScrollView>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/suitcaseLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/logo_suitcase"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/warningLayout"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"/>
+
     </LinearLayout>
 
 </RelativeLayout>
