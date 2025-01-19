@@ -75,7 +75,7 @@ public class HomeActivity extends AppCompatActivity {
         startAnimation(shoppingListButton, 0);
         startAnimation(pantryButton, 300);
         startAnimation(suitcaseButton, 500);
-        startBottomAnimation(warningText, 700);
+        startBottomAnimation(warningText, 200);
 
         loadExpiringProducts();
 
