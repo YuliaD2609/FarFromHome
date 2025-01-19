@@ -79,10 +79,10 @@
 
                 <LinearLayout
                     android:id="@+id/buttonDecreaseQuantity"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/brown_border_accent_round"
+                    android:background="@drawable/round_buttons"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -90,7 +90,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="-"
-                        android:textSize="35dp"
+                        android:textSize="30dp"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -109,10 +109,10 @@
 
                 <LinearLayout
                     android:id="@+id/buttonIncreaseQuantity"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:background="@drawable/brown_border_accent_round"
+                    android:background="@drawable/round_buttons"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -120,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="+"
-                        android:textSize="35dp"
+                        android:textSize="30dp"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
