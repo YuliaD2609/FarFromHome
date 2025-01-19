@@ -81,7 +81,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/rounded_background"
+                    android:background="@drawable/brown_border_accent_round"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -111,7 +111,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
-                    android:background="@drawable/rounded_background"
+                    android:background="@drawable/brown_border_accent_round"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -130,7 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="25dp"
-                android:background="@drawable/rounded_background"
+                android:background="@drawable/brown_border_accent_round"
                 android:gravity="center"
                 android:padding="12dp"
                 android:orientation="horizontal">
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Aggiungi Prodotto"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:fontFamily="sans-serif-condensed-medium"
                     android:textSize="25dp" />
 
