@@ -53,7 +53,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
-                android:src="@drawable/search2"
+                android:src="@drawable/search"
                 android:gravity="center" />
         </LinearLayout>
     </LinearLayout>

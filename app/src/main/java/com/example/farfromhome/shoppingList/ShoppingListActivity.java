@@ -43,9 +43,6 @@ public class ShoppingListActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-        Item i=new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
-        dbHelper.addShoppingListItem(i);
-
         shoppingItemFragment = new ShoppingItemsFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         if (categoryName != null) {
@@ -68,6 +65,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         LinearLayout shoppingDoneButton = findViewById(R.id.shoppingDone);
         shoppingDoneButton.setOnClickListener(v -> {
             shoppingItemFragment.removeMarkedItems();
+            HomeActivity.showCustomToast(this, "La spesa è stata fatta! Gli elementi sono stati aggiunti nella dispensa.");
         });
 
         EditText searchInput = findViewById(R.id.search_input);
