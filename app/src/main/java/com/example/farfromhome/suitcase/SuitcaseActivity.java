@@ -34,6 +34,7 @@ public class SuitcaseActivity extends AppCompatActivity {
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
         Bundle bundle = new Bundle();
         bundle.putString("TITLE", "Valigia");
+        bundle.putBoolean("SHOW_CART", false);
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
