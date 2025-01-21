@@ -41,6 +41,7 @@ public class VerticalMenuFragment extends Fragment {
     private PantryActivity pantryActivity=null;
     private ShoppingListActivity shoppingActivity=null;
     private SuitcaseActivity suitcaseActivity=null;
+    private static String selectedCategory=null;
 
     @Override
     public void onAttach(Context context) {
@@ -212,6 +213,7 @@ public class VerticalMenuFragment extends Fragment {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
                     .setTextColor(getResources().getColor(R.color.black));
+            selectedCategory=null;
         }
         if (selectedCategoryView == selectedView) {
             selectedCategoryView = null;
@@ -226,6 +228,7 @@ public class VerticalMenuFragment extends Fragment {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons_selected);
             ((TextView) ((LinearLayout) selectedCategoryView).getChildAt(0))
                     .setTextColor(getResources().getColor(R.color.brown));
+            selectedCategory=categoryName;
 
             if (pantryActivity != null)
                 pantryActivity.updateCategory(categoryName);
@@ -234,5 +237,9 @@ public class VerticalMenuFragment extends Fragment {
             if (suitcaseActivity != null)
                 suitcaseActivity.updateCategory(categoryName);
         }
+    }
+
+    public static String getSelectedCategory() {
+        return selectedCategory;
     }
 }

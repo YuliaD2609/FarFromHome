@@ -49,7 +49,13 @@ public class PantryItemsFragment extends Fragment {
         loadItems(categoryName);
     }
 
-    private void loadItems(String category) {
+    public void updateItemList(List<Item> newItems) {
+        if (itemAdapter != null) {
+            itemAdapter.updateItems(newItems);
+        }
+    }
+
+    public void loadItems(String category) {
         if (category == null || category.isEmpty()) {
             items = dbHelper.getAllPantryItems();
         } else {
@@ -64,5 +70,4 @@ public class PantryItemsFragment extends Fragment {
             itemAdapter.updateItems(items);
         }
     }
-
 }

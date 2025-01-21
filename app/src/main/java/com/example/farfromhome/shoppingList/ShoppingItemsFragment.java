@@ -53,7 +53,7 @@ public class ShoppingItemsFragment extends Fragment {
         loadItems(categoryName);
     }
 
-    private void loadItems(String category) {
+    public void loadItems(String category) {
         if (category == null || category.isEmpty()) {
             items = dbHelper.getAllShoppingListItems();
         } else {
@@ -68,6 +68,12 @@ public class ShoppingItemsFragment extends Fragment {
             itemList.setAdapter(itemAdapter);
         } else {
             itemAdapter.updateItems(items);
+        }
+    }
+
+    public void updateItemList(List<Item> newItems) {
+        if (itemAdapter != null) {
+            itemAdapter.updateItems(newItems);
         }
     }
 

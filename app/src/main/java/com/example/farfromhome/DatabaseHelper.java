@@ -671,7 +671,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 Date expiryDate = null;
                 if (expiryStr != null && !expiryStr.isEmpty()) {
                     try {
-                        expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
+                        expiryDate = new SimpleDateFormat("dd-MM-yyy").parse(expiryStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
                         expiryDate = null;

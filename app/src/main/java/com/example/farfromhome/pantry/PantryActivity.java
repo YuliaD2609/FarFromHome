@@ -18,6 +18,7 @@ import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
 
 import java.util.Date;
+import java.util.List;
 
 public class PantryActivity extends AppCompatActivity {
 
@@ -72,14 +73,15 @@ public class PantryActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             String query = searchInput.getText().toString().trim().toLowerCase();
             if (!query.isEmpty()) {
-                boolean exists = dbHelper.doesProductPantryExist(query);
-                if (exists) {
-                    HomeActivity.showCustomToast(this, "L'elemento è presente nella dispensa.");
+                List<Item> searchResults = dbHelper.searchPantryItemsByName(query);
+                if (searchResults.isEmpty()) {
+                    HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
                 } else {
-                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella dispensa.");
+                    pantryItemFragment.updateItemList(searchResults);
                 }
             } else {
                 HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+                pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
             }
         });
 

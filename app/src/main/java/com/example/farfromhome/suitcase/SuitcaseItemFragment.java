@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HomeActivity;
+import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
 import java.util.ArrayList;
@@ -47,12 +48,18 @@ public class SuitcaseItemFragment extends Fragment {
         return rootView;
     }
 
+    public void updateItemList(List<SuitcaseItem> newItems) {
+        if (itemAdapter != null) {
+            itemAdapter.updateItems(newItems);
+        }
+    }
+
     public void updateCategory(String newCategory) {
         categoryName = newCategory;
         loadItems(categoryName);
     }
 
-    private void loadItems(String category) {
+    public void loadItems(String category) {
         if (category == null || category.isEmpty()) {
            items = dbHelper.getAllSuitcaseItems();
         } else {

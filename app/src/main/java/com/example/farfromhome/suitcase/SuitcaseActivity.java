@@ -11,9 +11,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HomeActivity;
+import com.example.farfromhome.Item;
 import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.R;
+import com.example.farfromhome.menu.VerticalMenuFragment;
 import com.example.farfromhome.menu.VerticalMenuFragmentSuitcase;
+
+import java.util.List;
 
 public class SuitcaseActivity extends AppCompatActivity {
 
@@ -75,14 +79,15 @@ public class SuitcaseActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             String query = searchInput.getText().toString().trim().toLowerCase();
             if (!query.isEmpty()) {
-                boolean exists = dbHelper.doesProductSuitcaseExist(query);
-                if (exists) {
+                List<SuitcaseItem> searchResults = dbHelper.searchSuitcaseListItemsByName(query);
+                if (searchResults.isEmpty()) {
                     HomeActivity.showCustomToast(this, "L'elemento è presente nella valigia.");
                 } else {
-                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella valigia.");
+                    suitcaseItemFragment.updateItemList(searchResults);
                 }
             } else {
                 HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+                suitcaseItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
             }
         });
     }
