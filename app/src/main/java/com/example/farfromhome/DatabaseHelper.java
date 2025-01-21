@@ -739,6 +739,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return items;
     }
 
+    public Item modifyPantryItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        String expiryString = dateFormat.format(item.getExpiry());
+        values.put(COLUMN_EXPIRY, expiryString);
+        values.put("category_name", item.getCategory());
+
+        int rowsAffected = db.update(TABLE_PANTRY, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+
+        if (rowsAffected > 0) {
+            return item; // Return the modified item if update was successful
+        } else {
+            return null; // Or handle the case where no row was affected
+        }
+    }
+
+    public Item modifyShoppingListItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put(COLUMN_EXPIRY, item.getExpiry().getTime());
+        values.put("category_name", item.getCategory());
+
+        int rowsAffected = db.update(TABLE_SHOPPING_LIST, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+
+        if (rowsAffected > 0) {
+            return item;
+        } else {
+            return null;
+        }
+    }
+
+    public SuitcaseItem modifySuitcaseItem(SuitcaseItem item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NAME, item.getName());
+        values.put(COLUMN_QUANTITY, item.getQuantity());
+        values.put("category_name", item.getCategory());
+
+        int rowsAffected = db.update(TABLE_SUITCASE, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.close();
+
+        if (rowsAffected > 0) {
+            return item;
+        } else {
+            return null;
+        }
+    }
+
 
 
 }
