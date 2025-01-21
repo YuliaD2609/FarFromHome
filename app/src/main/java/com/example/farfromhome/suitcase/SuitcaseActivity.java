@@ -65,6 +65,7 @@ public class SuitcaseActivity extends AppCompatActivity {
         LinearLayout suitcaseDoneButton = findViewById(R.id.suitcaseDone);
         suitcaseDoneButton.setOnClickListener(v -> {
             suitcaseItemFragment.removeMarkedItems();
+            HomeActivity.showCustomToast(this, "La valigia è stata fatta!");
         });
 
         EditText searchInput = findViewById(R.id.search_input);

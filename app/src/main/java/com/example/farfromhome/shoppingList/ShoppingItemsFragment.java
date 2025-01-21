@@ -80,6 +80,7 @@ public class ShoppingItemsFragment extends Fragment {
                     Item itemPantry=dbHelper.getPantryItem(item.getName());
                     int quantity=item.getQuantity()+itemPantry.getQuantity();
                     item.setQuantity(quantity);
+                    item.setExpiry(itemPantry.getExpiry());
                 }
                 dbHelper.updatePantryItem(item);
                 dbHelper.removeShoppingListItem(item.getName());
