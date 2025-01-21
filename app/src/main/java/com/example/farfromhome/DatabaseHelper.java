@@ -653,5 +653,92 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return category;
     }
 
+    @SuppressLint("Range")
+    public List<Item> searchPantryItemsByName(String namePrefix) {
+        List<Item> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM pantry WHERE name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+                Date expiryDate = null;
+                if (expiryStr != null && !expiryStr.isEmpty()) {
+                    try {
+                        expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        expiryDate = null;
+                    }
+                }
+
+
+                Item item= new Item(name,quantity,expiryDate,category);
+                items.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    @SuppressLint("Range")
+    public List<Item> searchShoppingListItemsByName(String namePrefix) {
+        List<Item> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM shopping_list WHERE name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+                Date expiryDate = null;
+
+                Item item= new Item(name,quantity,expiryDate,category);
+                items.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+    @SuppressLint("Range")
+    public List<SuitcaseItem> searchSuitcaseListItemsByName(String namePrefix) {
+        List<SuitcaseItem> items = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM suitcase WHERE name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+
+                SuitcaseItem item= new SuitcaseItem(name,quantity,category);
+                items.add(item);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return items;
+    }
+
+
 
 }
