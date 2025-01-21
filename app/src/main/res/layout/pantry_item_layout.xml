@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Scadenza:"
+                android:text="Scadenza: "
                 android:textColor="@color/black"
                 android:textSize="16sp" />
             <TextView
@@ -45,6 +45,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="22/22/2022"
+                android:clickable="true"
+                android:focusable="true"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
         </LinearLayout>

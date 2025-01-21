@@ -1,10 +1,12 @@
 package com.example.farfromhome.pantry;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,6 @@ import java.util.Date;
 import java.util.List;
 
 public class PantryAddItem extends AppCompatActivity {
-
 
     private EditText editTextProductName;
     private Spinner spinnerCategory;
@@ -60,18 +61,14 @@ public class PantryAddItem extends AppCompatActivity {
 
         fragmentTransaction.commit();
 
-
-
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
-        addDateInputFormat(editTextExpiryDate);
+        editTextExpiryDate.setOnClickListener(v -> showDatePicker(editTextExpiryDate));
+
         editTextProductName = findViewById(R.id.editTextProductName);
         editTextProductName.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
         spinnerCategory = findViewById(R.id.spinnerCategory);
 
         loadCategories();
-
-        editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
-        editTextExpiryDate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
 
         textViewQuantity = findViewById(R.id.textViewQuantity);
         LinearLayout buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
@@ -91,7 +88,34 @@ public class PantryAddItem extends AppCompatActivity {
         });
 
         buttonAddProduct.setOnClickListener(v -> addProductToDatabase());
+    }
 
+    public void showDatePicker(EditText editText) {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this, R.style.CustomDatePickerDialog,
+                (view, year, month, dayOfMonth) -> {
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(year, month, dayOfMonth);
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                    SpannableString underlineExpiry = new SpannableString(formattedDate);
+
+                    editText.setText(underlineExpiry);
+                },
+                currentYear, currentMonth, currentDay
+        );
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        calendar.add(Calendar.YEAR, 15);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
     }
 
     private void loadCategories() {

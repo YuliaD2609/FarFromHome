@@ -74,7 +74,8 @@
                 android:textColorHint="#8E6062"
                 android:fontFamily="sans-serif-condensed"
                 android:hint="Data di scadenza (DD/MM/YYYY)"
-                android:inputType="date" />
+                android:inputType="none"
+                android:focusable="false"/>
 
             <TextView
                 android:layout_width="wrap_content"

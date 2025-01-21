@@ -1,11 +1,13 @@
 package com.example.farfromhome.pantry;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -56,7 +59,6 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         }
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PantryItemViewHolder holder, int position) {
         Item item = items.get(position);
@@ -66,21 +68,26 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
 
         if (item.getExpiry() == null) {
             holder.itemExpire.setText("N/A");
-            holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black)); // Default color
+            holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black));
         } else {
             Date expiryDate = item.getExpiry();
             Calendar calendar = Calendar.getInstance();
             long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
             long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
-            holder.itemExpire.setText(dateFormat.format(expiryDate));
+            String expiryText = dateFormat.format(expiryDate);
+            SpannableString underlineExpiry = new SpannableString(expiryText);
+            underlineExpiry.setSpan(new android.text.style.UnderlineSpan(), 0, expiryText.length(), 0);
+            holder.itemExpire.setText(underlineExpiry);
 
-            if (daysToExpiry >= 0 && daysToExpiry <= 14) {
-                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.red)); // Rosso per scadenze ravvicinate
+            if (daysToExpiry >= 0 && daysToExpiry <= 7) {
+                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.red));
             } else {
-                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black)); // Colore predefinito per scadenze lontane
+                holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black));
             }
         }
+
+        holder.itemExpire.setOnClickListener(v -> showDatePicker(holder.itemExpire, item));
 
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
@@ -97,6 +104,53 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
             dbHelper.updatePantryItem(item);
             holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
         });
+    }
+
+    private void showDatePicker(TextView textView, Item item) {
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                context, R.style.CustomDatePickerDialog,
+                (datePicker, i, i1, i2) -> {
+                    Calendar selectedDate = Calendar.getInstance();
+                    selectedDate.set(i, i1, i2);
+                    Calendar today = Calendar.getInstance();  // Ottiene la data attuale correttamente
+
+                    item.setExpiry(selectedDate.getTime());
+
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    String formattedDate = dateFormat.format(selectedDate.getTime());
+
+                    // Sottolinea il testo della data
+                    SpannableString underlineExpiry = new SpannableString(formattedDate);
+                    underlineExpiry.setSpan(new android.text.style.UnderlineSpan(), 0, formattedDate.length(), 0);
+
+                    long diffInMillis = item.getExpiry().getTime() - today.getTimeInMillis();
+                    long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
+
+                    // Cambia il colore della data in base alla scadenza
+                    if (daysToExpiry <= 7) {
+                        textView.setTextColor(ContextCompat.getColor(context, R.color.red));
+                    } else {
+                        textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+                    }
+
+                    // Imposta il testo con la sottolineatura
+                    textView.setText(underlineExpiry);
+                    dbHelper.updatePantryItem(item);
+                },
+                currentYear, currentMonth, currentDay
+        );
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+
+        calendar.add(Calendar.YEAR, 15);
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+
+        datePickerDialog.show();
     }
 
     private void showConfirmDialog(Item item, int position) {
