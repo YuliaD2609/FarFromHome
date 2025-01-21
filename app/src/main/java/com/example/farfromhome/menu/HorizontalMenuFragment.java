@@ -1,6 +1,14 @@
 package com.example.farfromhome.menu;
 
+import android.Manifest;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +16,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.R;
 
 public class HorizontalMenuFragment extends Fragment {
+
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,10 +56,16 @@ public class HorizontalMenuFragment extends Fragment {
         rootView.findViewById(R.id.homeImage).setOnClickListener(v -> goToHome());
 
         ImageView shopImageView = rootView.findViewById(R.id.shopImage);
+
+
+
         if (isShoppingList) {
             shopImageView.setVisibility(View.VISIBLE);
+            shopImageView.setClickable(true);
+            shopImageView.setOnClickListener(v -> checkLocationPermissionAndOpenMaps());
         } else {
             shopImageView.setVisibility(View.GONE);
+            shopImageView.setClickable(false);
         }
 
         return rootView;
@@ -67,4 +88,48 @@ public class HorizontalMenuFragment extends Fragment {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+    private View.OnClickListener checkLocationPermissionAndOpenMaps() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission();
+        } else {
+            fetchLocationAndOpenMaps();
+        }
+        return null;
+    }
+
+    private void requestLocationPermission() {
+        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+    }
+
+    private void fetchLocationAndOpenMaps() {
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(location -> {
+                    if (location != null) {
+                        String uri = "geo:" + location.getLatitude() + "," + location.getLongitude() + "?q=supermercato";
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setPackage("com.google.android.apps.maps");
+                        startActivity(intent);
+                    }
+                });
+    }
+
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fetchLocationAndOpenMaps();
+            } else {
+                HomeActivity.showCustomToast(requireContext(),"E' richiesta l'accesso alla posizione");
+            }
+        }
+    }
+
 }
