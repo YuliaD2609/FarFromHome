@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import androidx.fragment.app.Fragment;
 
 import com.example.farfromhome.HomeActivity;
@@ -17,9 +18,12 @@ public class HorizontalMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.horizontal_menu, container, false);
         assert getArguments() != null;
         String title = getArguments().getString("TITLE", "Default Title");
+        boolean isShoppingList = getArguments().getBoolean("SHOW_CART", false);
 
         TextView titleTextView = rootView.findViewById(R.id.activityTitle);
         titleTextView.setText(title);
@@ -35,6 +39,13 @@ public class HorizontalMenuFragment extends Fragment {
         });
 
         rootView.findViewById(R.id.homeImage).setOnClickListener(v -> goToHome());
+
+        ImageView shopImageView = rootView.findViewById(R.id.shopImage);
+        if (isShoppingList) {
+            shopImageView.setVisibility(View.VISIBLE);
+        } else {
+            shopImageView.setVisibility(View.GONE);
+        }
 
         return rootView;
     }

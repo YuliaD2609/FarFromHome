@@ -38,6 +38,7 @@ public class ShoppingListActivity extends AppCompatActivity {
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
         Bundle bundle = new Bundle();
         bundle.putString("TITLE", "Lista della spesa");
+        bundle.putBoolean("SHOW_CART", true); ;
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
