@@ -58,15 +58,49 @@
         </LinearLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/ShoppingItemList"
+    <ScrollView
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:layout_below="@id/search_bar"
         android:layout_toRightOf="@id/vertical_menu"
-        android:layout_alignParentBottom="true"
-        android:padding="8dp"
-        android:layout_marginBottom="55dp" />
+        android:layout_marginBottom="70dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <FrameLayout
+                android:id="@+id/ShoppingItemList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/search_bar"
+                android:layout_toRightOf="@id/vertical_menu"
+                android:layout_alignParentBottom="true"
+                android:padding="8dp"
+                android:layout_marginBottom="3dp" />
+            <LinearLayout
+                android:id="@+id/addItemButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:onClick="addElement"
+                android:background="@drawable/brown_border_accent_round"
+                android:padding="8dp"
+                android:layout_margin="8dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/funneldisplay_bold"
+                    android:gravity="center"
+                    android:text="Aggiungi un elemento"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/shoppingDone"
@@ -79,7 +113,7 @@
         android:background="@drawable/rounded_background_accent"
         android:padding="8dp"
         android:layout_margin="8dp"
-        android:layout_toLeftOf="@id/addItemButton"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         >
 
@@ -93,28 +127,4 @@
             android:gravity="center" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/addItemButton"
-        android:layout_width="90dp"
-        android:layout_height="50dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_gravity="end"
-        android:onClick="addElement"
-        android:background="@drawable/brown_border_accent_round"
-        android:padding="8dp"
-        android:layout_margin="8dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:fontFamily="@font/funneldisplay_bold"
-            android:gravity="center" />
-    </LinearLayout>
 </RelativeLayout>
