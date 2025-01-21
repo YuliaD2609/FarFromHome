@@ -729,8 +729,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
                 @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
-                Date expiryDate = null;
-
                 SuitcaseItem item= new SuitcaseItem(name,quantity,category);
                 items.add(item);
             } while (cursor.moveToNext());
