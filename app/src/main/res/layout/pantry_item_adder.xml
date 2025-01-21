@@ -52,12 +52,10 @@
 
             <Spinner
                 android:id="@+id/spinnerCategory"
+                style="@style/CustomSpinnerStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textColorHint="#8E6062"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="15dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
