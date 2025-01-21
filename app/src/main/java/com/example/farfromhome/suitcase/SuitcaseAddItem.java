@@ -97,7 +97,6 @@ public class SuitcaseAddItem extends AppCompatActivity {
                 return super.getDropDownView(position, convertView, parent);
             }
         };
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
     }
 
