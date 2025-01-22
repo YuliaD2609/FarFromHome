@@ -108,6 +108,7 @@ public class PantryAddItem extends AppCompatActivity {
                     SpannableString underlineExpiry = new SpannableString(formattedDate);
 
                     editText.setText(underlineExpiry);
+                    editText.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
                 },
                 currentYear, currentMonth, currentDay
         );

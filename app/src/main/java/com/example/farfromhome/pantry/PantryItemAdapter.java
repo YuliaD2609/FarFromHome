@@ -124,21 +124,18 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                     String formattedDate = dateFormat.format(selectedDate.getTime());
 
-                    // Sottolinea il testo della data
                     SpannableString underlineExpiry = new SpannableString(formattedDate);
                     underlineExpiry.setSpan(new android.text.style.UnderlineSpan(), 0, formattedDate.length(), 0);
 
                     long diffInMillis = item.getExpiry().getTime() - today.getTimeInMillis();
                     long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
-                    // Cambia il colore della data in base alla scadenza
                     if (daysToExpiry <= 7) {
                         textView.setTextColor(ContextCompat.getColor(context, R.color.red));
                     } else {
                         textView.setTextColor(ContextCompat.getColor(context, R.color.black));
                     }
 
-                    // Imposta il testo con la sottolineatura
                     textView.setText(underlineExpiry);
                     dbHelper.updatePantryItem(item);
                 },
