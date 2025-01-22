@@ -63,6 +63,7 @@ public class PantryAddItem extends AppCompatActivity {
 
         editTextExpiryDate = findViewById(R.id.editTextExpiryDate);
         editTextExpiryDate.setOnClickListener(v -> showDatePicker(editTextExpiryDate));
+        editTextExpiryDate.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
 
         editTextProductName = findViewById(R.id.editTextProductName);
         editTextProductName.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
