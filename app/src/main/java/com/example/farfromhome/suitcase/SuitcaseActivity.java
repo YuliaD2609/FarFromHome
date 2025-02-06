@@ -2,6 +2,8 @@ package com.example.farfromhome.suitcase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -75,6 +77,29 @@ public class SuitcaseActivity extends AppCompatActivity {
 
         EditText searchInput = findViewById(R.id.search_input);
         LinearLayout searchButton = findViewById(R.id.search_button);
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim().toLowerCase();
+
+                if (!query.isEmpty()) {
+                    List<SuitcaseItem> searchResults = dbHelper.searchSuitcaseListItemsByName(query);
+                    suitcaseItemFragment.updateItemList(searchResults);
+                } else {
+                    // Se il campo è vuoto, ricarica tutti gli elementi della categoria selezionata
+                    suitcaseItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         searchButton.setOnClickListener(v -> {
             String query = searchInput.getText().toString().trim().toLowerCase();
