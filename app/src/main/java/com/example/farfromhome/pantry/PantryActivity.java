@@ -2,6 +2,8 @@ package com.example.farfromhome.pantry;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -69,6 +71,29 @@ public class PantryActivity extends AppCompatActivity {
 
         EditText searchInput = findViewById(R.id.search_input);
         LinearLayout searchButton = findViewById(R.id.search_button);
+
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim().toLowerCase();
+
+                if (!query.isEmpty()) {
+                    List<Item> searchResults = dbHelper.searchPantryItemsByName(query);
+                    pantryItemFragment.updateItemList(searchResults);
+                } else {
+                    // Se il campo è vuoto, ricarica tutti gli elementi della categoria selezionata
+                    pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         searchButton.setOnClickListener(v -> {
             String query = searchInput.getText().toString().trim().toLowerCase();
