@@ -1,6 +1,8 @@
 package com.example.farfromhome;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -66,6 +68,18 @@ public class HomeActivity extends AppCompatActivity {
                 initializeSystem();
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+
+                showCustomToast(this, "Abilita il permesso di allarme per ricevere i promemoria di scadenza!");
+            }
+        }
+
+
 
         View shoppingListButton = findViewById(R.id.shoppinglistbutton);
         View pantryButton = findViewById(R.id.pantrybutton);
@@ -190,21 +204,20 @@ public class HomeActivity extends AppCompatActivity {
             LinearLayout warningContainer = findViewById(R.id.warningContainer);
             warningContainer.removeAllViews();
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             Calendar calendar = Calendar.getInstance();
-            boolean notify = false;
             boolean hasExpiringItems = false;
 
             for (Item item : pantryItems) {
                 Date expiryDate = item.getExpiry();
-                if(expiryDate!=null) {
+                if (expiryDate != null) {
                     long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
                     long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
                     if (daysToExpiry >= 0 && daysToExpiry <= 14) {
                         hasExpiringItems = true;
-                        notify = daysToExpiry <= 7 || notify;
 
+                        // Mostra i prodotti in scadenza nella UI
                         LinearLayout row = new LinearLayout(this);
                         row.setLayoutParams(new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -227,8 +240,12 @@ public class HomeActivity extends AppCompatActivity {
 
                         row.addView(itemNameView);
                         row.addView(expiryDateView);
-
                         warningContainer.addView(row);
+
+                        // Pianifica le notifiche per 7 giorni, 48 ore e 24 ore prima della scadenza
+                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 7);
+                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 2);
+                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 1);
                     }
                 }
             }
@@ -244,13 +261,32 @@ public class HomeActivity extends AppCompatActivity {
                 noItemsView.setGravity(Gravity.CENTER);
                 warningContainer.addView(noItemsView);
             }
-
-            if (notify) {
-                sendNotification();
-            }
         });
     }
 
+    @SuppressLint("ScheduleExactAlarm")
+    private void scheduleNotification(Context context, String itemName, long expiryTime, int daysBefore) {
+        long triggerTime = expiryTime - (daysBefore * 24 * 60 * 60 * 1000); // Tempo della notifica
+
+        if (triggerTime > System.currentTimeMillis()) { // Pianifica solo notifiche future
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            intent.putExtra("itemName", itemName);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) triggerTime, intent, PendingIntent.FLAG_IMMUTABLE);
+
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                    } else {
+                        Log.e("Alarm", "L'app non ha il permesso per allarmi esatti");
+                    }
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
+                }
+            }
+        }
+    }
 
 
     private void sendNotification() {
