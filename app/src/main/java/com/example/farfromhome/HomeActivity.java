@@ -11,18 +11,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -110,10 +116,11 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    private void showNotificationTimePicker() {
+    public void showNotificationTimePicker() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         TextView title = new TextView(this);
-        title.setText("Imposta orario notifiche");
+        title.setText("Imposta orario notifica");
         title.setTextSize(20);
         title.setTextColor(getResources().getColor(R.color.darkerBrown));
         title.setTypeface(null, Typeface.BOLD);
@@ -121,37 +128,80 @@ public class HomeActivity extends AppCompatActivity {
         title.setGravity(Gravity.CENTER);
         builder.setCustomTitle(title);
 
-        FrameLayout container = new FrameLayout(this);
-        int margin = (int) (16 * getResources().getDisplayMetrics().density);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(margin, margin, margin, margin);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setPadding(50, 40, 50, 10);
+        layout.setGravity(Gravity.CENTER);
 
-        TimePicker timePicker = new TimePicker(this);
-        timePicker.setLayoutParams(params);
-        timePicker.setIs24HourView(true);
-        container.addView(timePicker);
-        builder.setView(container);
+        EditText hourInput = new EditText(this);
+        hourInput.setHint("HH");
+        hourInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        hourInput.setGravity(Gravity.CENTER);
+        hourInput.setTextSize(18);
+        hourInput.setTextColor(getResources().getColor(R.color.darkerBrown));
+        hourInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+        hourInput.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.brown)));
+        hourInput.setHintTextColor(getResources().getColor(R.color.lightBrown));
+
+        TextView separator = new TextView(this);
+        separator.setText(" : ");
+        separator.setTextSize(18);
+        separator.setTextColor(getResources().getColor(R.color.brown));
+
+        EditText minuteInput = new EditText(this);
+        minuteInput.setHint("MM");
+        minuteInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        minuteInput.setGravity(Gravity.CENTER);
+        minuteInput.setTextSize(18);
+        minuteInput.setTextColor(getResources().getColor(R.color.darkerBrown));
+        minuteInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+        minuteInput.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.brown)));
+        minuteInput.setHintTextColor(getResources().getColor(R.color.lightBrown));
+
+        layout.addView(hourInput);
+        layout.addView(separator);
+        layout.addView(minuteInput);
+        builder.setView(layout);
 
         builder.setPositiveButton("Salva", (dialog, which) -> {
-            int hour = timePicker.getHour();
-            int minute = timePicker.getMinute();
-            saveNotificationTime(hour, minute);
+            String hourText = hourInput.getText().toString().trim();
+            String minuteText = minuteInput.getText().toString().trim();
+
+            if (isValidTime(hourText, minuteText)) {
+                int hour = Integer.parseInt(hourText);
+                int minute = Integer.parseInt(minuteText);
+                saveNotificationTime(hour, minute);
+            } else {
+                showCustomToast(this, "Inserisci un orario valido (00-23 : 00-59)");
+            }
         });
+
         builder.setNegativeButton("Annulla", (dialog, which) -> dialog.cancel());
 
         AlertDialog dialog = builder.create();
         Drawable background = ContextCompat.getDrawable(this, R.drawable.popup);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
+
         dialog.setOnShowListener(d -> {
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.darkerBrown));
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.brown));
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(null, Typeface.BOLD);
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(null, Typeface.BOLD);
         });
+
         dialog.show();
+    }
+
+    private boolean isValidTime(String hourText, String minuteText) {
+        if (hourText.isEmpty() || minuteText.isEmpty()) return false;
+
+        try {
+            int hour = Integer.parseInt(hourText);
+            int minute = Integer.parseInt(minuteText);
+            return (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void saveNotificationTime(int hour, int minute) {
@@ -187,20 +237,17 @@ public class HomeActivity extends AppCompatActivity {
         int screenHeight = metrics.heightPixels;
         int screenWidth = metrics.widthPixels;
 
-        // Modifica la dimensione del titolo
         ImageView title = findViewById(R.id.title);
         RelativeLayout.LayoutParams titleParams = (RelativeLayout.LayoutParams) title.getLayoutParams();
-        titleParams.height = (int) (screenHeight * 0.15); // 15% dell'altezza dello schermo
+        titleParams.height = (int) (screenHeight * 0.15);
         title.setLayoutParams(titleParams);
 
-        // Modifica la dimensione del layout dei prodotti in scadenza
         LinearLayout warningLayout = findViewById(R.id.warningLayout);
         LinearLayout.LayoutParams warningParams = (LinearLayout.LayoutParams) warningLayout.getLayoutParams();
-        warningParams.height = (int) (screenHeight * 0.25); // 25% dell'altezza dello schermo
+        warningParams.height = (int) (screenHeight * 0.25);
         warningLayout.setLayoutParams(warningParams);
 
-        // Modifica la spaziatura tra i bottoni
-        int buttonSpacing = (int) (screenHeight * 0.05); // 5% dell'altezza dello schermo
+        int buttonSpacing = (int) (screenHeight * 0.05);
 
         LinearLayout shoppingListButton = findViewById(R.id.shoppinglistbutton);
         LinearLayout pantryButton = findViewById(R.id.pantrybutton);
@@ -297,7 +344,6 @@ public class HomeActivity extends AppCompatActivity {
                     if (daysToExpiry >= 0 && daysToExpiry <= 14) {
                         hasExpiringItems = true;
 
-                        // Mostra i prodotti in scadenza nella UI
                         LinearLayout row = new LinearLayout(this);
                         row.setLayoutParams(new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -322,7 +368,6 @@ public class HomeActivity extends AppCompatActivity {
                         row.addView(expiryDateView);
                         warningContainer.addView(row);
 
-                        // Pianifica le notifiche per 7 giorni, 48 ore e 24 ore prima della scadenza
                         scheduleNotification(this, item.getName(), expiryDate.getTime(), 7);
                         scheduleNotification(this, item.getName(), expiryDate.getTime(), 2);
                         scheduleNotification(this, item.getName(), expiryDate.getTime(), 1);
@@ -346,16 +391,16 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("ScheduleExactAlarm")
     private void scheduleNotification(Context context, String itemName, long expiryTime, int daysBefore) {
-        long triggerTime = expiryTime - (daysBefore * 24 * 60 * 60 * 1000); // Tempo della notifica
+        long triggerTime = expiryTime - (daysBefore * 24 * 60 * 60 * 1000);
 
-        if (triggerTime > System.currentTimeMillis()) { // Pianifica solo notifiche future
+        if (triggerTime > System.currentTimeMillis()) {
             Intent intent = new Intent(context, NotificationReceiver.class);
             intent.putExtra("itemName", itemName);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) triggerTime, intent, PendingIntent.FLAG_IMMUTABLE);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Android 12+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     if (alarmManager.canScheduleExactAlarms()) {
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
                     } else {
@@ -365,26 +410,6 @@ public class HomeActivity extends AppCompatActivity {
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
                 }
             }
-        }
-    }
-
-
-    private void sendNotification() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("Attenzione!")
-                .setContentText("Hai dei prodotti con scadenza a breve!")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.notify(1, builder.build());
         }
     }
 
