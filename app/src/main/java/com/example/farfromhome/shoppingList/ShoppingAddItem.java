@@ -22,18 +22,14 @@ import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
-import java.util.Date;
 import java.util.List;
 
 public class ShoppingAddItem extends AppCompatActivity {
-
 
     private EditText editTextProductName;
     private Spinner spinnerCategory;
     private TextView textViewQuantity;
     private int quantity = 0;
-    private String selectedCategory;
-
     private DatabaseHelper databaseHelper;
 
     @SuppressLint("MissingInflatedId")
@@ -43,106 +39,116 @@ public class ShoppingAddItem extends AppCompatActivity {
         setContentView(R.layout.shoppinglist_item_adder);
 
         databaseHelper = new DatabaseHelper(this);
+        setupUI();
+    }
 
+    private void setupUI() {
+        setupMenu();
+        setupProductNameField();
+        setupQuantityButtons();
+        setupAddProductButton();
+        loadCategories();
+    }
+
+    private void setupMenu() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("TITLE", "Lista spesa");
-        horizontalFragment.setArguments(bundle);
+        horizontalFragment.setArguments(createMenuBundle("Lista spesa"));
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
-
         fragmentTransaction.commit();
+    }
 
+    private Bundle createMenuBundle(String title) {
+        Bundle bundle = new Bundle();
+        bundle.putString("TITLE", title);
+        return bundle;
+    }
 
+    private void setupProductNameField() {
         editTextProductName = findViewById(R.id.editTextProductName);
         editTextProductName.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black)));
-        spinnerCategory = findViewById(R.id.spinnerCategory);
+    }
 
-        loadCategories();
-
+    private void setupQuantityButtons() {
         textViewQuantity = findViewById(R.id.textViewQuantity);
         LinearLayout buttonDecreaseQuantity = findViewById(R.id.buttonDecreaseQuantity);
         LinearLayout buttonIncreaseQuantity = findViewById(R.id.buttonIncreaseQuantity);
+
+        buttonDecreaseQuantity.setOnClickListener(v -> updateQuantity(-1));
+        buttonIncreaseQuantity.setOnClickListener(v -> updateQuantity(1));
+    }
+
+    private void setupAddProductButton() {
         LinearLayout buttonAddProduct = findViewById(R.id.buttonAddProduct);
-
-        buttonDecreaseQuantity.setOnClickListener(v -> {
-            if (quantity > 0) {
-                quantity--;
-                textViewQuantity.setText(String.valueOf(quantity));
-            }
-        });
-
-        buttonIncreaseQuantity.setOnClickListener(v -> {
-            quantity++;
-            textViewQuantity.setText(String.valueOf(quantity));
-        });
-
         buttonAddProduct.setOnClickListener(v -> addProductToDatabase());
-
     }
 
     private void loadCategories() {
         List<String> categories = databaseHelper.getAllCategories();
         if (categories == null || categories.isEmpty()) {
-            System.out.println("No categories found in database.");
             categories.add("N/A");
-        } else {
-            System.out.println("Categories fetched from database: " + categories);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.custom_spinner, categories) {
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                return super.getDropDownView(position, convertView, parent);
-            }
-        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.custom_spinner, categories);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
         spinnerCategory.setAdapter(adapter);
+    }
+
+    private void updateQuantity(int delta) {
+        quantity = Math.max(0, quantity + delta);
+        textViewQuantity.setText(String.valueOf(quantity));
     }
 
     private void addProductToDatabase() {
         String productName = editTextProductName.getText().toString().trim();
-        Date expiryDate = null;
 
-        if(productName.isEmpty()){
-            HomeActivity.showCustomToast(this,"Il nome deve essere presente!");
+        if (!validateInputs(productName)) return;
+
+        String selectedCategory = spinnerCategory.getSelectedItem().toString();
+        if (databaseHelper.doesProductShoppingListExist(productName)) {
+            HomeActivity.showCustomToast(this, "Un prodotto con questo nome esiste già");
             return;
         }
 
-        if (quantity == 0) {
-            HomeActivity.showCustomToast(this,"Non puoi inserire 0 elementi!");
-            return;
-        }
-
-        selectedCategory = spinnerCategory.getSelectedItem().toString();
-
-        boolean productExists = databaseHelper.doesProductShoppingListExist(productName);
-        if (productExists) {
-            HomeActivity.showCustomToast(this,"Un prodotto con questo nome esiste già");
-            return;
-        }
-
-        Item item = new Item(productName, quantity, expiryDate, selectedCategory);
-
+        Item item = new Item(productName, quantity, null, selectedCategory);
         boolean isInserted = databaseHelper.addShoppingListItem(item);
+        showResultToast(isInserted);
+    }
+
+    private boolean validateInputs(String productName) {
+        if (productName.isEmpty()) {
+            HomeActivity.showCustomToast(this, "Il nome deve essere presente!");
+            return false;
+        }
+        if (quantity == 0) {
+            HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
+            return false;
+        }
+        return true;
+    }
+
+    private void showResultToast(boolean isInserted) {
         if (isInserted) {
-            inputCleaner();
-            HomeActivity.showCustomToast(this,"Prodotto aggiunto con successo");
-            Intent intent = new Intent(this, ShoppingListActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
+            resetInputs();
+            HomeActivity.showCustomToast(this, "Prodotto aggiunto con successo");
+            navigateToShoppingList();
         } else {
-            HomeActivity.showCustomToast(this,"Errore nell'aggiunta del prodotto");
+            HomeActivity.showCustomToast(this, "Errore nell'aggiunta del prodotto");
         }
     }
 
-    public void inputCleaner(){
+    private void resetInputs() {
         editTextProductName.setText("");
         spinnerCategory.setSelection(0);
         quantity = 0;
         textViewQuantity.setText(String.valueOf(quantity));
     }
 
+    private void navigateToShoppingList() {
+        Intent intent = new Intent(this, ShoppingListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+    }
 }
