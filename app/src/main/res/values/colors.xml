@@ -9,5 +9,6 @@
     <color name="dark_orange">#CE6615</color>
     <color name="red">#E94015</color>
     <color name="accentBrown">#F8C27F</color>
+    <color name="buttonBrown">#F6C686</color>
     <color name="accent2">#E7AA65</color>
 </resources>
