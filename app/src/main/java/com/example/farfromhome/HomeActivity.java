@@ -88,6 +88,7 @@ public class HomeActivity extends AppCompatActivity {
         View shoppingListButton = findViewById(R.id.shoppinglistbutton);
         View pantryButton = findViewById(R.id.pantrybutton);
         View suitcaseButton = findViewById(R.id.suitcasebutton);
+        ImageView notificationButton = findViewById(R.id.notification_icon);
         warningText = findViewById(R.id.warningLayout);
 
         databaseHelper = new DatabaseHelper(this);
@@ -97,6 +98,7 @@ public class HomeActivity extends AppCompatActivity {
         startAnimation(shoppingListButton, 0);
         startAnimation(pantryButton, 300);
         startAnimation(suitcaseButton, 500);
+        startAnimation(notificationButton, 600);
         startBottomAnimation(warningText, 200);
 
         loadExpiringProducts();
@@ -105,8 +107,8 @@ public class HomeActivity extends AppCompatActivity {
         pantryButton.setOnClickListener(view -> goToPantry());
         suitcaseButton.setOnClickListener(view -> goToSuitcase());
 
-        ImageView notificationIcon = findViewById(R.id.notification_icon);
-        notificationIcon.setOnClickListener(v -> showNotificationTimePicker());
+
+        notificationButton.setOnClickListener(v -> showNotificationTimePicker());
     }
 
 
@@ -363,9 +365,9 @@ public class HomeActivity extends AppCompatActivity {
                         row.addView(expiryDateView);
                         warningContainer.addView(row);
 
-                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 7);
-                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 2);
-                        scheduleNotification(this, item.getName(), expiryDate.getTime(), 1);
+                        scheduleNotification(this, expiryDate.getTime(), 7);
+                        scheduleNotification(this, expiryDate.getTime(), 2);
+                        scheduleNotification(this, expiryDate.getTime(), 1);
                     }
                 }
             }
@@ -385,12 +387,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private void scheduleNotification(Context context, String itemName, long expiryTime, int daysBefore) {
+    private void scheduleNotification(Context context, long expiryTime, int daysBefore) {
         long triggerTime = expiryTime - (daysBefore * 24 * 60 * 60 * 1000);
 
         if (triggerTime > System.currentTimeMillis()) {
             Intent intent = new Intent(context, NotificationReceiver.class);
-            intent.putExtra("itemName", itemName);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, (int) triggerTime, intent, PendingIntent.FLAG_IMMUTABLE);
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
