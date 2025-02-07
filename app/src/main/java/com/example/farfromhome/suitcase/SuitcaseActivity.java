@@ -18,6 +18,9 @@ import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
 import com.example.farfromhome.menu.VerticalMenuFragmentSuitcase;
+import com.example.farfromhome.pantry.PantryActivity;
+import com.example.farfromhome.pantry.PantryAddItem;
+import com.example.farfromhome.pantry.PantryItemsFragment;
 
 import java.util.List;
 
@@ -25,17 +28,23 @@ public class SuitcaseActivity extends AppCompatActivity {
 
     DatabaseHelper dbHelper;
     private SuitcaseItemFragment suitcaseItemFragment;
+    private LinearLayout addItemButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.suitcase_layout);
+        setContentView(R.layout.pantry_layout);
 
+        dbHelper = new DatabaseHelper(this);
+        setupFragments();
+        setupUI();
+    }
+
+    private void setupFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        VerticalMenuFragmentSuitcase categoriesFragment = new VerticalMenuFragmentSuitcase();
-        fragmentTransaction.replace(R.id.vertical_menu, categoriesFragment);
+        fragmentTransaction.replace(R.id.vertical_menu, new VerticalMenuFragment());
 
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
         Bundle bundle = new Bundle();
@@ -44,12 +53,6 @@ public class SuitcaseActivity extends AppCompatActivity {
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
 
-        dbHelper = new DatabaseHelper(this);
-
-        SuitcaseItem i=new SuitcaseItem("prova", 3, "Cucina");
-        dbHelper.addSuitcaseItem(i);
-
-
         suitcaseItemFragment = new SuitcaseItemFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
         if (categoryName != null) {
@@ -57,22 +60,17 @@ public class SuitcaseActivity extends AppCompatActivity {
             suitcaseBundle.putString("CATEGORY_NAME", categoryName);
             suitcaseItemFragment.setArguments(suitcaseBundle);
         }
-        fragmentTransaction.replace(R.id.suitcaseItemList, suitcaseItemFragment);
+        fragmentTransaction.replace(R.id.item_fragment_container, suitcaseItemFragment);
 
         fragmentTransaction.commit();
+    }
 
-        LinearLayout addItemButton = findViewById(R.id.addItemButton);
-
+    private void setupUI() {
+        addItemButton = findViewById(R.id.addItemButton);
         addItemButton.setOnClickListener(v -> {
-         Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
-         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-         startActivity(intent);
-        });
-
-        LinearLayout suitcaseDoneButton = findViewById(R.id.suitcaseDone);
-        suitcaseDoneButton.setOnClickListener(v -> {
-            suitcaseItemFragment.removeMarkedItems();
-            HomeActivity.showCustomToast(this, "La valigia è stata fatta!");
+            Intent intent = new Intent(SuitcaseActivity.this, SuitcaseAddItem.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
         });
 
         EditText searchInput = findViewById(R.id.search_input);
@@ -106,26 +104,24 @@ public class SuitcaseActivity extends AppCompatActivity {
 
     public void search(EditText searchInput){
         String query = searchInput.getText().toString().trim().toLowerCase();
-        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
 
-        if (!query.isEmpty()) {
-            List<SuitcaseItem> searchResults;
-
-            if (selectedCategory == null || selectedCategory.isEmpty()) {
-                searchResults = dbHelper.searchSuitcaseListItemsByName(query);
-            } else {
-                searchResults = dbHelper.searchSuitcaseListItemsByCategoryAndName(selectedCategory, query);
-            }
-
-            if (searchResults.isEmpty()) {
-                HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
-            } else {
-                suitcaseItemFragment.updateItemList(searchResults);
-            }
-        } else {
+        if (query.isEmpty()) {
             HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             suitcaseItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+            return;
         }
+
+        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
+        List<SuitcaseItem> searchResults = (selectedCategory == null || selectedCategory.isEmpty())
+                ? dbHelper.searchSuitcaseListItemsByName(query)
+                : dbHelper.searchSuitcaseListItemsByCategoryAndName(selectedCategory, query);
+
+        if (searchResults.isEmpty()) {
+            HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
+        } else {
+            suitcaseItemFragment.updateItemList(searchResults);
+        }
+
     }
 
 }

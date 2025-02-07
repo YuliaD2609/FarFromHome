@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -20,7 +18,6 @@ import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
 
-import java.util.Date;
 import java.util.List;
 
 public class PantryActivity extends AppCompatActivity {
@@ -34,11 +31,16 @@ public class PantryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pantry_layout);
 
+        dbHelper = new DatabaseHelper(this);
+        setupFragments();
+        setupUI();
+    }
+
+    private void setupFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
-        fragmentTransaction.replace(R.id.vertical_menu, categoriesFragment);
+        fragmentTransaction.replace(R.id.vertical_menu, new VerticalMenuFragment());
 
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
         Bundle bundle = new Bundle();
@@ -46,11 +48,6 @@ public class PantryActivity extends AppCompatActivity {
         bundle.putBoolean("SHOW_CART", false);
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
-
-        dbHelper = new DatabaseHelper(this);
-
-        Item i = new Item("prova", 3, new Date(2025, 12, 12), "Cucina");
-        dbHelper.addPantryItem(i);
 
         pantryItemFragment = new PantryItemsFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
@@ -62,7 +59,9 @@ public class PantryActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.item_fragment_container, pantryItemFragment);
 
         fragmentTransaction.commit();
+    }
 
+    private void setupUI() {
         addItemButton = findViewById(R.id.addItemButton);
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(PantryActivity.this, PantryAddItem.class);
@@ -91,8 +90,6 @@ public class PantryActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             search(searchInput);
         });
-
-
     }
 
     public void updateCategory(String newCategory) {
@@ -103,25 +100,22 @@ public class PantryActivity extends AppCompatActivity {
 
     public void search(EditText searchInput){
         String query = searchInput.getText().toString().trim().toLowerCase();
-        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
 
-        if (!query.isEmpty()) {
-            List<Item> searchResults;
-
-            if (selectedCategory == null || selectedCategory.isEmpty()) {
-                searchResults = dbHelper.searchPantryItemsByName(query);
-            } else {
-                searchResults = dbHelper.searchPantryItemsByCategoryAndName(selectedCategory, query);
-            }
-
-            if (searchResults.isEmpty()) {
-                HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
-            } else {
-                pantryItemFragment.updateItemList(searchResults);
-            }
-        } else {
+        if (query.isEmpty()) {
             HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+            return;
+        }
+
+        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
+        List<Item> searchResults = (selectedCategory == null || selectedCategory.isEmpty())
+                ? dbHelper.searchPantryItemsByName(query)
+                : dbHelper.searchPantryItemsByCategoryAndName(selectedCategory, query);
+
+        if (searchResults.isEmpty()) {
+            HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
+        } else {
+            pantryItemFragment.updateItemList(searchResults);
         }
     }
 }

@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -18,8 +17,10 @@ import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
+import com.example.farfromhome.pantry.PantryActivity;
+import com.example.farfromhome.pantry.PantryAddItem;
+import com.example.farfromhome.pantry.PantryItemsFragment;
 
-import java.util.Date;
 import java.util.List;
 
 public class ShoppingListActivity extends AppCompatActivity {
@@ -30,22 +31,25 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.shopping_list_layout);
+        setContentView(R.layout.pantry_layout);
 
+        dbHelper = new DatabaseHelper(this);
+        setupFragments();
+        setupUI();
+    }
+
+    private void setupFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        VerticalMenuFragment categoriesFragment = new VerticalMenuFragment();
-        fragmentTransaction.replace(R.id.vertical_menu, categoriesFragment);
+        fragmentTransaction.replace(R.id.vertical_menu, new VerticalMenuFragment());
 
         HorizontalMenuFragment horizontalFragment = new HorizontalMenuFragment();
         Bundle bundle = new Bundle();
         bundle.putString("TITLE", "Lista della spesa");
-        bundle.putBoolean("SHOW_CART", true); ;
+        bundle.putBoolean("SHOW_CART", true);
         horizontalFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.horizontal_menu, horizontalFragment);
-
-        dbHelper = new DatabaseHelper(this);
 
         shoppingItemFragment = new ShoppingItemsFragment();
         String categoryName = getIntent().getStringExtra("CATEGORY_NAME");
@@ -54,22 +58,17 @@ public class ShoppingListActivity extends AppCompatActivity {
             shoppingBundle.putString("CATEGORY_NAME", categoryName);
             shoppingItemFragment.setArguments(shoppingBundle);
         }
-        fragmentTransaction.replace(R.id.ShoppingItemList, shoppingItemFragment);
+        fragmentTransaction.replace(R.id.item_fragment_container, shoppingItemFragment);
 
         fragmentTransaction.commit();
+    }
 
+    private void setupUI() {
         addItemButton = findViewById(R.id.addItemButton);
-
         addItemButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingListActivity.this, ShoppingAddItem.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
-        });
-
-        LinearLayout shoppingDoneButton = findViewById(R.id.shoppingDone);
-        shoppingDoneButton.setOnClickListener(v -> {
-            shoppingItemFragment.removeMarkedItems();
-            HomeActivity.showCustomToast(this, "La spesa è stata fatta! Gli elementi sono stati aggiunti nella dispensa.");
         });
 
         EditText searchInput = findViewById(R.id.search_input);
@@ -101,25 +100,21 @@ public class ShoppingListActivity extends AppCompatActivity {
 
     public void search(EditText searchInput){
         String query = searchInput.getText().toString().trim().toLowerCase();
-        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
-
-        if (!query.isEmpty()) {
-            List<Item> searchResults;
-
-            if (selectedCategory == null || selectedCategory.isEmpty()) {
-                searchResults = dbHelper.searchShoppingListItemsByName(query);
-            } else {
-                searchResults = dbHelper.searchShoppingListItemsByCategoryAndName(selectedCategory, query);
-            }
-
-            if (searchResults.isEmpty()) {
-                HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
-            } else {
-                shoppingItemFragment.updateItemList(searchResults);
-            }
-        } else {
+        if (query.isEmpty()) {
             HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             shoppingItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+            return;
+        }
+
+        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
+        List<Item> searchResults = (selectedCategory == null || selectedCategory.isEmpty())
+                ? dbHelper.searchShoppingListItemsByName(query)
+                : dbHelper.searchShoppingListItemsByCategoryAndName(selectedCategory, query);
+
+        if (searchResults.isEmpty()) {
+            HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
+        } else {
+            shoppingItemFragment.updateItemList(searchResults);
         }
     }
 }
