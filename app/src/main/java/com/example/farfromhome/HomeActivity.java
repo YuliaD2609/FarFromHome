@@ -3,7 +3,7 @@ package com.example.farfromhome;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,11 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,10 +23,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +47,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -100,6 +103,83 @@ public class HomeActivity extends AppCompatActivity {
         shoppingListButton.setOnClickListener(view -> goToShoppingList());
         pantryButton.setOnClickListener(view -> goToPantry());
         suitcaseButton.setOnClickListener(view -> goToSuitcase());
+
+        ImageView notificationIcon = findViewById(R.id.notification_icon);
+        notificationIcon.setOnClickListener(v -> showNotificationTimePicker());
+    }
+
+
+
+    private void showNotificationTimePicker() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        TextView title = new TextView(this);
+        title.setText("Imposta orario notifiche");
+        title.setTextSize(20);
+        title.setTextColor(getResources().getColor(R.color.darkerBrown));
+        title.setTypeface(null, Typeface.BOLD);
+        title.setPadding(20, 30, 20, 10);
+        title.setGravity(Gravity.CENTER);
+        builder.setCustomTitle(title);
+
+        FrameLayout container = new FrameLayout(this);
+        int margin = (int) (16 * getResources().getDisplayMetrics().density);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(margin, margin, margin, margin);
+
+        TimePicker timePicker = new TimePicker(this);
+        timePicker.setLayoutParams(params);
+        timePicker.setIs24HourView(true);
+        container.addView(timePicker);
+        builder.setView(container);
+
+        builder.setPositiveButton("Salva", (dialog, which) -> {
+            int hour = timePicker.getHour();
+            int minute = timePicker.getMinute();
+            saveNotificationTime(hour, minute);
+        });
+        builder.setNegativeButton("Annulla", (dialog, which) -> dialog.cancel());
+
+        AlertDialog dialog = builder.create();
+        Drawable background = ContextCompat.getDrawable(this, R.drawable.popup);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.darkerBrown));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.brown));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(null, Typeface.BOLD);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(null, Typeface.BOLD);
+        });
+        dialog.show();
+    }
+
+    private void saveNotificationTime(int hour, int minute) {
+        SharedPreferences prefs = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("notification_hour", hour);
+        editor.putInt("notification_minute", minute);
+        editor.apply();
+        scheduleDailyNotification(hour, minute);
+        showCustomToast(this, "Orario notifiche impostato: " + hour + ":" + String.format("%02d", minute));
+    }
+
+    private void scheduleDailyNotification(int hour, int minute) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        }
     }
 
     private void adjustLayout() {
