@@ -113,16 +113,16 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showNotificationTimePicker() {
 
-        // Verifica se l'app ha i permessi per programmare allarmi
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
+        // Verifica se l'app ha il permesso di inviare notifiche
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                // Se il permesso non è stato concesso, richiedilo
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
                 return;
             }
         }
 
+        // Se il permesso è stato concesso, continua con l'azione di impostare l'orario della notifica
         // Creazione del dialogo per impostare l'orario della notifica
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
