@@ -2,15 +2,12 @@
 <resources>
     <color name="black">#402E32</color>
     <color name="white">#FDF9F1</color>
-    <color name="dark_white">#DED7CC</color>
     <color name="brown">#B17227</color>
-    <color name="darkBrown">#945D24</color>
     <color name="darkerBrown">#6F430A</color>
-    <color name="beige">#F2B85B</color>
     <color name="lightBrown">#FBD39D</color>
     <color name="orange">#E47621</color>
     <color name="dark_orange">#CE6615</color>
-    <color name="red">#E2350C</color>
+    <color name="red">#E94015</color>
     <color name="accentBrown">#F8C27F</color>
     <color name="accent2">#E7AA65</color>
 </resources>
