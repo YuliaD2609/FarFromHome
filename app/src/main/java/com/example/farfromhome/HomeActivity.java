@@ -73,16 +73,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
-
-                showCustomToast(this, "Abilita il permesso di allarme per ricevere i promemoria di scadenza!");
-            }
-        }
-
 
 
         View shoppingListButton = findViewById(R.id.shoppinglistbutton);
@@ -107,13 +97,33 @@ public class HomeActivity extends AppCompatActivity {
         pantryButton.setOnClickListener(view -> goToPantry());
         suitcaseButton.setOnClickListener(view -> goToSuitcase());
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                showCustomToast(this, "Abilita il permesso di allarme per ricevere i promemoria di scadenza! (Notifica in alto a destra)");
+            }
+        }
 
-        notificationButton.setOnClickListener(v -> showNotificationTimePicker());
+        notificationButton.setOnClickListener(v -> {
+                showNotificationTimePicker();
+        });
     }
 
 
 
     public void showNotificationTimePicker() {
+
+        // Verifica se l'app ha i permessi per programmare allarmi
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+                return;
+            }
+        }
+
+        // Creazione del dialogo per impostare l'orario della notifica
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         TextView title = new TextView(this);
@@ -188,6 +198,7 @@ public class HomeActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
 
     private boolean isValidTime(String hourText, String minuteText) {
         if (hourText.isEmpty() || minuteText.isEmpty()) return false;
