@@ -3,7 +3,6 @@ package com.example.farfromhome;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import androidx.core.app.NotificationCompat;
