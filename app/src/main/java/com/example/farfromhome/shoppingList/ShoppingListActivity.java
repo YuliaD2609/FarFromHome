@@ -82,15 +82,7 @@ public class ShoppingListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim().toLowerCase();
-
-                if (!query.isEmpty()) {
-                    List<Item> searchResults = dbHelper.searchShoppingListItemsByName(query);
-                    shoppingItemFragment.updateItemList(searchResults);
-                } else {
-                    // Se il campo è vuoto, ricarica tutti gli elementi della categoria selezionata
-                    shoppingItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
-                }
+                search(searchInput);
             }
 
             @Override
@@ -99,22 +91,35 @@ public class ShoppingListActivity extends AppCompatActivity {
         });
 
         searchButton.setOnClickListener(v -> {
-            String query = searchInput.getText().toString().trim().toLowerCase();
-            if (!query.isEmpty()) {
-                List<Item> searchResults = dbHelper.searchPantryItemsByName(query);
-                if (searchResults.isEmpty()) {
-                    HomeActivity.showCustomToast(this, "L'elemento è presente nella lista della spesa.");
-                } else {
-                    HomeActivity.showCustomToast(this, "L'elemento non è presente nella lista della spesa.");
-                }
-            } else {
-                HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
-                shoppingItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
-            }
+            search(searchInput);
         });
     }
 
     public void updateCategory(String newCategory) {
         shoppingItemFragment.updateCategory(newCategory);
+    }
+
+    public void search(EditText searchInput){
+        String query = searchInput.getText().toString().trim().toLowerCase();
+        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
+
+        if (!query.isEmpty()) {
+            List<Item> searchResults;
+
+            if (selectedCategory == null || selectedCategory.isEmpty()) {
+                searchResults = dbHelper.searchShoppingListItemsByName(query);
+            } else {
+                searchResults = dbHelper.searchShoppingListItemsByCategoryAndName(selectedCategory, query);
+            }
+
+            if (searchResults.isEmpty()) {
+                HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
+            } else {
+                shoppingItemFragment.updateItemList(searchResults);
+            }
+        } else {
+            HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+            shoppingItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
+        }
     }
 }
