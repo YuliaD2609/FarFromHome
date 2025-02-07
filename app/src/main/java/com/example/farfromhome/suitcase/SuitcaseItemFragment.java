@@ -1,12 +1,9 @@
 package com.example.farfromhome.suitcase;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,18 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HomeActivity;
-import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SuitcaseItemFragment extends Fragment {
 
     private RecyclerView itemList;
     private SuitcaseItemAdapter itemAdapter;
-    private List<SuitcaseItem> items = new ArrayList<>();
     private DatabaseHelper dbHelper;
     private String categoryName;
 
@@ -60,6 +53,7 @@ public class SuitcaseItemFragment extends Fragment {
     }
 
     public void loadItems(String category) {
+        List<SuitcaseItem> items;
         if (category == null || category.isEmpty()) {
            items = dbHelper.getAllSuitcaseItems();
         } else {
@@ -71,22 +65,6 @@ public class SuitcaseItemFragment extends Fragment {
             itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
             itemList.setAdapter(itemAdapter);
         } else {
-            itemAdapter.updateItems(items);
-        }
-    }
-
-    public void removeMarkedItems() {
-        List<SuitcaseItem> itemsToRemove = new ArrayList<>();
-        for (SuitcaseItem item : items) {
-            if (item.isMarked()) {
-                itemsToRemove.add(item);
-                dbHelper.removeSuitcaseItem(item.getName());
-            }
-        }
-        if(itemsToRemove.isEmpty()){
-            HomeActivity.showCustomToast(requireContext(), "Non ci sono elementi selezionati");
-        }else {
-            items.removeAll(itemsToRemove);
             itemAdapter.updateItems(items);
         }
     }

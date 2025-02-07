@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.farfromhome.suitcase.SuitcaseItem;
 
@@ -299,7 +298,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // Method to remove an item from the pantry
     public boolean removePantryItem(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_PANTRY, COLUMN_NAME + " = ?", new String[]{itemName});
@@ -307,7 +305,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsDeleted > 0;
     }
 
-    // Method to remove an item from the shopping list
     public boolean removeShoppingListItem(String itemName) {
         SQLiteDatabase db = this.getWritableDatabase();
         int rowsDeleted = db.delete(TABLE_SHOPPING_LIST, COLUMN_NAME + " = ?", new String[]{itemName});
@@ -464,8 +461,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             try {
                 expiryDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(expiryStr);
             } catch (ParseException e) {
-                e.printStackTrace(); // Log dell'errore per il debug
-                expiryDate = null;  // Imposta a null in caso di errore
+                e.printStackTrace();
+                expiryDate = null;
             }
         }
 
@@ -542,7 +539,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowsAffected > 0;
     }
 
-    public boolean updateShoppingListItem(Item item) {
+    public void updateShoppingListItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -558,12 +555,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.putNull(COLUMN_EXPIRY);
         }
 
-        int rowsAffected = db.update(TABLE_SHOPPING_LIST, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.update(TABLE_SHOPPING_LIST, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
         db.close();
-        return rowsAffected > 0;
     }
 
-    public boolean updateSuitcaseItem(SuitcaseItem item) {
+    public void updateSuitcaseItem(SuitcaseItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -571,12 +567,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_QUANTITY, item.getQuantity());
         values.put("category_name", item.getCategory());
 
-        int rowsAffected = db.update(TABLE_SUITCASE, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
+        db.update(TABLE_SUITCASE, values, COLUMN_NAME + " = ?", new String[]{item.getName()});
         db.close();
-        return rowsAffected > 0;
     }
 
-    // Metodo per ottenere un elemento specifico dalla pantry
     public Item getPantryItem(String itemName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Item item = null;
@@ -591,7 +585,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return item;
     }
 
-    // Metodo per ottenere un elemento specifico dalla shopping list
     public Item getShoppingListItem(String itemName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Item item = null;
@@ -606,7 +599,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return item;
     }
 
-    // Metodo per ottenere un elemento specifico dalla suitcase
     public SuitcaseItem getSuitcaseItem(String itemName) {
         SQLiteDatabase db = this.getReadableDatabase();
         SuitcaseItem item = null;
@@ -621,7 +613,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return item;
     }
 
-    // Metodo per ottenere una categoria specifica
     @SuppressLint("Range")
     public String getCategory(String categoryName) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -637,7 +628,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return category;
     }
 
-    // Metodo per ottenere una categoria specifica dalla suitcase_categories
     @SuppressLint("Range")
     public String getSuitcaseCategory(String categoryName) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -840,9 +830,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         if (rowsAffected > 0) {
-            return item; // Return the modified item if update was successful
+            return item;
         } else {
-            return null; // Or handle the case where no row was affected
+            return null;
         }
     }
 

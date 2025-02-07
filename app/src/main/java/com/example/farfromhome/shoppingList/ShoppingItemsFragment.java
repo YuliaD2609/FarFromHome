@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
-import com.example.farfromhome.suitcase.SuitcaseItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,29 +72,6 @@ public class ShoppingItemsFragment extends Fragment {
     public void updateItemList(List<Item> newItems) {
         if (itemAdapter != null) {
             itemAdapter.updateItems(newItems);
-        }
-    }
-
-    public void removeMarkedItems() {
-        List<Item> itemsToRemove = new ArrayList<>();
-        for (Item item : items) {
-            if (item.isMarked()) {
-                itemsToRemove.add(item);
-                if(dbHelper.doesProductPantryExist(item.getName())){
-                    Item itemPantry=dbHelper.getPantryItem(item.getName());
-                    int quantity=item.getQuantity()+itemPantry.getQuantity();
-                    item.setQuantity(quantity);
-                    item.setExpiry(itemPantry.getExpiry());
-                }
-                dbHelper.updatePantryItem(item);
-                dbHelper.removeShoppingListItem(item.getName());
-            }
-        }
-        if(itemsToRemove.isEmpty()){
-            HomeActivity.showCustomToast(requireContext(), "Non ci sono elementi selezionati");
-        }else {
-            items.removeAll(itemsToRemove);
-            itemAdapter.updateItems(items);
         }
     }
 

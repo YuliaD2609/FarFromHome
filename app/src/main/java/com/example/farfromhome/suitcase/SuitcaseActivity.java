@@ -13,14 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.farfromhome.DatabaseHelper;
 import com.example.farfromhome.HomeActivity;
-import com.example.farfromhome.Item;
 import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
-import com.example.farfromhome.menu.VerticalMenuFragmentSuitcase;
-import com.example.farfromhome.pantry.PantryActivity;
-import com.example.farfromhome.pantry.PantryAddItem;
-import com.example.farfromhome.pantry.PantryItemsFragment;
 
 import java.util.List;
 

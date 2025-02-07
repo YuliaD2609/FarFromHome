@@ -7,7 +7,6 @@ import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
-import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -117,7 +115,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
                 (datePicker, i, i1, i2) -> {
                     Calendar selectedDate = Calendar.getInstance();
                     selectedDate.set(i, i1, i2);
-                    Calendar today = Calendar.getInstance();  // Ottiene la data attuale correttamente
+                    Calendar today = Calendar.getInstance();
 
                     item.setExpiry(selectedDate.getTime());
 
