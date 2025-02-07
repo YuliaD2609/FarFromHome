@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +58,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_main);
-        //deleteDatabase("farfromhomedb.db");
-
 
         checkAndInitializeDatabase();
         createNotificationChannel();
@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
+        adjustLayout();
+
         startAnimation(shoppingListButton, 0);
         startAnimation(pantryButton, 300);
         startAnimation(suitcaseButton, 500);
@@ -84,6 +86,43 @@ public class HomeActivity extends AppCompatActivity {
         shoppingListButton.setOnClickListener(view -> goToShoppingList());
         pantryButton.setOnClickListener(view -> goToPantry());
         suitcaseButton.setOnClickListener(view -> goToSuitcase());
+    }
+
+    private void adjustLayout() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+
+        // Modifica la dimensione del titolo
+        ImageView title = findViewById(R.id.title);
+        RelativeLayout.LayoutParams titleParams = (RelativeLayout.LayoutParams) title.getLayoutParams();
+        titleParams.height = (int) (screenHeight * 0.15); // 15% dell'altezza dello schermo
+        title.setLayoutParams(titleParams);
+
+        // Modifica la dimensione del layout dei prodotti in scadenza
+        LinearLayout warningLayout = findViewById(R.id.warningLayout);
+        LinearLayout.LayoutParams warningParams = (LinearLayout.LayoutParams) warningLayout.getLayoutParams();
+        warningParams.height = (int) (screenHeight * 0.25); // 25% dell'altezza dello schermo
+        warningLayout.setLayoutParams(warningParams);
+
+        // Modifica la spaziatura tra i bottoni
+        int buttonSpacing = (int) (screenHeight * 0.05); // 5% dell'altezza dello schermo
+
+        LinearLayout shoppingListButton = findViewById(R.id.shoppinglistbutton);
+        LinearLayout pantryButton = findViewById(R.id.pantrybutton);
+        LinearLayout suitcaseButton = findViewById(R.id.suitcasebutton);
+
+        LinearLayout.LayoutParams shoppingParams = (LinearLayout.LayoutParams) shoppingListButton.getLayoutParams();
+        shoppingParams.setMargins(0, 0, 0, buttonSpacing);
+        shoppingListButton.setLayoutParams(shoppingParams);
+
+        LinearLayout.LayoutParams pantryParams = (LinearLayout.LayoutParams) pantryButton.getLayoutParams();
+        pantryParams.setMargins(0, 0, 0, buttonSpacing);
+        pantryButton.setLayoutParams(pantryParams);
+
+        LinearLayout.LayoutParams suitcaseParams = (LinearLayout.LayoutParams) suitcaseButton.getLayoutParams();
+        suitcaseParams.setMargins(0, 0, 0, buttonSpacing);
+        suitcaseButton.setLayoutParams(suitcaseParams);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
