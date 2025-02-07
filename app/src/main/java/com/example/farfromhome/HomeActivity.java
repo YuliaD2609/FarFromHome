@@ -312,10 +312,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            if (notificationAccepted && locationAccepted) {
-                initializeSystem();
-            } else {
+            if (!notificationAccepted && !locationAccepted) {
                 showPermissionDeniedMessage(notificationAccepted, locationAccepted);
+            } else {
+
             }
         }
     }
