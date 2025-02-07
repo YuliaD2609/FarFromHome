@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -79,15 +80,7 @@ public class PantryActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim().toLowerCase();
-
-                if (!query.isEmpty()) {
-                    List<Item> searchResults = dbHelper.searchPantryItemsByName(query);
-                    pantryItemFragment.updateItemList(searchResults);
-                } else {
-                    // Se il campo è vuoto, ricarica tutti gli elementi della categoria selezionata
-                    pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
-                }
+                search(searchInput);
             }
 
             @Override
@@ -96,25 +89,39 @@ public class PantryActivity extends AppCompatActivity {
         });
 
         searchButton.setOnClickListener(v -> {
-            String query = searchInput.getText().toString().trim().toLowerCase();
-            if (!query.isEmpty()) {
-                List<Item> searchResults = dbHelper.searchPantryItemsByName(query);
-                if (searchResults.isEmpty()) {
-                    HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
-                } else {
-                    pantryItemFragment.updateItemList(searchResults);
-                }
-            } else {
-                HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
-                pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
-            }
+            search(searchInput);
         });
+
 
     }
 
     public void updateCategory(String newCategory) {
         if (pantryItemFragment != null) {
             pantryItemFragment.updateCategory(newCategory);
+        }
+    }
+
+    public void search(EditText searchInput){
+        String query = searchInput.getText().toString().trim().toLowerCase();
+        String selectedCategory = VerticalMenuFragment.getSelectedCategory();
+
+        if (!query.isEmpty()) {
+            List<Item> searchResults;
+
+            if (selectedCategory == null || selectedCategory.isEmpty()) {
+                searchResults = dbHelper.searchPantryItemsByName(query);
+            } else {
+                searchResults = dbHelper.searchPantryItemsByCategoryAndName(selectedCategory, query);
+            }
+
+            if (searchResults.isEmpty()) {
+                HomeActivity.showCustomToast(this, "Nessun elemento trovato con questo nome.");
+            } else {
+                pantryItemFragment.updateItemList(searchResults);
+            }
+        } else {
+            HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
+            pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
         }
     }
 }
