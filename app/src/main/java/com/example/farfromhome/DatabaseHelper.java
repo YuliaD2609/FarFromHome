@@ -690,32 +690,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
-    public List<Item> searchPantryItemsByCategory(String categoryPrefix) {
+    public List<Item> searchPantryItemsByCategoryAndName(String categoryPrefix, String namePrefix) {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM pantry WHERE category_name LIKE ?";
-        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix + "%"});
+        String query = "SELECT * FROM pantry WHERE category_name= ? AND name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
             do {
-                @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
-                @SuppressLint("Range") int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
-                @SuppressLint("Range") String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
-                @SuppressLint("Range") String category = cursor.getString(cursor.getColumnIndex("category_name"));
+                String name = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+                int quantity = cursor.getInt(cursor.getColumnIndex(COLUMN_QUANTITY));
+                String expiryStr = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRY));
+                String category = cursor.getString(cursor.getColumnIndex("category_name"));
 
                 Date expiryDate = null;
                 if (expiryStr != null && !expiryStr.isEmpty()) {
                     try {
-                        expiryDate = new SimpleDateFormat("dd-MM-yyy").parse(expiryStr);
+                        expiryDate = new SimpleDateFormat("dd-MM-yyyy").parse(expiryStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        expiryDate = null;
                     }
                 }
 
-
-                Item item= new Item(name,quantity,expiryDate,category);
+                Item item = new Item(name, quantity, expiryDate, category);
                 items.add(item);
             } while (cursor.moveToNext());
         }
@@ -724,6 +722,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return items;
     }
+
 
 
     @SuppressLint("Range")
@@ -753,12 +752,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
-    public List<Item> searchShoppingListItemsByCategory(String categoryPrefix) {
+    public List<Item> searchShoppingListItemsByCategoryAndName(String categoryPrefix,String namePrefix) {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM shopping_list WHERE category_name LIKE ?";
-        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix + "%"});
+        String query = "SELECT * FROM shopping_list WHERE category_name= ? AND name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
             do {
@@ -803,12 +802,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
-    public List<SuitcaseItem> searchSuitcaseListItemsByCategory(String categoryPrefix) {
+    public List<SuitcaseItem> searchSuitcaseListItemsByCategoryAndName(String categoryPrefix,String namePrefix) {
         List<SuitcaseItem> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM suitcase WHERE category_name LIKE ?";
-        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix + "%"});
+        String query = "SELECT * FROM suitcase WHERE category_name= ? AND name LIKE ?";
+        Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
             do {
