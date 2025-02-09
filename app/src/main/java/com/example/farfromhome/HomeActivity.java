@@ -48,6 +48,7 @@ import androidx.core.content.ContextCompat;
 import com.example.farfromhome.pantry.PantryActivity;
 import com.example.farfromhome.shoppingList.ShoppingListActivity;
 import com.example.farfromhome.suitcase.SuitcaseActivity;
+import com.example.farfromhome.suitcase.SuitcaseAddItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -106,9 +107,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification,ImageView trash) {
-        shoppingList.setOnClickListener(view -> startActivity(new Intent(this, ShoppingListActivity.class)));
-        pantry.setOnClickListener(view -> startActivity(new Intent(this, PantryActivity.class)));
-        suitcase.setOnClickListener(view -> startActivity(new Intent(this, SuitcaseActivity.class)));
+        shoppingList.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ShoppingListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+        });
+        pantry.setOnClickListener(view -> {
+            Intent intent = new Intent(this, PantryActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+        });
+        suitcase.setOnClickListener(view -> {
+            Intent intent = new Intent(this, SuitcaseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
+        });
         notification.setOnClickListener(v -> showNotificationTimePicker());
         trash.setOnClickListener(v -> deleteDb());
     }
@@ -409,7 +422,7 @@ public class HomeActivity extends AppCompatActivity {
                     long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
                     long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
-                    if (daysToExpiry >= 0 && daysToExpiry <= 14) {
+                    if (daysToExpiry >= 0 && daysToExpiry <= 7) {
                         hasExpiringItems = true;
 
                         LinearLayout row = new LinearLayout(this);
