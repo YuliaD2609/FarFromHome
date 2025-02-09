@@ -65,38 +65,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage_main);
 
+        databaseHelper = new DatabaseHelper(this);
         checkAndInitializeDatabase();
         createNotificationChannel();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkAndRequestPermissions()) {
                 initializeSystem();
             }
         }
-
-
-
-        View shoppingListButton = findViewById(R.id.shoppinglistbutton);
-        View pantryButton = findViewById(R.id.pantrybutton);
-        View suitcaseButton = findViewById(R.id.suitcasebutton);
-        ImageView notificationButton = findViewById(R.id.notification_icon);
-        warningText = findViewById(R.id.warningLayout);
-
-        databaseHelper = new DatabaseHelper(this);
-
-        adjustLayout();
-
-        startAnimation(shoppingListButton, 0);
-        startAnimation(pantryButton, 300);
-        startAnimation(suitcaseButton, 500);
-        startAnimation(notificationButton, 600);
-        startBottomAnimation(warningText, 200);
-
-        loadExpiringProducts();
-
-        shoppingListButton.setOnClickListener(view -> goToShoppingList());
-        pantryButton.setOnClickListener(view -> goToPantry());
-        suitcaseButton.setOnClickListener(view -> goToSuitcase());
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             if (alarmManager != null && !alarmManager.canScheduleExactAlarms()) {
@@ -104,26 +81,48 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        notificationButton.setOnClickListener(v -> {
-                showNotificationTimePicker();
-        });
+        initializeUI();
+        adjustLayout();
+        loadExpiringProducts();
+
     }
 
+    private void initializeUI() {
+        View shoppingListButton = findViewById(R.id.shoppinglistbutton);
+        View pantryButton = findViewById(R.id.pantrybutton);
+        View suitcaseButton = findViewById(R.id.suitcasebutton);
+        ImageView notificationButton = findViewById(R.id.notification_icon);
+        warningText = findViewById(R.id.warningLayout);
 
+        setButtonListeners(shoppingListButton, pantryButton, suitcaseButton, notificationButton);
+        startAnimations(shoppingListButton, pantryButton, suitcaseButton, notificationButton);
+    }
+
+    private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification) {
+        shoppingList.setOnClickListener(view -> startActivity(new Intent(this, ShoppingListActivity.class)));
+        pantry.setOnClickListener(view -> startActivity(new Intent(this, PantryActivity.class)));
+        suitcase.setOnClickListener(view -> startActivity(new Intent(this, SuitcaseActivity.class)));
+        notification.setOnClickListener(v -> showNotificationTimePicker());
+    }
+
+    private void startAnimations(View... views) {
+        long delay = 0;
+        for (View view : views) {
+            startAnimation(view, delay);
+            delay += 200;
+        }
+        startBottomAnimation(warningText, 200);
+    }
 
     public void showNotificationTimePicker() {
 
-        // Verifica se l'app ha il permesso di inviare notifiche
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // Se il permesso non è stato concesso, richiedilo
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+               ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
                 return;
             }
         }
 
-        // Se il permesso è stato concesso, continua con l'azione di impostare l'orario della notifica
-        // Creazione del dialogo per impostare l'orario della notifica
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         TextView title = new TextView(this);
@@ -422,15 +421,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private void checkAndInitializeDatabase() {
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isDatabaseInitialized = preferences.getBoolean(KEY_DATABASE_INITIALIZED, false);
 
-        if (!isDatabaseInitialized) {
+        if (!preferences.getBoolean(KEY_DATABASE_INITIALIZED, false)) {
             DatabaseHelper databaseHelper = new DatabaseHelper(this);
             databaseHelper.getWritableDatabase();
 
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(KEY_DATABASE_INITIALIZED, true);
-            editor.apply();
+            editor.putBoolean(KEY_DATABASE_INITIALIZED, true).apply();
         }
     }
 
@@ -444,21 +441,6 @@ public class HomeActivity extends AppCompatActivity {
         Animation slideInLeft = AnimationUtils.loadAnimation(this, R.anim.slide_in_bottom);
         slideInLeft.setStartOffset(delay);
         view.startAnimation(slideInLeft);
-    }
-
-    private void goToShoppingList() {
-        Intent intent = new Intent(this, ShoppingListActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToPantry() {
-        Intent intent = new Intent(this, PantryActivity.class);
-        startActivity(intent);
-    }
-
-    private void goToSuitcase() {
-        Intent intent = new Intent(this, SuitcaseActivity.class);
-        startActivity(intent);
     }
 
     public static void showCustomToast(Context context, String message) {
