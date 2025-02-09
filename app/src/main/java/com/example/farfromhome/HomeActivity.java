@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
 
         TextView messageView = new TextView(this);
         messageView.setTextSize(16);
-        String firstPart = "Vuoi eliminare tutti i dati?";
+        String firstPart = "Vuoi eliminare tutti gli elementi inseriti?";
         SpannableString spannableFirstPart = new SpannableString(firstPart);
         spannableFirstPart.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.darkerBrown)),
                 0, firstPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

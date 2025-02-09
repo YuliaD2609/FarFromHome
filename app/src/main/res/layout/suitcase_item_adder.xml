@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Inserisci un prodotto per la tua valigia"
+                android:text="Inserisci un prodotto"
                 android:textSize="30dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textColor="@color/black" />
