@@ -836,6 +836,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean deleteAllItems() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean isDeleted = false;
+
+        int suitcaseResult = db.delete(TABLE_SUITCASE, null, null);
+        int pantryResult = db.delete(TABLE_PANTRY, null, null);
+        int shoppingListResult = db.delete(TABLE_SHOPPING_LIST, null, null);
+
+        if (suitcaseResult > 0 || pantryResult > 0 || shoppingListResult > 0) {
+            isDeleted = true;
+        }
+
+        db.close();
+        return isDeleted;
+    }
+
     public Item modifyShoppingListItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

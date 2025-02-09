@@ -8,6 +8,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,6 +20,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +32,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,17 +98,74 @@ public class HomeActivity extends AppCompatActivity {
         View pantryButton = findViewById(R.id.pantrybutton);
         View suitcaseButton = findViewById(R.id.suitcasebutton);
         ImageView notificationButton = findViewById(R.id.notification_icon);
+        ImageView trashButton = findViewById(R.id.trash_icon);
         warningText = findViewById(R.id.warningLayout);
 
-        setButtonListeners(shoppingListButton, pantryButton, suitcaseButton, notificationButton);
+        setButtonListeners(shoppingListButton, pantryButton, suitcaseButton, notificationButton, trashButton);
         startAnimations(shoppingListButton, pantryButton, suitcaseButton, notificationButton);
     }
 
-    private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification) {
+    private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification,ImageView trash) {
         shoppingList.setOnClickListener(view -> startActivity(new Intent(this, ShoppingListActivity.class)));
         pantry.setOnClickListener(view -> startActivity(new Intent(this, PantryActivity.class)));
         suitcase.setOnClickListener(view -> startActivity(new Intent(this, SuitcaseActivity.class)));
         notification.setOnClickListener(v -> showNotificationTimePicker());
+        trash.setOnClickListener(v -> deleteDb());
+    }
+
+    private void deleteDb() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        TextView title = new TextView(this);
+        title.setText("Conferma eliminazione");
+        title.setTextSize(20);
+        title.setTextColor(getResources().getColor(R.color.darkerBrown));
+        title.setTypeface(null, Typeface.BOLD);
+        title.setPadding(20, 30, 20, 10);
+        title.setGravity(Gravity.CENTER);
+        builder.setCustomTitle(title);
+
+        TextView messageView = new TextView(this);
+        messageView.setTextSize(16);
+        String firstPart = "Vuoi eliminare tutti i dati?";
+        SpannableString spannableFirstPart = new SpannableString(firstPart);
+        spannableFirstPart.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.darkerBrown)),
+                0, firstPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        String secondPart = "\nI dati eliminati non saranno recuperati.";
+        SpannableString spannableSecondPart = new SpannableString(secondPart);
+        spannableSecondPart.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.red)),
+                0, secondPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        CharSequence finalMessage = TextUtils.concat(spannableFirstPart, spannableSecondPart);
+        messageView.setText(finalMessage);
+        messageView.setGravity(Gravity.CENTER);
+        builder.setView(messageView);
+
+        builder.setPositiveButton("Si", (dialog, which) -> {
+
+            if(databaseHelper.deleteAllItems())
+                HomeActivity.showCustomToast(this,"Dati eliminati con successo");
+            else
+                HomeActivity.showCustomToast(this,"Errore nell'eliminazione");
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+
+
+
+        Drawable background = ContextCompat.getDrawable(this, R.drawable.popup);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
+
+        dialog.setOnShowListener(d -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.darkerBrown));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.brown));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(null, Typeface.BOLD);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(null, Typeface.BOLD);
+        });
+
+        dialog.show();
     }
 
     private void startAnimations(View... views) {
