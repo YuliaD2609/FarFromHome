@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SuitcaseItemFragment extends Fragment {
@@ -22,6 +24,7 @@ public class SuitcaseItemFragment extends Fragment {
     private SuitcaseItemAdapter itemAdapter;
     private DatabaseHelper dbHelper;
     private String categoryName;
+    List<SuitcaseItem> items=new ArrayList<>();
 
     @Nullable
     @Override
@@ -53,7 +56,6 @@ public class SuitcaseItemFragment extends Fragment {
     }
 
     public void loadItems(String category) {
-        List<SuitcaseItem> items;
         if (category == null || category.isEmpty()) {
            items = dbHelper.getAllSuitcaseItems();
         } else {
@@ -65,6 +67,23 @@ public class SuitcaseItemFragment extends Fragment {
             itemList.setLayoutManager(new LinearLayoutManager(requireContext()));
             itemList.setAdapter(itemAdapter);
         } else {
+            itemAdapter.updateItems(items);
+        }
+    }
+
+    public void removeMarkedItems() {
+        List<SuitcaseItem> itemsToRemove = new ArrayList<>();
+        for (SuitcaseItem item : items) {
+            if (item.isMarked()) {
+                itemsToRemove.add(item);
+                dbHelper.removeSuitcaseItem(item.getName());
+            }
+        }
+        if(itemsToRemove.isEmpty()){
+            HomeActivity.showCustomToast(requireContext(), "Non hai selezionato nessun elemento");
+        }else{
+            HomeActivity.showCustomToast(requireContext(), "La valigia è stata fatta!");
+            items.removeAll(itemsToRemove);
             itemAdapter.updateItems(items);
         }
     }

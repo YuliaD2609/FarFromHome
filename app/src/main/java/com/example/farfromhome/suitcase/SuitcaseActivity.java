@@ -89,6 +89,11 @@ public class SuitcaseActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             search(searchInput);
         });
+
+        LinearLayout suitcaseDoneButton = findViewById(R.id.suitcaseDone);
+        suitcaseDoneButton.setOnClickListener(v -> {
+            suitcaseItemFragment.removeMarkedItems();
+        });
     }
 
     public void updateCategory(String newCategory) {

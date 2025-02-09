@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farfromhome.DatabaseHelper;
+import com.example.farfromhome.HomeActivity;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 
@@ -75,4 +75,20 @@ public class ShoppingItemsFragment extends Fragment {
         }
     }
 
+    public void removeMarkedItems() {
+        List<Item> itemsToRemove = new ArrayList<>();
+        for (Item item : items) {
+            if (item.isMarked()) {
+                itemsToRemove.add(item);
+                dbHelper.removeShoppingListItem(item.getName());
+            }
+        }
+        if(itemsToRemove.isEmpty()){
+            HomeActivity.showCustomToast(requireContext(), "Non hai selezionato nessun elemento");
+        }else{
+            HomeActivity.showCustomToast(requireContext(), "La spesa è stata fatta! Gli elementi sono stati aggiunti nella dispensa.");
+            items.removeAll(itemsToRemove);
+            itemAdapter.updateItems(items);
+        }
+    }
 }

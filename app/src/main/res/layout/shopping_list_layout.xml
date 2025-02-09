@@ -109,7 +109,6 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_gravity="end"
-        android:onClick="addElement"
         android:background="@drawable/rounded_background_accent"
         android:padding="8dp"
         android:layout_margin="8dp"

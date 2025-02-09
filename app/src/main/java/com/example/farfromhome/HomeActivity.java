@@ -109,17 +109,14 @@ public class HomeActivity extends AppCompatActivity {
     private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification,ImageView trash) {
         shoppingList.setOnClickListener(view -> {
             Intent intent = new Intent(this, ShoppingListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         pantry.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantryActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         suitcase.setOnClickListener(view -> {
             Intent intent = new Intent(this, SuitcaseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         notification.setOnClickListener(v -> showNotificationTimePicker());
@@ -472,7 +469,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @SuppressLint("ScheduleExactAlarm")
     private void scheduleNotification(Context context, long expiryTime, int daysBefore) {
-        long triggerTime = expiryTime - (daysBefore * 24 * 60 * 60 * 1000);
+        long triggerTime = expiryTime - ((long) daysBefore * 24 * 60 * 60 * 1000);
 
         if (triggerTime > System.currentTimeMillis()) {
             Intent intent = new Intent(context, NotificationReceiver.class);

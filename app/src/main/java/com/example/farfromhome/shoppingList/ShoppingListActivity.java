@@ -17,9 +17,6 @@ import com.example.farfromhome.menu.HorizontalMenuFragment;
 import com.example.farfromhome.Item;
 import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
-import com.example.farfromhome.pantry.PantryActivity;
-import com.example.farfromhome.pantry.PantryAddItem;
-import com.example.farfromhome.pantry.PantryItemsFragment;
 
 import java.util.List;
 
@@ -92,6 +89,11 @@ public class ShoppingListActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             search(searchInput);
         });
+
+        LinearLayout shoppingDoneButton = findViewById(R.id.shoppingDone);
+        shoppingDoneButton.setOnClickListener(v -> {
+            shoppingItemFragment.removeMarkedItems();
+            });
     }
 
     public void updateCategory(String newCategory) {
