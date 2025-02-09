@@ -153,8 +153,6 @@ public class HomeActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
 
-
-
         Drawable background = ContextCompat.getDrawable(this, R.drawable.popup);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(background);
 
