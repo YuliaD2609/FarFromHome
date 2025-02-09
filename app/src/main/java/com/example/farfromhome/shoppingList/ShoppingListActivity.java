@@ -31,7 +31,7 @@ public class ShoppingListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pantry_layout);
+        setContentView(R.layout.shopping_list_layout);
 
         dbHelper = new DatabaseHelper(this);
         setupFragments();
@@ -58,7 +58,7 @@ public class ShoppingListActivity extends AppCompatActivity {
             shoppingBundle.putString("CATEGORY_NAME", categoryName);
             shoppingItemFragment.setArguments(shoppingBundle);
         }
-        fragmentTransaction.replace(R.id.item_fragment_container, shoppingItemFragment);
+        fragmentTransaction.replace(R.id.ShoppingItemList, shoppingItemFragment);
 
         fragmentTransaction.commit();
     }

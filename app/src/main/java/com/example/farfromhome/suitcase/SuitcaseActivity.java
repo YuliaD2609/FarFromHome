@@ -28,7 +28,7 @@ public class SuitcaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pantry_layout);
+        setContentView(R.layout.suitcase_layout);
 
         dbHelper = new DatabaseHelper(this);
         setupFragments();
@@ -55,7 +55,7 @@ public class SuitcaseActivity extends AppCompatActivity {
             suitcaseBundle.putString("CATEGORY_NAME", categoryName);
             suitcaseItemFragment.setArguments(suitcaseBundle);
         }
-        fragmentTransaction.replace(R.id.item_fragment_container, suitcaseItemFragment);
+        fragmentTransaction.replace(R.id.suitcaseItemList, suitcaseItemFragment);
 
         fragmentTransaction.commit();
     }

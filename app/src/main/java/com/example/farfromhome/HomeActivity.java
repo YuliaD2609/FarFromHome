@@ -316,7 +316,7 @@ public class HomeActivity extends AppCompatActivity {
     private void adjustLayout() {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         int screenHeight = metrics.heightPixels;
-        int screenWidth = metrics.widthPixels;
+        //int screenWidth = metrics.widthPixels;
 
         ImageView title = findViewById(R.id.title);
         RelativeLayout.LayoutParams titleParams = (RelativeLayout.LayoutParams) title.getLayoutParams();
@@ -385,7 +385,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            if (!notificationAccepted && !locationAccepted) {
+            if (!notificationAccepted || !locationAccepted) {
                 showPermissionDeniedMessage(notificationAccepted, locationAccepted);
             } else {
 
