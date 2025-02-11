@@ -648,7 +648,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM pantry WHERE name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_PANTRY +" WHERE name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
@@ -684,7 +684,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM pantry WHERE category_name= ? AND name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_PANTRY +" WHERE category_name= ? AND name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
@@ -700,8 +700,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         expiryDate = new SimpleDateFormat("dd-MM-yyyy").parse(expiryStr);
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        expiryDate = null;
                     }
                 }
+
 
                 Item item = new Item(name, quantity, expiryDate, category);
                 items.add(item);
@@ -720,7 +722,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM shopping_list WHERE name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_SHOPPING_LIST +" WHERE name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
@@ -746,7 +748,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM shopping_list WHERE category_name= ? AND name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_SHOPPING_LIST +" WHERE category_name= ? AND name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
@@ -772,7 +774,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<SuitcaseItem> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM suitcase WHERE name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_SUITCASE +" WHERE name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
@@ -796,7 +798,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<SuitcaseItem> items = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM suitcase WHERE category_name= ? AND name LIKE ?";
+        String query = "SELECT * FROM "+ TABLE_SUITCASE +" WHERE category_name= ? AND name LIKE ?";
         Cursor cursor = db.rawQuery(query, new String[]{categoryPrefix, namePrefix + "%"});
 
         if (cursor.moveToFirst()) {
