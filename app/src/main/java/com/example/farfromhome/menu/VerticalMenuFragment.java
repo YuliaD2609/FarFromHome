@@ -62,7 +62,10 @@ public class VerticalMenuFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.vertical_menu, container, false);
 
         dbHelper = new DatabaseHelper(requireContext());
-        existingCategories = dbHelper.getAllCategories();
+        if (suitcaseActivity != null)
+            existingCategories = dbHelper.getAllSuitcaseCategories();
+        else
+            existingCategories = dbHelper.getAllCategories();
 
         categoryList = rootView.findViewById(R.id.categoryList);
 
@@ -185,8 +188,10 @@ public class VerticalMenuFragment extends Fragment {
         categoryContainer.addView(deleteIcon);
 
         categoryList.addView(categoryContainer);
-
-        dbHelper.addCategory(categoryName);
+        if (suitcaseActivity != null)
+            dbHelper.addSuitcaseCategory(categoryName);
+        else
+            dbHelper.addCategory(categoryName);
     }
 
     private void confirmAndDeleteCategory(String categoryName, View categoryContainer) {

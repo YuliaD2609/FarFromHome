@@ -150,9 +150,10 @@ public class HomeActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Si", (dialog, which) -> {
 
-            if(databaseHelper.deleteAllItems())
-                HomeActivity.showCustomToast(this,"Dati eliminati con successo");
-            else
+            if(databaseHelper.deleteAllItems()) {
+                HomeActivity.showCustomToast(this, "Dati eliminati con successo");
+                loadExpiringProducts();
+            }else
                 HomeActivity.showCustomToast(this,"Errore nell'eliminazione");
         });
 
@@ -286,10 +287,11 @@ public class HomeActivity extends AppCompatActivity {
         editor.putInt("notification_minute", minute);
         editor.apply();
 
-        cancelExistingNotification(); // Cancella l'allarme precedente
-        scheduleDailyNotification(hour, minute); // Imposta il nuovo allarme
+        cancelExistingNotification();
+        scheduleDailyNotification(hour, minute);
 
         showCustomToast(this, "Orario notifiche impostato: " + hour + ":" + String.format("%02d", minute));
+        loadExpiringProducts();
     }
 
     private void scheduleDailyNotification(int hour, int minute) {
@@ -302,7 +304,6 @@ public class HomeActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
 
-        // Se l'orario scelto è già passato per oggi, programma per domani
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
@@ -312,14 +313,23 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // Metodo per cancellare eventuali notifiche precedenti
     private void cancelExistingNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (alarmManager != null) {
-            alarmManager.cancel(pendingIntent);
+            // Annulla tutte le notifiche programmate per 7, 2 e 1 giorni prima della scadenza
+            for (int daysBefore : new int[]{7, 2, 1}) {
+                Intent intent = new Intent(this, NotificationReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                        this, daysBefore, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                alarmManager.cancel(pendingIntent);
+            }
+        }
+
+        // Cancella le notifiche già visualizzate
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
         }
     }
 
@@ -459,7 +469,6 @@ public class HomeActivity extends AppCompatActivity {
                         row.addView(expiryDateView);
                         warningContainer.addView(row);
 
-                        // Programma le notifiche SOLO se ci sono prodotti in scadenza
                         scheduleNotification(this, expiryDate.getTime(), 7);
                         scheduleNotification(this, expiryDate.getTime(), 2);
                         scheduleNotification(this, expiryDate.getTime(), 1);
@@ -467,7 +476,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            // Se non ci sono prodotti in scadenza, non schedulare alcuna notifica
             if (!hasExpiringItems) {
                 TextView noItemsView = new TextView(this);
                 noItemsView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -479,7 +487,6 @@ public class HomeActivity extends AppCompatActivity {
                 noItemsView.setGravity(Gravity.CENTER);
                 warningContainer.addView(noItemsView);
 
-                // Cancella eventuali notifiche precedenti
                 cancelExistingNotification();
             }
         });
