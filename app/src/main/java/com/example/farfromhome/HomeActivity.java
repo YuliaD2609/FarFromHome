@@ -200,6 +200,16 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+                showCustomToast(this, "Abilita il permesso di notifica per ricevere i promemoria!");
+
+                return;
+            }
+        }
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         TextView title = new TextView(this);
@@ -399,9 +409,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            boolean notificationAccepted = false;
-            boolean locationAccepted = false;
+            boolean notificationAccepted = true;
+            boolean locationAccepted = true;
 
             for (int i = 0; i < permissions.length; i++) {
                 if (permissions[i].equals(Manifest.permission.POST_NOTIFICATIONS)) {
@@ -411,13 +422,16 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
-            if (!notificationAccepted || !locationAccepted) {
-                showPermissionDeniedMessage(notificationAccepted, locationAccepted);
-            } else {
-
+            if (!notificationAccepted && !locationAccepted) {
+                showCustomToast(this, "Attiva le notifiche e la posizione per il corretto funzionamento dell'app.");
+            } else if (!notificationAccepted) {
+                showCustomToast(this, "Il permesso di notifica è richiesto per il corretto funzionamento dell'app.");
+            } else if (!locationAccepted) {
+                showCustomToast(this, "Il permesso di posizione è richiesto per il corretto funzionamento dell'app.");
             }
         }
     }
+
 
     private void showPermissionDeniedMessage(boolean notificationAccepted, boolean locationAccepted) {
         if (!notificationAccepted) {
