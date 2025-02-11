@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
         warningText = findViewById(R.id.warningLayout);
 
         setButtonListeners(shoppingListButton, pantryButton, suitcaseButton, notificationButton, trashButton);
-        startAnimations(shoppingListButton, pantryButton, suitcaseButton, notificationButton);
+        startAnimations(shoppingListButton, pantryButton, suitcaseButton, notificationButton,trashButton);
     }
 
     private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification,ImageView trash) {
