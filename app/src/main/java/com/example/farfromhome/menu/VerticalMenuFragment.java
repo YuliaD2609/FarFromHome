@@ -117,7 +117,7 @@ public class VerticalMenuFragment extends Fragment {
         builder.setPositiveButton("Add", (dialog, which) -> {
             String categoryName = input.getText().toString().trim();
             if (!categoryName.isEmpty()) {
-                if (categoryName.length() > 8) {
+                if (categoryName.length() > 10) {
                     HomeActivity.showCustomToast(requireContext(),"Il nome della categoria è troppo lungo");
                 } else {
                     if (existingCategories.contains(categoryName)) {
