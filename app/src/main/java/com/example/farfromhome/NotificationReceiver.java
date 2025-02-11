@@ -6,12 +6,19 @@ import android.content.Intent;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import androidx.core.app.NotificationCompat;
+import android.content.SharedPreferences;
 
 public class NotificationReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "expiring_products_channel";
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        SharedPreferences prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE);
+        boolean hasExpiringItems = prefs.getBoolean("has_expiring_items", false);
+
+        if (!hasExpiringItems) {
+            return;
+        }
 
         Intent notificationIntent = new Intent(context, HomeActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -27,7 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
-            notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+            notificationManager.notify(1001, builder.build());
         }
     }
 }

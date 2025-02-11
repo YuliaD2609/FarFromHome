@@ -476,6 +476,11 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
+            SharedPreferences prefs = getSharedPreferences("NotificationPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("has_expiring_items", hasExpiringItems);
+            editor.apply();
+
             if (!hasExpiringItems) {
                 TextView noItemsView = new TextView(this);
                 noItemsView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -486,11 +491,10 @@ public class HomeActivity extends AppCompatActivity {
                 noItemsView.setTextColor(getResources().getColor(R.color.black));
                 noItemsView.setGravity(Gravity.CENTER);
                 warningContainer.addView(noItemsView);
-
-                cancelExistingNotification();
             }
         });
     }
+
 
     @SuppressLint("ScheduleExactAlarm")
     private void scheduleNotification(Context context, long expiryTime, int daysBefore) {
