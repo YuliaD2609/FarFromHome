@@ -288,7 +288,10 @@ public class HomeActivity extends AppCompatActivity {
         editor.putInt("notification_hour", hour);
         editor.putInt("notification_minute", minute);
         editor.apply();
-        scheduleDailyNotification(hour, minute);
+
+        cancelExistingNotification(); // Cancella l'allarme precedente
+        scheduleDailyNotification(hour, minute); // Imposta il nuovo allarme
+
         showCustomToast(this, "Orario notifiche impostato: " + hour + ":" + String.format("%02d", minute));
     }
 
@@ -301,12 +304,25 @@ public class HomeActivity extends AppCompatActivity {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
+
+        // Se l'orario scelto è già passato per oggi, programma per domani
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
+
+    // Metodo per cancellare eventuali notifiche precedenti
+    private void cancelExistingNotification() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        if (alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
         }
     }
 
