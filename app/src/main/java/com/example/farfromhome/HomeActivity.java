@@ -14,9 +14,11 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.SpannableString;
@@ -188,6 +190,11 @@ public class HomeActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
+
                 return;
             }
         }
@@ -318,7 +325,6 @@ public class HomeActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (alarmManager != null) {
-            // Annulla tutte le notifiche programmate per 7, 2 e 1 giorni prima della scadenza
             for (int daysBefore : new int[]{7, 2, 1}) {
                 Intent intent = new Intent(this, NotificationReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -327,7 +333,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
-        // Cancella le notifiche già visualizzate
         if (notificationManager != null) {
             notificationManager.cancelAll();
         }
