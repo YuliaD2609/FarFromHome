@@ -8,7 +8,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,7 +31,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,7 +46,6 @@ import androidx.core.content.ContextCompat;
 import com.example.farfromhome.pantry.PantryActivity;
 import com.example.farfromhome.shoppingList.ShoppingListActivity;
 import com.example.farfromhome.suitcase.SuitcaseActivity;
-import com.example.farfromhome.suitcase.SuitcaseAddItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -462,6 +459,7 @@ public class HomeActivity extends AppCompatActivity {
                         row.addView(expiryDateView);
                         warningContainer.addView(row);
 
+                        // Programma le notifiche SOLO se ci sono prodotti in scadenza
                         scheduleNotification(this, expiryDate.getTime(), 7);
                         scheduleNotification(this, expiryDate.getTime(), 2);
                         scheduleNotification(this, expiryDate.getTime(), 1);
@@ -469,6 +467,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
 
+            // Se non ci sono prodotti in scadenza, non schedulare alcuna notifica
             if (!hasExpiringItems) {
                 TextView noItemsView = new TextView(this);
                 noItemsView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -479,6 +478,9 @@ public class HomeActivity extends AppCompatActivity {
                 noItemsView.setTextColor(getResources().getColor(R.color.black));
                 noItemsView.setGravity(Gravity.CENTER);
                 warningContainer.addView(noItemsView);
+
+                // Cancella eventuali notifiche precedenti
+                cancelExistingNotification();
             }
         });
     }
