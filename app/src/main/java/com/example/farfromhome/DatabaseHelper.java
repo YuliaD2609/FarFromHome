@@ -496,7 +496,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public List<SuitcaseItem> getSuitcaseItemsByCategory(String category) {
         SQLiteDatabase db = this.getReadableDatabase();
         List<SuitcaseItem> items = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SHOPPING_LIST + " WHERE category_name = ?", new String[]{category});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SUITCASE + " WHERE category_name = ?", new String[]{category});
 
         if (cursor.moveToFirst()) {
             do {
