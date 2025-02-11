@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -20,7 +19,6 @@ import com.example.farfromhome.R;
 import com.example.farfromhome.menu.VerticalMenuFragment;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class PantryActivity extends AppCompatActivity {
 
