@@ -108,14 +108,17 @@ public class HomeActivity extends AppCompatActivity {
     private void setButtonListeners(View shoppingList, View pantry, View suitcase, ImageView notification,ImageView trash) {
         shoppingList.setOnClickListener(view -> {
             Intent intent = new Intent(this, ShoppingListActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         pantry.setOnClickListener(view -> {
             Intent intent = new Intent(this, PantryActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         suitcase.setOnClickListener(view -> {
             Intent intent = new Intent(this, SuitcaseActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(intent);
         });
         notification.setOnClickListener(v -> showNotificationTimePicker());

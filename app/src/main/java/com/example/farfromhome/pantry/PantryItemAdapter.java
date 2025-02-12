@@ -154,7 +154,12 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
         builder.setMessage("La quantità di "+item.getName()+ " è 0. Vuoi aggiungere questo elemento alla lista della spesa?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {
-            dbHelper.addShoppingListItem(item);
+               if(dbHelper.doesProductShoppingListExist(item.getName())) {
+                   Item itemShopping=dbHelper.getShoppingListItem(item.getName());
+                   item.setQuantity(itemShopping.getQuantity()+item.getQuantity());
+                   dbHelper.updateShoppingListItem(item);
+               }else
+                 dbHelper.addShoppingListItem(item);
             dbHelper.removePantryItem(item.getName());
             items.remove(position);
             notifyItemRemoved(position);
