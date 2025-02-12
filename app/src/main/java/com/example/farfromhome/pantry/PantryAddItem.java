@@ -115,11 +115,11 @@ public class PantryAddItem extends AppCompatActivity {
     private void addProductToDatabase() {
         String productName = editTextProductName.getText().toString().trim();
         String expiryDateStr = editTextExpiryDate.getText().toString().trim();
+        Date expiryDate=null;
 
         if (!validateInputs(productName, expiryDateStr)) return;
-
-        Date expiryDate = parseDate(expiryDateStr);
-        if (expiryDate == null) return;
+        if(!expiryDateStr.isEmpty())
+            expiryDate = parseDate(expiryDateStr);
 
         String selectedCategory = spinnerCategory.getSelectedItem().toString();
 
@@ -141,10 +141,7 @@ public class PantryAddItem extends AppCompatActivity {
             HomeActivity.showCustomToast(this, "Non puoi inserire 0 elementi!");
             return false;
         }
-        if (expiryDateStr.isEmpty()) {
-            HomeActivity.showCustomToast(this, "Inserisci una data di scadenza valida!");
-            return false;
-        }
+
         return true;
     }
 
