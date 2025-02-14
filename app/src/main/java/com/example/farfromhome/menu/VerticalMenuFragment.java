@@ -199,7 +199,10 @@ public class VerticalMenuFragment extends Fragment {
                 .setTitle("Elimina Categoria")
                 .setMessage("Sei sicuro di voler eliminare la categoria \"" + categoryName + "\"?\nGli elementi al suo interno saranno eliminati.")
                 .setPositiveButton("Elimina", (dialog, which) -> {
-                    dbHelper.deleteCategory(categoryName);
+                    if (suitcaseActivity != null)
+                        dbHelper.deleteSuitcaseCategory(categoryName);
+                    else
+                        dbHelper.deleteCategory(categoryName);
                     categoryList.removeView(categoryContainer);
                     HomeActivity.showCustomToast(requireContext(), "Categoria eliminata");
                     handleCategorySelection(categoryContainer, null);
