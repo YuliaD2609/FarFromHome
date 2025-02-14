@@ -81,12 +81,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="end"
-                android:layout_margin="2dp"
                 android:background="@drawable/brown_border_accent_round"
                 android:gravity="center"
                 android:onClick="addElement"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:layout_margin="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
