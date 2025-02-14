@@ -106,7 +106,6 @@ public class SuitcaseActivity extends AppCompatActivity {
         String query = searchInput.getText().toString().trim().toLowerCase();
 
         if (query.isEmpty()) {
-            HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             suitcaseItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
             return;
         }

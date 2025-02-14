@@ -465,7 +465,7 @@ public class HomeActivity extends AppCompatActivity {
                     long diffInMillis = expiryDate.getTime() - calendar.getTimeInMillis();
                     long daysToExpiry = diffInMillis / (1000 * 60 * 60 * 24);
 
-                    if (daysToExpiry >= 0 && daysToExpiry <= 7) {
+                    if (daysToExpiry <= 7) {
                         hasExpiringItems = true;
 
                         LinearLayout row = new LinearLayout(this);
@@ -480,6 +480,8 @@ public class HomeActivity extends AppCompatActivity {
                         itemNameView.setText("• " + item.getName());
                         itemNameView.setTextSize(16);
                         itemNameView.setTextColor(getResources().getColor(R.color.black));
+                        if (daysToExpiry <= 0)
+                            itemNameView.setTextColor(getResources().getColor(R.color.red));
 
                         TextView expiryDateView = new TextView(this);
                         expiryDateView.setLayoutParams(new LinearLayout.LayoutParams(
@@ -487,6 +489,8 @@ public class HomeActivity extends AppCompatActivity {
                         expiryDateView.setText(sdf.format(expiryDate));
                         expiryDateView.setTextSize(16);
                         expiryDateView.setTextColor(getResources().getColor(R.color.black));
+                        if (daysToExpiry <= 0)
+                            expiryDateView.setTextColor(getResources().getColor(R.color.red));
 
                         row.addView(itemNameView);
                         row.addView(expiryDateView);

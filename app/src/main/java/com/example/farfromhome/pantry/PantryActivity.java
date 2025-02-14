@@ -102,7 +102,6 @@ public class PantryActivity extends AppCompatActivity {
         String query = searchInput.getText().toString().trim().toLowerCase();
 
         if (query.isEmpty()) {
-            HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             pantryItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
             return;
         }

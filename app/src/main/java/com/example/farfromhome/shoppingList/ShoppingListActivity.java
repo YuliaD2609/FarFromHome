@@ -103,7 +103,6 @@ public class ShoppingListActivity extends AppCompatActivity {
     public void search(EditText searchInput){
         String query = searchInput.getText().toString().trim().toLowerCase();
         if (query.isEmpty()) {
-            HomeActivity.showCustomToast(this, "Inserisci un nome per cercare.");
             shoppingItemFragment.loadItems(VerticalMenuFragment.getSelectedCategory());
             return;
         }

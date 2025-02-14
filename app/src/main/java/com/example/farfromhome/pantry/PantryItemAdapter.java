@@ -78,7 +78,7 @@ public class PantryItemAdapter extends RecyclerView.Adapter<PantryItemAdapter.Pa
             underlineExpiry.setSpan(new android.text.style.UnderlineSpan(), 0, expiryText.length(), 0);
             holder.itemExpire.setText(underlineExpiry);
 
-            if (daysToExpiry >= 0 && daysToExpiry <= 7) {
+            if (daysToExpiry <= 7) {
                 holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.red));
             } else {
                 holder.itemExpire.setTextColor(ContextCompat.getColor(context, R.color.black));
