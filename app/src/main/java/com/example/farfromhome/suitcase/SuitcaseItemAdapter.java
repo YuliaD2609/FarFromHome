@@ -63,7 +63,6 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
         holder.decrementButton.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 item.decrementQuantity();
-
                 dbHelper.updateSuitcaseItem(item);
                 holder.itemQuantity.setText(String.valueOf(item.getQuantity()));
             } else {
@@ -94,7 +93,7 @@ public class SuitcaseItemAdapter extends RecyclerView.Adapter<SuitcaseItemAdapte
 
     private void showConfirmDialog(SuitcaseItem item, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Aggiungere alla lista della spesa?");
+        builder.setTitle("Rimuovere elemento?");
         builder.setMessage("La quantità di "+item.getName()+ " è 0. Vuoi rimuovere l'elemento dalla valigia?");
 
         builder.setPositiveButton("Sì", (dialog, which) -> {

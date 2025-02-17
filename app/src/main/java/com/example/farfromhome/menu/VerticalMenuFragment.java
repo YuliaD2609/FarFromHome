@@ -213,9 +213,6 @@ public class VerticalMenuFragment extends Fragment {
                 .show();
     }
 
-
-
-
     private void handleCategorySelection(View selectedView, String categoryName) {
         if (selectedCategoryView != null) {
             selectedCategoryView.setBackgroundResource(R.drawable.menu_buttons);
