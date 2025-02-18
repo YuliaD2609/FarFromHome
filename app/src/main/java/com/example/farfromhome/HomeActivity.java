@@ -435,16 +435,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
-    private void showPermissionDeniedMessage(boolean notificationAccepted, boolean locationAccepted) {
-        if (!notificationAccepted) {
-            showCustomToast(this, "Il permesso di notifica è richiesto per il corretto funzionamento dell'app");
-        }
-        if (!locationAccepted) {
-            showCustomToast(this, "Il permesso di posizione è richiesto per il corretto funzionamento dell'app");
-        }
-    }
-
     private void initializeSystem() {
         setContentView(R.layout.homepage_main);
     }
