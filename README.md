@@ -1,2 +1,3 @@
-Progetto di Mobile Programming
-Sviluppo di un'app epr fuorisede con la possibilità di gestire la dispensa, scrivere la lilsta della spesa e organizzare la valigia
+Progetto di Mobile Programming:
+Sviluppo di un'app per fuorisede con la possibilità di gestire la dispensa, scrivere la lista della spesa e organizzare la valigia
+In collaborazione con Vincenzo Genovese
