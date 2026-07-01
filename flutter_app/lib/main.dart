@@ -11,6 +11,7 @@ import 'screens/pantry_screen.dart';
 import 'screens/shopping_screen.dart';
 import 'screens/auth_screen.dart';
 import 'screens/recipes_screen.dart';
+import 'services/ia/local_receipt_parser.dart';
 import 'theme/app_colors.dart';
 import 'widgets/nearby_supermarkets_modal.dart';
 
@@ -23,6 +24,9 @@ void main() async {
 
   // Inizializza le notifiche locali
   await NotificationService().init();
+
+  // Inizializza dizionario dinamico OCR
+  await LocalReceiptParser.initCustomDictionary();
 
   // Carica le variabili di ambiente
   try {

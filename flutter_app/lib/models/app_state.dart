@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/firebase_service.dart';
 import '../services/auth_service.dart';
 import '../services/notification_service.dart';
+import '../services/ia/local_receipt_parser.dart';
 import '../main.dart';
 import 'user_model.dart';
 
@@ -22,6 +23,7 @@ class ItemModel {
   bool isPantry;
   bool isShopping;
   String? ownerId;
+  String? rawOcrName;
 
   ItemModel({
     required this.id,
@@ -33,6 +35,7 @@ class ItemModel {
     this.isPantry = false,
     this.isShopping = false,
     this.ownerId,
+    this.rawOcrName,
   }) : expireDates = expireDates ?? (expireDate != "-" && expireDate != "Data: N/A" && expireDate.isNotEmpty ? [expireDate] : []);
 
   String get _cleanDateText => expireDate
@@ -888,6 +891,14 @@ class AppState extends ChangeNotifier {
       // Aggiunge nuovo elemento
       allItems.add(newItem);
       notifyListeners();
+      
+      // Aggiunge al dizionario dinamico offline dell'AI
+      if (newItem.rawOcrName != null && newItem.rawOcrName!.isNotEmpty) {
+          LocalReceiptParser.addCustomProduct(newItem.rawOcrName!, newItem.name, newItem.category);
+      } else {
+          LocalReceiptParser.addCustomProduct(newItem.name, newItem.name, newItem.category);
+      }
+      
       await _firebaseService?.saveItem(newItem);
     }
   }

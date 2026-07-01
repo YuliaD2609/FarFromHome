@@ -1,7 +1,44 @@
 import 'dart:math';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/app_state.dart';
 
 class LocalReceiptParser {
+  static Map<String, Map<String, String>> _customDictionary = {};
+
+  static Future<void> initCustomDictionary() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? dictJson = prefs.getString('custom_product_dictionary');
+      if (dictJson != null) {
+        final Map<String, dynamic> decoded = json.decode(dictJson);
+        _customDictionary = decoded.map((key, value) => MapEntry(
+            key,
+            Map<String, String>.from(value as Map)
+        ));
+      }
+    } catch (e) {
+      print("Errore caricamento dizionario custom: $e");
+    }
+  }
+
+  static void addCustomProduct(String rawKey, String finalName, String category) {
+    String cleanKey = rawKey.trim().toLowerCase();
+    if (cleanKey.length < 3) return;
+    
+    // Evita duplicati o similarità elevate con prodotti già noti
+    for (var k in _productDictionary.keys) {
+      if (k == cleanKey || _similarityScore(k, cleanKey) > 0.8) return;
+    }
+    for (var k in _customDictionary.keys) {
+      if (k == cleanKey || _similarityScore(k, cleanKey) > 0.8) return;
+    }
+    
+    _customDictionary[cleanKey] = {'name': finalName.trim(), 'category': category};
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('custom_product_dictionary', json.encode(_customDictionary));
+    });
+  }
   // Dizionario OMNICOMPRENSIVO ispirato a dataset OpenFoodFacts e cataloghi GDO Italiani (Esselunga, Coop, Conad)
   static final Map<String, Map<String, String>> _productDictionary = {
     // ================= FRUTTA & VERDURA =================
@@ -1052,7 +1089,9 @@ class LocalReceiptParser {
         'vendita',
         'prestazione',
         'descrizione',
-        'prezzo'
+        'prezzo',
+        'slam',
+        'ferreri'
       ];
       for (String garbage in discardWords) {
         if (cleanLine.contains(garbage)) {
@@ -1109,8 +1148,35 @@ class LocalReceiptParser {
       double bestSimilarity = 0.0;
       String bestMatchKey = '';
 
-      // Confronta con dizionario
+      // Confronta con dizionario base
       for (String dictKey in _productDictionary.keys) {
+        // Confronto della stringa intera
+        double fullSim = _similarityScore(productNameRaw, dictKey);
+        if (fullSim > bestSimilarity) {
+          bestSimilarity = fullSim;
+          bestMatchKey = dictKey;
+        }
+        // Confronto singole parole
+        List<String> words = productNameRaw.split(' ');
+        for (String word in words) {
+          if (word.length < 3) continue;
+          double sim = _similarityScore(word, dictKey);
+          if (sim > bestSimilarity) {
+            bestSimilarity = sim;
+            bestMatchKey = dictKey;
+          }
+        }
+      }
+      
+      // Confronta con dizionario custom
+      for (String dictKey in _customDictionary.keys) {
+        // Confronto della stringa intera (Essenziale per le stringhe OCR lunghe)
+        double fullSim = _similarityScore(productNameRaw, dictKey);
+        if (fullSim > bestSimilarity) {
+          bestSimilarity = fullSim;
+          bestMatchKey = dictKey;
+        }
+        // Confronto singole parole
         List<String> words = productNameRaw.split(' ');
         for (String word in words) {
           if (word.length < 3) continue;
@@ -1124,12 +1190,22 @@ class LocalReceiptParser {
 
       // Valuta similarità
       if (bestSimilarity >= 0.70) {
-        finalName = _productDictionary[bestMatchKey]!['name']!;
-        finalCategory = _productDictionary[bestMatchKey]!['category']!;
+        if (_productDictionary.containsKey(bestMatchKey)) {
+          finalName = _productDictionary[bestMatchKey]!['name']!;
+          finalCategory = _productDictionary[bestMatchKey]!['category']!;
+        } else if (_customDictionary.containsKey(bestMatchKey)) {
+          finalName = _customDictionary[bestMatchKey]!['name']!;
+          finalCategory = _customDictionary[bestMatchKey]!['category']!;
+        }
       } else {
         // Se non assomiglia a nessun prodotto noto E non ha nessun prezzo vicino, è spazzatura
         if (!hasPriceNearby) {
           continue;
+        }
+
+        // Filtro aggiuntivo: se non è nel dizionario ed è chiaramente spazzatura, scartalo comunque
+        if (cleanLine.contains('scont') || cleanLine.contains('filiera') || cleanLine.contains('srl')) {
+            continue;
         }
 
         // Fallback nome originale
@@ -1147,6 +1223,7 @@ class LocalReceiptParser {
         quantity: quantity,
         category: finalCategory,
         isPantry: true,
+        rawOcrName: productNameRaw, // Mantiene traccia dell'OCR grezzo
       ));
     }
 
